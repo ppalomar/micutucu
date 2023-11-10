@@ -1,35 +1,151 @@
-/* src/styles.css */
+/* @import './styles/tailwind.css'; */
+
 body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #ece6ff;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+};
+
+
+h2 {
+    font-size: 24px;
+    margin: 0px 0px 20px 0px;
+}
+
+input, select {
+    height: 36px;
+    border-radius: 4px;
+    border: none;
+    margin-right: 5px;
+    font-size: 14px;
+    width: 250px;
+}
+
+input:focus, select:focus {
+    outline: none;
+}
+
+input::placeholder {
+    margin-left: 5px;
+}
+
+button {
+    height: 38px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #8e44ad;
+    color: white;
+    padding: 0px 20px;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #9b59b6;
+}
+
+.title {
+    font-size: 60px;
+    text-align: center;
+    padding: 20px 0;
 }
 
 .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
-h1, h2 {
-  color: #333;
+.section {
+    display: flex; 
+    flex-direction:column; 
+    padding: 20px;
+
+    background-color: #e0d6ff;
+    margin: 10px;
+    border-radius: 8px;
+
+    min-height: 80vh;
 }
 
-form {
-  margin-top: 10px;
+.classroom{
+    width: 20%
+}
+.students{
+    width: 20%
+}
+.books{
+    width: 35%
+}
+.rounds{
+    width: 15%
 }
 
-input, select, button {
-  margin-bottom: 10px;
-  padding: 8px;
+
+.section-separator {
+    border-bottom: 1px dashed white;
+    margin-top: 16px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.list-div {
+    margin-top: 16px;
 }
 
-li {
-  margin-bottom: 5px;
+.list-item {
+    display: flex;
+    border: 1px dashed #9b59b6;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 8px;
 }
+
+.list-item.active{
+    display: flex;
+}
+
+.classroom .list-item {
+    background-color: #e3daff;
+    border: 1px solid #9b59b6;
+    cursor: pointer;
+}
+
+.list-item > .active-text{
+    margin-left: auto;
+}
+
+.classroom .list-item:hover {
+    border: 1px solid white;
+}
+
+.main-section {
+    display: flex;
+};
+
+.round-title {
+    font-size: 28px;
+}
+
+.round-title-container {
+    display: flex;
+    margin-top: 18px
+}
+
+.round-title {
+    font-size: 28px;
+}
+
+.round-date{
+    font-size: 14px;
+    margin-left: auto;
+    margin-top: 10px;
+}
+
+.delete-round{
+    margin-left: auto;
+    cursor: pointer;
+}
+
+
+

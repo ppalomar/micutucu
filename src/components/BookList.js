@@ -1,15 +1,16 @@
 // src/components/BookList.js
-import React from 'react';
+import React from "react";
 
 const BookList = ({ books, students }) => {
   return (
     <div>
-      <h2>Books</h2>
-      <ul>
+      <div className="list-div">
         {books.map((book) => (
-          <li key={book.id}>{`${book.name} - Owner: ${getOwnerName(book.owner, students)}`}</li>
+          <div className="list-item" key={book.id}>{`${
+            book.name
+          } - Owner: ${getOwnerName(book.owner, students)}`}</div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
@@ -17,7 +18,7 @@ const BookList = ({ books, students }) => {
 // Helper function to get the name of the owner based on the owner's ID
 const getOwnerName = (ownerId, students) => {
   const student = students.find((std) => std.id === ownerId);
-  return student ? student.name : 'Unknown Owner';
+  return student ? student.name : "Unknown Owner";
 };
 
 export default BookList;

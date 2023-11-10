@@ -1,15 +1,26 @@
 // src/components/ClassroomList.js
-import React from 'react';
+import React from "react";
 
-const ClassroomList = ({ classrooms }) => {
+const ClassroomList = ({
+  classrooms,
+  selectedClassroom,
+  handleSelectedClassroom,
+}) => {
   return (
-    <div>
-      <h2>Classrooms</h2>
-      <ul>
-        {classrooms.map((classroom) => (
-          <li key={classroom.id}>{classroom.name}</li>
-        ))}
-      </ul>
+    <div className="list-div">
+      {classrooms.map((classroom) => {
+        const isActive = selectedClassroom?.id === classroom.id;
+        return (
+          <div
+            className={`list-item ${isActive ? "active" : ""}`}
+            key={classroom.id}
+            onClick={() => handleSelectedClassroom(classroom)}
+          >
+            {classroom.name}
+            {isActive && <div className="active-text">(active)</div>}
+          </div>
+        );
+      })}
     </div>
   );
 };

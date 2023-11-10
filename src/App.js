@@ -1,5 +1,6 @@
 // src/App.js
 import React, { useState, useEffect } from "react";
+import _ from "lodash";
 import {
   collection,
   getDocs,
@@ -26,8 +27,19 @@ const App = () => {
 
   const [selectedClassroom, setSelectedClassroom] = useState(null);
 
+  const classroomStudents = students?.filter(
+    (s) => s.classroomId === selectedClassroom?.id
+  );
+
+  const classroomBooks = books?.filter(
+    (b) => b?.classroomId === selectedClassroom?.id
+  );
+
+  const classroomRounds = rounds?.filter(
+    (r) => r?.classroom === selectedClassroom?.id
+  );
+
   useEffect(() => {
-    // Load data from Firestore on component mount
     const fetchData = async () => {
       try {
         const studentsSnapshot = await getCollection("students");
@@ -57,11 +69,12 @@ const App = () => {
 
   const saveCollection = async (collectionName, item) => {
     const col = collection(db, collectionName);
-    await addDoc(col, item);
+    const docRef = await addDoc(col, item);
+    return docRef.id;
   };
 
-  const removeDocFromCollection = async (collectionName, document) => {
-    await deleteDoc(doc(db, collectionName, document));
+  const removeDocFromCollection = async (collectionName, documentId) => {
+    await deleteDoc(doc(db, collectionName, documentId));
   };
 
   const addClassroom = (classroom) => {
@@ -79,19 +92,35 @@ const App = () => {
     saveCollection("books", book);
   };
 
-  const addRound = (round) => {
-    setRounds([...rounds, round]);
-    saveCollection("rounds", round);
+  const addRound = async (round) => {
+    const documentId = await saveCollection("rounds", round);
+    setRounds([...rounds, { documentId, ...round }]);
   };
 
-  const removeLastRound = () => {
-    removeDocFromCollection("rounds", rounds[rounds.length - 1]);
+  const removeLastRound = async () => {
+    const documentId = _.maxBy(classroomRounds, "round")?.documentId;
+    await removeDocFromCollection("rounds", documentId);
+    setRounds([...rounds.filter((r) => r.documentId !== documentId)]);
+
+    // reset all the books to the previous state
+    setBooks(
+      classroomBooks.map((b) => ({
+        ...b,
+        assigned: b.prevAssigned,
+        prevAssigned:
+          b.prevAssigned === null
+            ? null
+            : b.prevAssigned - 1 === 0
+            ? classroomStudents.length
+            : b.prevAssigned - 1,
+      }))
+    );
   };
 
   const assignBooksToStudents = () => {
     const newAssignments = [];
 
-    books.forEach((book) => {
+    classroomBooks.forEach((book) => {
       // Update the book's 'prevAssigned' prop
       book.prevAssigned = book.assigned;
 
@@ -99,64 +128,81 @@ const App = () => {
 
       // Calculate the new 'assigned' position
       if (!book.assigned) {
-        const owner = students.find((student) => student.id === book.owner);
+        const owner = classroomStudents.find(
+          (student) => student.id === book.owner
+        );
         nextPosition = owner?.position + 1;
       } else {
         nextPosition = book.assigned + 1;
       }
-      book.assigned = nextPosition > students.length ? 1 : nextPosition;
+      book.assigned =
+        nextPosition > classroomStudents.length ? 1 : nextPosition;
 
-      // Create a new assignment
       newAssignments.push({
-        student: students[book.assigned - 1].name,
+        student: classroomStudents.find((s) => s.position === book.assigned)
+          ?.name,
         book: book.name,
       });
     });
 
     addRound({
-      round: rounds.length + 1,
+      round: classroomRounds.length + 1,
       date: getCurrentDateTime(),
       assignments: newAssignments,
       classroom: selectedClassroom.id,
     });
   };
 
-  const styleBlock = { display: "flex", flexDirection: "column", padding: 20 };
+  const handleSelectedClassroom = (classroom) => {
+    setSelectedClassroom(classroom);
+  };
 
   const isButtonDisabled = students.length === 0 || books.length === 0;
+
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <h1>Micutucu</h1>
-      <div style={{ display: "flex" }}>
-        <div style={styleBlock}>
+    <div className="container">
+      <div className="title">Micutucu</div>
+      <div className="main-section">
+        <div className="section classroom">
           <ClassroomForm addClassroom={addClassroom} />
-          <ClassroomList classrooms={classrooms} />
-        </div>
-        <div style={styleBlock}>
-          <StudentForm
-            students={students}
+          <div className="section-separator" />
+          <ClassroomList
             classrooms={classrooms}
+            selectedClassroom={selectedClassroom}
+            handleSelectedClassroom={handleSelectedClassroom}
+          />
+        </div>
+        <div className="section students">
+          <StudentForm
+            students={classroomStudents}
+            selectedClassroom={selectedClassroom}
             addStudent={addStudent}
           />
-          <StudentList students={students} classrooms={classrooms} />
+          <div className="section-separator" />
+          <StudentList students={classroomStudents} classrooms={classrooms} />
         </div>
-        <div style={styleBlock}>
-          <BookForm students={students} addBook={addBook} />
-          <BookList books={books} students={students} />
+        <div className="section books">
+          <BookForm
+            students={classroomStudents}
+            selectedClassroom={selectedClassroom}
+            addBook={addBook}
+          />
+          <div className="section-separator" />
+          <BookList books={classroomBooks} students={classroomStudents} />
         </div>
-        <div style={styleBlock}>
-          <div>
+        <div className="section rounds">
+          <div style={{ display: "flex" }}>
             <button disabled={isButtonDisabled} onClick={assignBooksToStudents}>
               Assign Books to Students
             </button>
-            <button disabled={isButtonDisabled} onClick={removeLastRound}>
-              Delete Last Round
-            </button>
-            <button disabled={isButtonDisabled} onClick={assignBooksToStudents}>
-              Delete All Rounds
-            </button>
+            <div className="delete-round">
+              <span class="material-symbols-rounded" onClick={removeLastRound}>
+                delete
+              </span>
+            </div>
           </div>
-          <AssignmentList rounds={rounds} />
+          <div className="section-separator" />
+          <AssignmentList rounds={classroomRounds} />
         </div>
       </div>
     </div>

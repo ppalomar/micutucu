@@ -1,23 +1,16 @@
 // src/components/StudentList.js
-import React from 'react';
+import React from "react";
 
-const StudentList = ({ students, classrooms }) => {
+const StudentList = ({ students }) => {
   return (
-    <div>
-      <h2>Students</h2>
-      <ul>
-        {students.map((student) => (
-          <li key={student.id}>{`${student.name} - ${getClassroomName(student.classroomId, classrooms)}`}</li>
-        ))}
-      </ul>
+    <div className="list-div">
+      {students.map((student) => (
+        <div className="list-item" key={student.id}>
+          {student.name}
+        </div>
+      ))}
     </div>
   );
-};
-
-// Helper function to get the name of the classroom based on its ID
-const getClassroomName = (classroomId, classrooms) => {
-  const classroom = classrooms.find((cls) => cls.id === classroomId);
-  return classroom ? classroom.name : 'Unknown Classroom';
 };
 
 export default StudentList;

@@ -1,8 +1,8 @@
 // src/components/ClassroomForm.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ClassroomForm = ({ addClassroom }) => {
-  const [className, setClassName] = useState('');
+  const [className, setClassName] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,13 +12,13 @@ const ClassroomForm = ({ addClassroom }) => {
         name: className,
       };
       addClassroom(classroom);
-      setClassName('');
+      setClassName("");
     }
   };
 
   return (
     <div>
-      <h2>Create Classroom</h2>
+      <h2>Classrooms</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -26,7 +26,7 @@ const ClassroomForm = ({ addClassroom }) => {
           value={className}
           onChange={(e) => setClassName(e.target.value)}
         />
-        <button type="submit">Create</button>
+        <button type="submit">Add</button>
       </form>
     </div>
   );

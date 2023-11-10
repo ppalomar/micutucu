@@ -1,0 +1,62 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Jest - all",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/node_modules/.bin/react-scripts",
+            "args": [
+                // Run all tests in a single sequence in the current process -- not multiple processes
+                // Only good for debugging -- not normal test runs
+                "test",
+                "--watchAll=false",
+                "--runInBand",
+                "--no-cache"
+            ],
+            "runtimeArgs": ["--nolazy"],
+            "stopOnEntry": false,
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Jest - all changed",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/node_modules/.bin/react-scripts",
+            "args": [
+                // Run all tests in a single sequence in the current process -- not multiple processes
+                // Only good for debugging -- not normal test runs
+                "test",
+                "--watchAll=false",
+                "--runInBand",
+                "--no-cache",
+                "-o"
+            ],
+            "runtimeArgs": ["--nolazy"],
+            "stopOnEntry": false,
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Jest - open file",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/node_modules/.bin/react-scripts",
+            "args": [
+                // Run all tests in a single sequence in the current process -- not multiple processes
+                // Only good for debugging -- not normal test runs
+                "test",
+                "--watchAll=false",
+                "--runInBand",
+                "--no-cache",
+                "--findRelatedTests",
+                "${file}"
+            ],
+            "runtimeArgs": ["--nolazy"],
+            "stopOnEntry": false,
+            "console": "integratedTerminal"
+        }
+    ]
+}

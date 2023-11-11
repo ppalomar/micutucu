@@ -1,13 +1,5 @@
 // src/App.js
 import React, { useState, useEffect } from "react";
-import _ from "lodash";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore/lite";
 
 import ClassroomForm from "./components/ClassroomForm";
 import StudentForm from "./components/StudentForm";
@@ -16,8 +8,13 @@ import ClassroomList from "./components/ClassroomList";
 import StudentList from "./components/StudentList";
 import BookList from "./components/BookList";
 import AssignmentList from "./components/AssignmentList"; // Import the new component
-import { db } from "./firebase";
 import { getCurrentDateTime } from "./helpers";
+import {
+  saveCollection,
+  updateDocFromCollection,
+  getCollection,
+  removeDocFromCollection,
+} from "./db";
 
 const App = () => {
   const [classrooms, setClassrooms] = useState([]);
@@ -30,14 +27,26 @@ const App = () => {
   const classroomStudents = students?.filter(
     (s) => s.classroomId === selectedClassroom?.id
   );
+  const notClassroomStudents = students?.filter(
+    (s) => s.classroomId !== selectedClassroom?.id
+  );
 
   const classroomBooks = books?.filter(
     (b) => b?.classroomId === selectedClassroom?.id
+  );
+  const notClassroomBooks = books?.filter(
+    (b) => b?.classroomId !== selectedClassroom?.id
   );
 
   const classroomRounds = rounds?.filter(
     (r) => r?.classroom === selectedClassroom?.id
   );
+  const notClassroomRounds = rounds?.filter(
+    (r) => r?.classroom !== selectedClassroom?.id
+  );
+
+  const isButtonDisabled =
+    classroomStudents.length === 0 || classroomBooks.length === 0;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,22 +70,7 @@ const App = () => {
     fetchData();
   }, []);
 
-  const getCollection = async (collectionName) => {
-    const col = collection(db, collectionName);
-    const snapshot = await getDocs(col);
-    return snapshot.docs.map((doc) => doc.data());
-  };
-
-  const saveCollection = async (collectionName, item) => {
-    const col = collection(db, collectionName);
-    const docRef = await addDoc(col, item);
-    return docRef.id;
-  };
-
-  const removeDocFromCollection = async (collectionName, documentId) => {
-    await deleteDoc(doc(db, collectionName, documentId));
-  };
-
+  // HELPERS ------------------------------------------------------------------
   const addClassroom = (classroom) => {
     setClassrooms([...classrooms, classroom]);
     saveCollection("classrooms", classroom);
@@ -87,9 +81,9 @@ const App = () => {
     saveCollection("students", student);
   };
 
-  const addBook = (book) => {
-    setBooks([...books, book]);
-    saveCollection("books", book);
+  const addBook = async (book) => {
+    const documentId = await saveCollection("books", book);
+    setBooks([...books, { documentId, ...book }]);
   };
 
   const addRound = async (round) => {
@@ -97,24 +91,27 @@ const App = () => {
     setRounds([...rounds, { documentId, ...round }]);
   };
 
-  const removeLastRound = async () => {
-    const documentId = _.maxBy(classroomRounds, "round")?.documentId;
-    await removeDocFromCollection("rounds", documentId);
-    setRounds([...rounds.filter((r) => r.documentId !== documentId)]);
+  const updateBook = (documentId, book) => {
+    updateDocFromCollection("books", documentId, book);
+  };
 
-    // reset all the books to the previous state
-    setBooks(
-      classroomBooks.map((b) => ({
-        ...b,
-        assigned: b.prevAssigned,
-        prevAssigned:
-          b.prevAssigned === null
-            ? null
-            : b.prevAssigned - 1 === 0
-            ? classroomStudents.length
-            : b.prevAssigned - 1,
-      }))
-    );
+  const removeRounds = async () => {
+    // Remove all classroomRounds in db and local state
+    classroomRounds.forEach(async (r) => {
+      await removeDocFromCollection("rounds", r?.documentId);
+    });
+    setRounds(notClassroomRounds);
+
+    // Update classroomBooks to be unassigned in db and local state
+    const newBooks = classroomBooks.map((b) => ({
+      ...b,
+      assigned: null,
+      prevAssigned: null,
+    }));
+    newBooks.forEach(async ({ documentId, ...restProps }) => {
+      updateBook(documentId, restProps);
+    });
+    setBooks([...notClassroomBooks, ...newBooks]);
   };
 
   const assignBooksToStudents = () => {
@@ -138,6 +135,9 @@ const App = () => {
       book.assigned =
         nextPosition > classroomStudents.length ? 1 : nextPosition;
 
+      const { documentId, ...restBook } = book;
+      updateBook(documentId, restBook);
+
       newAssignments.push({
         student: classroomStudents.find((s) => s.position === book.assigned)
           ?.name,
@@ -152,12 +152,11 @@ const App = () => {
       classroom: selectedClassroom.id,
     });
   };
+  //END HELPERS ---------------------------------------------------------------
 
   const handleSelectedClassroom = (classroom) => {
     setSelectedClassroom(classroom);
   };
-
-  const isButtonDisabled = students.length === 0 || books.length === 0;
 
   return (
     <div className="container">
@@ -196,7 +195,7 @@ const App = () => {
               Assign Books to Students
             </button>
             <div className="delete-round">
-              <span class="material-symbols-rounded" onClick={removeLastRound}>
+              <span class="material-symbols-rounded" onClick={removeRounds}>
                 delete
               </span>
             </div>
@@ -210,3 +209,14 @@ const App = () => {
 };
 
 export default App;
+
+/* TODO LIST:
+
+- REMOVE BOOKS
+- REMOVE STUDENTS
+- REMOVE ALL ROUNDS AND RESET BOOKS
+- REMOVE CLASSROOMS
+- MINIMIZE STUDENTS AND BOOKS
+- SORT ALPHABETICALLY STUDENTS
+
+*/

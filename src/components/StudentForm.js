@@ -22,14 +22,20 @@ const StudentForm = ({ students, selectedClassroom, addStudent }) => {
     <div>
       <h2>Students</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter student name"
-          name="studentName"
-          value={studentName}
-          onChange={(e) => setStudentName(e.target.value)}
-        />
-        <button type="submit">Add</button>
+        <div style={{ display: "flex" }}>
+          <div style={{ flex: 10, marginRight: 20 }}>
+            <input
+              type="text"
+              placeholder="Enter student name"
+              name="studentName"
+              value={studentName}
+              onChange={(e) => setStudentName(e.target.value)}
+            />
+          </div>
+          <div style={{ flex: 2 }}>
+            <button type="submit">Add</button>
+          </div>
+        </div>
       </form>
     </div>
   );

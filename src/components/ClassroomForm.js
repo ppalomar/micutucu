@@ -20,13 +20,19 @@ const ClassroomForm = ({ addClassroom }) => {
     <div>
       <h2>Classrooms</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter classroom name"
-          value={className}
-          onChange={(e) => setClassName(e.target.value)}
-        />
-        <button type="submit">Add</button>
+        <div style={{ display: "flex" }}>
+          <div style={{ flex: 10, marginRight: 20 }}>
+            <input
+              type="text"
+              placeholder="Enter classroom name"
+              value={className}
+              onChange={(e) => setClassName(e.target.value)}
+            />
+          </div>
+          <div style={{ flex: 2 }}>
+            <button type="submit">Add</button>
+          </div>
+        </div>
       </form>
     </div>
   );

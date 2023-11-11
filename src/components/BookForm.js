@@ -37,28 +37,36 @@ const BookForm = ({ students, selectedClassroom, addBook }) => {
     <div>
       <h2>Books</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter book name"
-          name="bookName"
-          value={bookName}
-          onChange={(e) => setBookName(e.target.value)}
-        />
-        <select
-          value={selectedStudent}
-          onChange={handleChange}
-          name="selectedStudent" // Add the name attribute
-        >
-          <option value="" disabled>
-            Select Owner
-          </option>
-          {students.map((student) => (
-            <option key={student.id} value={student.id}>
-              {student.name}
-            </option>
-          ))}
-        </select>
-        <button type="submit">Add</button>
+        <div style={{ display: "flex" }}>
+          <div style={{ flex: 7, marginRight: 20 }}>
+            <input
+              type="text"
+              placeholder="Enter book name"
+              name="bookName"
+              value={bookName}
+              onChange={(e) => setBookName(e.target.value)}
+            />
+          </div>
+          <div style={{ flex: 4, marginRight: 16 }}>
+            <select
+              value={selectedStudent}
+              onChange={handleChange}
+              name="selectedStudent" // Add the name attribute
+            >
+              <option value="" disabled>
+                Select Owner
+              </option>
+              {students.map((student) => (
+                <option key={student.id} value={student.id}>
+                  {student.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div style={{ flex: 1 }}>
+            <button type="submit">Add</button>
+          </div>
+        </div>
       </form>
     </div>
   );

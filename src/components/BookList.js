@@ -1,14 +1,24 @@
 // src/components/BookList.js
 import React from "react";
 
-const BookList = ({ books, students }) => {
+const BookList = ({ books, students, removeBook }) => {
   return (
     <div>
       <div className="list-div">
         {books.map((book) => (
-          <div className="list-item" key={book.id}>{`${
-            book.name
-          } - Owner: ${getOwnerName(book.owner, students)}`}</div>
+          <div className="list-item" key={book.id}>
+            <div>
+              {`${book.name} - Owner: ${getOwnerName(book.owner, students)}`}{" "}
+            </div>
+            <div className="list-item-delete">
+              <span
+                class="material-symbols-rounded"
+                onClick={() => removeBook(book.documentId)}
+              >
+                delete
+              </span>
+            </div>
+          </div>
         ))}
       </div>
     </div>

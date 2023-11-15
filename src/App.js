@@ -98,7 +98,7 @@ const App = () => {
   const removeStudent = async (documentId) => {
     await removeDocFromCollection("students", documentId);
     setStudents([
-      ...students,
+      ...notClassroomStudents,
       classroomStudents.filter((b) => b.documentId !== documentId),
     ]);
 
@@ -107,15 +107,12 @@ const App = () => {
 
   const removeBook = async (documentId) => {
     await removeDocFromCollection("books", documentId);
-    setBooks([
-      ...books,
-      classroomBooks.filter((b) => b.documentId !== documentId),
-    ]);
-
-    await removeRounds();
+    const newBooks = classroomBooks.filter((b) => b.documentId !== documentId);
+    setBooks([...notClassroomBooks, ...newBooks]);
+    await removeRounds(newBooks);
   };
 
-  const removeRounds = async () => {
+  const removeRounds = async (stateBooks) => {
     // Remove all classroomRounds in db and local state
     classroomRounds.forEach(async (r) => {
       await removeDocFromCollection("rounds", r?.documentId);
@@ -123,7 +120,8 @@ const App = () => {
     setRounds(notClassroomRounds);
 
     // Update classroomBooks to be unassigned in db and local state
-    const newBooks = classroomBooks.map((b) => ({
+    const booksToReset = stateBooks || classroomBooks;
+    const newBooks = booksToReset.map((b) => ({
       ...b,
       assigned: null,
       prevAssigned: null,
@@ -208,7 +206,11 @@ const App = () => {
             addBook={addBook}
           />
           <div className="section-separator" />
-          <BookList books={classroomBooks} students={classroomStudents} />
+          <BookList
+            books={classroomBooks}
+            students={classroomStudents}
+            removeBook={removeBook}
+          />
         </div>
         <div className="section rounds">
           <h2>Assignments</h2>
@@ -222,7 +224,10 @@ const App = () => {
               </button>
             </div>
             <div style={{ display: "flex", flex: 1 }} className="delete-round">
-              <span class="material-symbols-rounded" onClick={removeRounds}>
+              <span
+                class="material-symbols-rounded"
+                onClick={() => removeRounds()}
+              >
                 delete
               </span>
             </div>

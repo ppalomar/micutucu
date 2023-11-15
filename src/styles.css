@@ -103,10 +103,22 @@ button:hover {
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 8px;
+    align-items: center;
+    height: 20px;
 }
 
 .list-item.active{
     display: flex;
+}
+
+.list-item:hover .list-item-delete {
+    display: block;
+}
+
+.list-item-delete {
+    display: none;
+    margin-left: auto;
+    cursor: pointer;
 }
 
 .classroom .list-item {
@@ -161,11 +173,6 @@ button:hover {
         display: flex;
         flex-direction: column;
     };
-
-    .section {
-        min-height: 10vh;
-        box-shadow: none;
-    }
   }
   
 

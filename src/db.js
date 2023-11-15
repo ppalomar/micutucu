@@ -12,7 +12,7 @@ import { db } from "./firebase";
 export const getCollection = async (collectionName) => {
   const col = collection(db, collectionName);
   const snapshot = await getDocs(col);
-  return snapshot.docs.map((doc) => doc.data());
+  return snapshot.docs.map((doc) => ({ documentId: doc.id, ...doc.data() }));
 };
 
 export const saveCollection = async (collectionName, item) => {

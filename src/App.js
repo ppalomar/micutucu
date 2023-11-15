@@ -71,14 +71,14 @@ const App = () => {
   }, []);
 
   // HELPERS ------------------------------------------------------------------
-  const addClassroom = (classroom) => {
-    setClassrooms([...classrooms, classroom]);
-    saveCollection("classrooms", classroom);
+  const addClassroom = async (classroom) => {
+    const documentId = await saveCollection("classrooms", classroom);
+    setBooks([...classrooms, { documentId, ...classroom }]);
   };
 
-  const addStudent = (student) => {
-    setStudents([...students, student]);
-    saveCollection("students", student);
+  const addStudent = async (student) => {
+    const documentId = await saveCollection("students", student);
+    setBooks([...students, { documentId, ...student }]);
   };
 
   const addBook = async (book) => {
@@ -109,6 +109,7 @@ const App = () => {
       prevAssigned: null,
     }));
     newBooks.forEach(async ({ documentId, ...restProps }) => {
+      // We don't want to save in database the documentId
       updateBook(documentId, restProps);
     });
     setBooks([...notClassroomBooks, ...newBooks]);
@@ -190,11 +191,17 @@ const App = () => {
           <BookList books={classroomBooks} students={classroomStudents} />
         </div>
         <div className="section rounds">
+          <h2>Assignments</h2>
           <div style={{ display: "flex" }}>
-            <button disabled={isButtonDisabled} onClick={assignBooksToStudents}>
-              Assign Books to Students
-            </button>
-            <div className="delete-round">
+            <div style={{ flex: 3 }}>
+              <button
+                disabled={isButtonDisabled}
+                onClick={assignBooksToStudents}
+              >
+                Assign Books to Students
+              </button>
+            </div>
+            <div style={{ display: "flex", flex: 1 }} className="delete-round">
               <span class="material-symbols-rounded" onClick={removeRounds}>
                 delete
               </span>

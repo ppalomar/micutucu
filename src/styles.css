@@ -148,6 +148,10 @@ button:hover {
     margin-left: auto;
     cursor: pointer;
 }
+.delete-round span{
+    margin-left: auto;
+}
+
 
 /* Media query to change styles for screens less than 700px */
 @media (max-width: 1440px) {

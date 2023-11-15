@@ -95,6 +95,26 @@ const App = () => {
     updateDocFromCollection("books", documentId, book);
   };
 
+  const removeStudent = async (documentId) => {
+    await removeDocFromCollection("students", documentId);
+    setStudents([
+      ...students,
+      classroomStudents.filter((b) => b.documentId !== documentId),
+    ]);
+
+    await removeRounds();
+  };
+
+  const removeBook = async (documentId) => {
+    await removeDocFromCollection("books", documentId);
+    setBooks([
+      ...books,
+      classroomBooks.filter((b) => b.documentId !== documentId),
+    ]);
+
+    await removeRounds();
+  };
+
   const removeRounds = async () => {
     // Remove all classroomRounds in db and local state
     classroomRounds.forEach(async (r) => {

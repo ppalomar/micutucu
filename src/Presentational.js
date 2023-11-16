@@ -32,7 +32,10 @@ const Presentational = ({
 
   return (
     <div className="container">
-      <div className="title">Micutucu</div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="title">Micu</div>
+        <div className="title-second">tucu</div>
+      </div>
       <div className="main-section">
         <div className="section classroom">
           <ClassroomForm addClassroom={addClassroom} />

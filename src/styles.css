@@ -22,15 +22,25 @@ input, select {
     width: 100%;
 }
 
+select {
+    font-family: 'Montserrat', sans-serif;
+    color: #82589F;
+}
+
 input:focus, select:focus {
     outline: none;
 }
 
-input::placeholder {
-    margin-left: 5px;
+input::placeholder{
+    font-family: 'Montserrat', sans-serif;
+    color: #999;
+    font-style: italic; 
+    position: relative;
+    left: 6px;
 }
 
 button {
+    font-family: 'Montserrat', sans-serif;
     height: 38px;
     border: none;
     border-radius: 4px;
@@ -47,9 +57,19 @@ button:hover {
 }
 
 .title {
-    font-size: 60px;
+    font-size: 68px;
     text-align: center;
     padding: 20px 0;
+    color: #82589F;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
+.title-second {
+    font-size: 70px;
+    text-align: center;
+    padding: 20px 0;
+    color: #D6A2E8;
 }
 
 .container {

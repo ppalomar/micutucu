@@ -8,9 +8,8 @@ body {
     padding: 0;
 };
 
-
 h2 {
-    font-size: 24px;
+    font-size: 28px;
     margin: 0px 0px 20px 0px;
 }
 
@@ -86,7 +85,6 @@ button:hover {
     flex: 3
 }
 
-
 .section-separator {
     border-bottom: 1px dashed white;
     margin-top: 16px;
@@ -109,6 +107,7 @@ button:hover {
 
 .list-item.active{
     display: flex;
+    border: 1px solid #82589F;
 }
 
 .list-item:hover .list-item-delete {
@@ -121,18 +120,29 @@ button:hover {
     cursor: pointer;
 }
 
-.classroom .list-item {
-    background-color: #e3daff;
-    border: 1px solid #9b59b6;
-    cursor: pointer;
-}
-
 .list-item > .active-text{
     margin-left: auto;
 }
 
+.classroom .list-item {
+    background-color: #e3daff;
+    border: 1px dashed #bdc3c7;
+    color: #2c3e50;
+    cursor: pointer;
+}
+
+.classroom .list-item.active{
+    display: flex;
+    border: 1px solid #82589F;
+    font-weight: 400;
+}
+
 .classroom .list-item:hover {
-    border: 1px solid white;
+    border: 1px dashed white;
+}
+
+.classroom .list-item.active:hover{
+    border: 1px solid #82589F;
 }
 
 .main-section {
@@ -149,7 +159,7 @@ button:hover {
 }
 
 .round-title {
-    font-size: 28px;
+    font-size: 20px;
 }
 
 .round-date{
@@ -165,7 +175,6 @@ button:hover {
 .delete-round span{
     margin-left: auto;
 }
-
 
 /* Media query to change styles for screens less than 700px */
 @media (max-width: 1440px) {

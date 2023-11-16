@@ -14,7 +14,9 @@ const ClassroomList = ({
           <div
             className={`list-item ${isActive ? "active" : ""}`}
             key={classroom.id}
-            onClick={() => handleSelectedClassroom(classroom)}
+            onClick={
+              isActive ? () => {} : () => handleSelectedClassroom(classroom)
+            }
           >
             {classroom.name}
             {isActive && <div className="active-text">(active)</div>}

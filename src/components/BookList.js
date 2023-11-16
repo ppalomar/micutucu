@@ -13,7 +13,7 @@ const BookList = ({ books, students, removeBook }) => {
             <div className="list-item-delete">
               <span
                 class="material-symbols-rounded"
-                onClick={() => removeBook(book.documentId)}
+                onClick={() => removeBook({ documentId: book.documentId })}
               >
                 delete
               </span>

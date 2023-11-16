@@ -18,34 +18,23 @@ const App = () => {
   const [rounds, setRounds] = useState([]);
   const [selectedClassroom, setSelectedClassroom] = useState(null);
 
-  const classroomStudents = React.useMemo(
-    () => students?.filter((s) => s.classroomId === selectedClassroom?.id),
-    [selectedClassroom?.id, students]
+  const classroomStudents = students?.filter(
+    (s) => s.classroomId === selectedClassroom?.id
   );
-
-  const notClassroomStudents = React.useMemo(
-    () => students?.filter((s) => s.classroomId !== selectedClassroom?.id),
-    [selectedClassroom?.id, students]
+  const notClassroomStudents = students?.filter(
+    (s) => s.classroomId !== selectedClassroom?.id
   );
-
-  const classroomBooks = React.useMemo(
-    () => books?.filter((b) => b?.classroomId === selectedClassroom?.id),
-    [books, selectedClassroom?.id]
+  const classroomBooks = books?.filter(
+    (b) => b?.classroomId === selectedClassroom?.id
   );
-
-  const notClassroomBooks = React.useMemo(
-    () => books?.filter((b) => b?.classroomId !== selectedClassroom?.id),
-    [books, selectedClassroom?.id]
+  const notClassroomBooks = books?.filter(
+    (b) => b?.classroomId !== selectedClassroom?.id
   );
-
-  const classroomRounds = React.useMemo(
-    () => rounds?.filter((r) => r?.classroom === selectedClassroom?.id),
-    [rounds, selectedClassroom?.id]
+  const classroomRounds = rounds?.filter(
+    (r) => r?.classroom === selectedClassroom?.id
   );
-
-  const notClassroomRounds = React.useMemo(
-    () => rounds?.filter((r) => r?.classroom !== selectedClassroom?.id),
-    [rounds, selectedClassroom?.id]
+  const notClassroomRounds = rounds?.filter(
+    (r) => r?.classroom !== selectedClassroom?.id
   );
 
   // HELPERS ------------------------------------------------------------------
@@ -74,16 +63,22 @@ const App = () => {
   };
 
   const removeStudent = async (documentId, studentId) => {
-    // remove all the rounds
-    await removeRounds();
-
     // remove any book that could have the student
     const booksOwnedByStudent = classroomBooks.filter(
       (book) => book.owner === studentId
     );
+    const booksNotOwnedByStudent = classroomBooks.filter(
+      (book) => book.owner !== studentId
+    );
     booksOwnedByStudent.forEach(async (book) => {
-      await removeBook(book.documentId, false);
+      await removeBook({
+        documentId: book.documentId,
+        needRemoveRounds: false,
+      });
     });
+
+    // remove remove all the rounds and reset the books
+    await removeRounds({ customBooks: booksNotOwnedByStudent });
 
     const newStudents = classroomStudents.filter(
       (student) => student.id !== studentId
@@ -92,35 +87,41 @@ const App = () => {
     await removeDocFromCollection("students", documentId);
   };
 
-  const removeRounds = async (stateBooks) => {
-    // Remove all classroomRounds in db and local state
-    classroomRounds.forEach(async (r) => {
-      await removeDocFromCollection("rounds", r?.documentId);
-    });
-    setRounds(notClassroomRounds);
-
+  const resetBooks = async ({ booksToReset }) => {
     // Update classroomBooks to be unassigned in db and local state
-    const booksToReset = stateBooks || classroomBooks;
     const newBooks = booksToReset.map((b) => ({
       ...b,
       assigned: null,
-      prevAssigned: null,
     }));
+    setBooks([...notClassroomBooks, ...newBooks]);
+
     newBooks.forEach(async ({ documentId, ...restProps }) => {
       // We don't want to save in database the documentId
       updateBook(documentId, restProps);
     });
-    setBooks([...notClassroomBooks, ...newBooks]);
   };
 
-  const removeBook = async (documentId, needRemoveRounds = true) => {
+  const removeRounds = async ({ customBooks } = {}) => {
+    if (!classroomRounds.length) return;
+
+    // Remove all classroom rounds in db and local state
+    setRounds(notClassroomRounds);
+    classroomRounds.forEach(async (r) => {
+      await removeDocFromCollection("rounds", r?.documentId);
+    });
+
+    // set all the classroom books to un-assigned again to start cycle
+    resetBooks({ booksToReset: customBooks || classroomBooks });
+  };
+
+  const removeBook = async ({ documentId, needRemoveRounds = true } = {}) => {
     await removeDocFromCollection("books", documentId);
     const newBooks = classroomBooks.filter((b) => b.documentId !== documentId);
     setBooks([...notClassroomBooks, ...newBooks]);
 
     // remove all the rounds
     if (needRemoveRounds) {
-      await removeRounds(newBooks);
+      await removeRounds({ customBooks: newBooks });
     }
   };
 

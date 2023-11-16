@@ -8,11 +8,8 @@ const BookForm = ({ students, selectedClassroom, addBook }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "selectedStudent") {
-      // Convert the selectedStudent value to a number
       setSelectedStudent(Number(value));
     } else {
-      // Handle other form field changes
-      // (e.g., bookName)
     }
   };
 
@@ -24,7 +21,6 @@ const BookForm = ({ students, selectedClassroom, addBook }) => {
         name: bookName,
         owner: selectedStudent,
         assigned: null,
-        prevAssigned: null,
         classroomId: selectedClassroom?.id,
       };
       addBook(book);

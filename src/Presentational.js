@@ -86,7 +86,9 @@ const Presentational = ({
             <div style={{ display: "flex", flex: 1 }} className="delete-round">
               <span
                 class="material-symbols-rounded"
-                onClick={() => removeRounds()}
+                onClick={
+                  classroomRounds?.length ? () => removeRounds() : () => {}
+                }
               >
                 delete
               </span>

@@ -1,4 +1,6 @@
 import React from "react";
+import _ from "lodash";
+import { sortBy } from "lodash/fp";
 
 import ClassroomForm from "./components/ClassroomForm";
 import StudentForm from "./components/StudentForm";
@@ -7,6 +9,8 @@ import ClassroomList from "./components/ClassroomList";
 import StudentList from "./components/StudentList";
 import BookList from "./components/BookList";
 import AssignmentList from "./components/AssignmentList"; // Import the new component
+
+const sortByRound = sortBy(["round"]);
 
 const Presentational = ({
   classrooms,
@@ -29,6 +33,11 @@ const Presentational = ({
 }) => {
   const isButtonDisabled =
     classroomStudents.length === 0 || classroomBooks.length === 0;
+
+  const lastRound = _.last(sortByRound(classroomRounds));
+  const lastRoundText = classroomRounds.length
+    ? `Round ${lastRound.round} - ${lastRound.date}`
+    : "";
 
   return (
     <div className="container">
@@ -73,7 +82,12 @@ const Presentational = ({
           />
         </div>
         <div className="section rounds">
-          <h2>Assignments</h2>
+          <div style={{ display: "flex" }}>
+            <h2>Assignments</h2>
+            <div style={{ marginLeft: "auto" }}>
+              <h3>{lastRoundText}</h3>
+            </div>
+          </div>
           <div style={{ display: "flex" }}>
             <div style={{ flex: 3 }}>
               <button
@@ -85,6 +99,7 @@ const Presentational = ({
             </div>
             <div style={{ display: "flex", flex: 1 }} className="delete-round">
               <span
+                title="Delete all rounds"
                 class="material-symbols-rounded"
                 onClick={
                   classroomRounds?.length ? () => removeRounds() : () => {}

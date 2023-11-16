@@ -12,6 +12,7 @@ const ClassroomList = ({
         const isActive = selectedClassroom?.id === classroom.id;
         return (
           <div
+            title="Select this classroom"
             className={`list-item ${isActive ? "active" : ""}`}
             key={classroom.id}
             onClick={

@@ -9,6 +9,7 @@ const StudentList = ({ students, removeStudent }) => {
           <div>{student.name}</div>
           <div className="list-item-delete">
             <span
+              title="Delete student"
               class="material-symbols-rounded"
               onClick={() => removeStudent(student.documentId, student.id)}
             >

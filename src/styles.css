@@ -13,6 +13,8 @@ h2 {
     margin: 0px 0px 20px 0px;
 }
 
+h3 { margin-left: 5px; margin-top: 26px; }
+
 input, select {
     font-family: 'Montserrat', sans-serif;
     height: 36px;
@@ -145,6 +147,11 @@ button:hover {
     margin-left: auto;
 }
 
+.list-item.assignment {
+    border: 1px solid #82589F;
+    font-weight: 400;
+}
+
 .classroom .list-item {
     background-color: #e3daff;
     border: 1px dashed #bdc3c7;
@@ -176,7 +183,8 @@ button:hover {
 
 .round-title-container {
     display: flex;
-    margin-top: 18px
+    margin-top: 18px;
+    align-items: center;
 }
 
 .round-title {
@@ -186,7 +194,6 @@ button:hover {
 .round-date{
     font-size: 14px;
     margin-left: auto;
-    margin-top: 10px;
 }
 
 .delete-round{

@@ -58,8 +58,8 @@ const App = () => {
     setRounds([...rounds, { documentId, ...round }]);
   };
 
-  const updateBook = (documentId, book) => {
-    updateDocFromCollection("books", documentId, book);
+  const updateBook = async (documentId, book) => {
+    await updateDocFromCollection("books", documentId, book);
   };
 
   const removeStudent = async (documentId, studentId) => {

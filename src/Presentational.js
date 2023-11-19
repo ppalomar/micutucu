@@ -26,6 +26,7 @@ const Presentational = ({
   removeStudent,
 
   addBook,
+  updateBook,
   removeBook,
 
   assignBooksToStudents,
@@ -78,6 +79,7 @@ const Presentational = ({
           <BookList
             books={classroomBooks}
             students={classroomStudents}
+            updateBook={updateBook}
             removeBook={removeBook}
           />
         </div>

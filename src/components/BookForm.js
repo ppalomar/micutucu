@@ -21,6 +21,7 @@ const BookForm = ({ students, selectedClassroom, addBook }) => {
         name: bookName,
         owner: selectedStudent,
         assigned: null,
+        available: true,
         classroomId: selectedClassroom?.id,
       };
       addBook(book);

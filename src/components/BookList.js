@@ -1,12 +1,25 @@
 // src/components/BookList.js
 import React from "react";
 
-const BookList = ({ books, students, removeBook }) => {
+const BookList = ({ books, students, updateBook, removeBook }) => {
+  const handleOnClick = (b) => {
+    const { documentId, ...book } = b;
+    updateBook(documentId, { ...book, available: !b.available });
+  };
+
+  const sortedBooks = books.sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <div>
       <div className="list-div">
-        {books.map((book) => (
-          <div className="list-item" key={book.id}>
+        {sortedBooks.map((book) => (
+          <div
+            className={`list-item book ${
+              book.available ? "available" : "not-available"
+            }`}
+            key={book.id}
+            onClick={() => handleOnClick(book)}
+          >
             <div>
               {`${book.name} - Owner: ${getOwnerName(book.owner, students)}`}{" "}
             </div>

@@ -60,6 +60,8 @@ const App = () => {
 
   const updateBook = async (documentId, book) => {
     await updateDocFromCollection("books", documentId, book);
+    const restOfBooks = books.filter((b) => b.id !== book.id);
+    setBooks([...restOfBooks, { documentId, ...book }]);
   };
 
   const removeStudent = async (documentId, studentId) => {
@@ -126,6 +128,18 @@ const App = () => {
   };
 
   const assignBooksToStudents = () => {
+    /*
+    i. Crear una lista de libros disponibles para esa semana, inicialmente todos los libros.
+      ii. Para cada alumno en la clase:
+          1. Si el alumno no ha devuelto su libro de la semana anterior:
+               - Eliminar su libro del historial de asignaciones.
+          2. Si el libro asignado al alumno está disponible:
+               - Eliminarlo de la lista de libros disponibles.
+      iii. Para cada alumno en la clase:
+          1. Asignar un libro de la lista de disponibles que minimice la repetición utilizando el historial de asignaciones.
+          2. Actualizar la lista de asignaciones y el historial de asignaciones.
+    */
+
     const newAssignments = [];
 
     classroomBooks.forEach((book) => {
@@ -201,10 +215,16 @@ const App = () => {
     addStudent,
     removeStudent,
     addBook,
+    updateBook,
     removeBook,
     assignBooksToStudents,
     removeRounds,
   };
+
+  console.log("Classrooms:", classrooms);
+  console.log("Students:", classroomStudents);
+  console.log("Books:", classroomBooks);
+  console.log("Rounds:", classroomRounds);
 
   return <Presentational {...presentationalProps} />;
 };

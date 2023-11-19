@@ -126,6 +126,19 @@ button:hover {
     height: 20px;
 }
 
+.list-item.book {
+    cursor: pointer;
+}
+
+.list-item.book.not-available {
+    background-color: #f8a5c2;
+    border: 1px dashed #c44569;
+}
+
+.list-item.book:hover {
+    border: 1px dashed #f8a5c2;
+}
+
 .list-item.active{
     display: flex;
     border: 1px solid #82589F;

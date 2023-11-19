@@ -2,9 +2,11 @@
 import React from "react";
 
 const StudentList = ({ students, removeStudent }) => {
+  const sortedStudents = students.sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <div className="list-div">
-      {students.map((student) => (
+      {sortedStudents.map((student) => (
         <div className="list-item" key={student.id}>
           <div>{student.name}</div>
           <div className="list-item-delete">

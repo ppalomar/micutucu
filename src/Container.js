@@ -123,7 +123,7 @@ const App = () => {
     const studentIdsThatNotReturnedBook = notAvailableBooks.map(
       (b) => b.assigned
     );
-    const studentIdsOwningABook = availableBooks.map((b) => b.owner);
+    const studentIdsOwningABook = classroomBooks.map((b) => b.owner);
     const studentsConsideredForRound = classroomStudents.filter(
       (s) =>
         !studentIdsThatNotReturnedBook.includes(s.id) &&

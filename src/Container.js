@@ -75,18 +75,11 @@ const App = () => {
     const booksOwnedByStudent = classroomBooks.filter(
       (book) => book.owner === studentId
     );
-    const booksNotOwnedByStudent = classroomBooks.filter(
-      (book) => book.owner !== studentId
-    );
     booksOwnedByStudent.forEach(async (book) => {
       await removeBook({
         documentId: book.documentId,
-        needRemoveRounds: false,
       });
     });
-
-    // remove remove all the rounds and reset the books
-    await removeRounds({ customBooks: booksNotOwnedByStudent });
 
     const newStudents = classroomStudents.filter(
       (student) => student.id !== studentId
@@ -118,15 +111,10 @@ const App = () => {
     resetBooks({ booksToReset: customBooks || classroomBooks });
   };
 
-  const removeBook = async ({ documentId, needRemoveRounds = true } = {}) => {
+  const removeBook = async ({ documentId } = {}) => {
     await removeDocFromCollection("books", documentId);
     const newBooks = classroomBooks.filter((b) => b.documentId !== documentId);
     setBooks([...notClassroomBooks, ...newBooks]);
-
-    // remove all the rounds
-    // if (needRemoveRounds) {
-    //   await removeRounds({ customBooks: newBooks });
-    // }
   };
 
   const assignBooksToStudents = async () => {

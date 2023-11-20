@@ -124,9 +124,9 @@ const App = () => {
     setBooks([...notClassroomBooks, ...newBooks]);
 
     // remove all the rounds
-    if (needRemoveRounds) {
-      await removeRounds({ customBooks: newBooks });
-    }
+    // if (needRemoveRounds) {
+    //   await removeRounds({ customBooks: newBooks });
+    // }
   };
 
   const assignBooksToStudents = async () => {
@@ -135,8 +135,11 @@ const App = () => {
     const studentIdsThatNotReturnedBook = notAvailableBooks.map(
       (b) => b.assigned
     );
+    const studentIdsOwningABook = availableBooks.map((b) => b.owner);
     const studentsConsideredForRound = classroomStudents.filter(
-      (s) => !studentIdsThatNotReturnedBook.includes(s.id)
+      (s) =>
+        !studentIdsThatNotReturnedBook.includes(s.id) &&
+        studentIdsOwningABook.includes(s.id)
     );
 
     const buildRound = () => {
@@ -213,11 +216,6 @@ const App = () => {
       assignmentsBag,
       "studentsRepeating"
     )?.assignments;
-
-    console.log(
-      "repeating",
-      minBy(assignmentsBag, "studentsRepeating")?.studentsRepeating
-    );
 
     addRound({
       round: classroomRounds.length + 1,

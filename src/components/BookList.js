@@ -2,12 +2,16 @@
 import React from "react";
 
 const BookList = ({ books, students, updateBook, removeBook }) => {
-  const handleOnClick = (b) => {
-    const { documentId, ...book } = b;
-    updateBook(documentId, { ...book, available: !b.available });
+  const handleOnClick = (book) => {
+    updateBook({ ...book, available: !book.available });
   };
 
   const sortedBooks = books.sort((a, b) => a.name.localeCompare(b.name));
+
+  const getStudentName = (id) => {
+    const student = students.find((std) => std.id === id);
+    return student ? student.name : "Unknown Owner";
+  };
 
   return (
     <div>
@@ -20,8 +24,16 @@ const BookList = ({ books, students, updateBook, removeBook }) => {
             key={book.id}
             onClick={() => handleOnClick(book)}
           >
-            <div>
-              {`${book.name} - Owner: ${getOwnerName(book.owner, students)}`}{" "}
+            <div className="book-display">
+              <div className="book-name">{book.name}</div>
+              {book.assigned && (
+                <div className="book-assigned">
+                  Assigned: {getStudentName(book.assigned)}
+                </div>
+              )}
+              <div className="book-owner">
+                Owner: {getStudentName(book.owner)}
+              </div>
             </div>
             <div className="list-item-delete">
               <span
@@ -37,12 +49,6 @@ const BookList = ({ books, students, updateBook, removeBook }) => {
       </div>
     </div>
   );
-};
-
-// Helper function to get the name of the owner based on the owner's ID
-const getOwnerName = (ownerId, students) => {
-  const student = students.find((std) => std.id === ownerId);
-  return student ? student.name : "Unknown Owner";
 };
 
 export default BookList;

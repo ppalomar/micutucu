@@ -1,5 +1,6 @@
 // src/App.js
 import React, { useState, useEffect } from "react";
+import { difference, sample } from "lodash";
 
 import { getCurrentDateTime } from "./helpers";
 import {
@@ -58,10 +59,11 @@ const App = () => {
     setRounds([...rounds, { documentId, ...round }]);
   };
 
-  const updateBook = async (documentId, book) => {
-    await updateDocFromCollection("books", documentId, book);
+  const updateBook = async (book) => {
+    const { documentId, ...b } = book;
+    await updateDocFromCollection("books", documentId, b);
     const restOfBooks = books.filter((b) => b.id !== book.id);
-    setBooks([...restOfBooks, { documentId, ...book }]);
+    setBooks([...restOfBooks, { documentId, ...b }]);
   };
 
   const removeStudent = async (documentId, studentId) => {
@@ -97,9 +99,9 @@ const App = () => {
     }));
     setBooks([...notClassroomBooks, ...newBooks]);
 
-    newBooks.forEach(async ({ documentId, ...restProps }) => {
+    newBooks.forEach(async (book) => {
       // We don't want to save in database the documentId
-      updateBook(documentId, restProps);
+      updateBook(book);
     });
   };
 
@@ -128,43 +130,44 @@ const App = () => {
   };
 
   const assignBooksToStudents = () => {
-    /*
-    i. Crear una lista de libros disponibles para esa semana, inicialmente todos los libros.
-      ii. Para cada alumno en la clase:
-          1. Si el alumno no ha devuelto su libro de la semana anterior:
-               - Eliminar su libro del historial de asignaciones.
-          2. Si el libro asignado al alumno está disponible:
-               - Eliminarlo de la lista de libros disponibles.
-      iii. Para cada alumno en la clase:
-          1. Asignar un libro de la lista de disponibles que minimice la repetición utilizando el historial de asignaciones.
-          2. Actualizar la lista de asignaciones y el historial de asignaciones.
-    */
-
     const newAssignments = [];
+    let booksAlreadyAssigned = [];
 
-    classroomBooks.forEach((book) => {
-      let nextPosition;
+    const availableBooks = classroomBooks.filter((b) => b.available);
+    const notAvailableBooks = classroomBooks.filter((b) => !b.available);
+    const studentIdsThatNotReturnedBook = notAvailableBooks.map(
+      (b) => b.assigned
+    );
+    const studentsConsideredForRound = classroomStudents.filter(
+      (s) => !studentIdsThatNotReturnedBook.includes(s.id)
+    );
 
-      // Calculate the new 'assigned' position
-      if (!book.assigned) {
-        const owner = classroomStudents.find(
-          (student) => student.id === book.owner
+    studentsConsideredForRound.forEach((student) => {
+      const bookOwnedByStudent = classroomBooks.find(
+        (b) => b.owner === student.id
+      );
+      const previousBooksAssignedToStudent = classroomRounds.filter((round) => {
+        const assignmentsToStudent = round.assignments.filter(
+          (assignment) => assignment.student.id === student.id
         );
-        nextPosition = owner?.position + 1;
-      } else {
-        nextPosition = book.assigned + 1;
-      }
-      book.assigned =
-        nextPosition > classroomStudents.length ? 1 : nextPosition;
 
-      const { documentId, ...restBook } = book;
-      updateBook(documentId, restBook);
+        return assignmentsToStudent.map((ats) => ats.book);
+      });
+
+      const targetBooks = difference(availableBooks, [
+        bookOwnedByStudent,
+        ...previousBooksAssignedToStudent,
+        ...booksAlreadyAssigned,
+      ]);
+
+      const book = sample(targetBooks);
 
       newAssignments.push({
-        student: classroomStudents.find((s) => s.position === book.assigned)
-          ?.name,
-        book: book.name,
+        student,
+        book,
       });
+
+      booksAlreadyAssigned = [...booksAlreadyAssigned, book];
     });
 
     addRound({
@@ -172,6 +175,10 @@ const App = () => {
       date: getCurrentDateTime(),
       assignments: newAssignments,
       classroom: selectedClassroom.id,
+    });
+
+    newAssignments.forEach(({ student, book }) => {
+      updateBook({ ...book, assigned: student.id });
     });
   };
 
@@ -221,10 +228,13 @@ const App = () => {
     removeRounds,
   };
 
-  console.log("Classrooms:", classrooms);
-  console.log("Students:", classroomStudents);
+  // console.log("Classrooms:", classrooms);
+  // console.log("Students:", classroomStudents);
   console.log("Books:", classroomBooks);
-  console.log("Rounds:", classroomRounds);
+  console.log(
+    "Rounds:",
+    classroomRounds.map((r) => r.assignments)
+  );
 
   return <Presentational {...presentationalProps} />;
 };

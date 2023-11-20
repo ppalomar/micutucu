@@ -8,7 +8,7 @@ const AssignmentList = ({ rounds }) => {
   const assignments = lastRound.assignments;
 
   const filteredAssignments = assignments.sort((a, b) =>
-    a.student.localeCompare(b.student)
+    a.student.name.localeCompare(b.student.name)
   );
 
   return (
@@ -17,7 +17,7 @@ const AssignmentList = ({ rounds }) => {
         <div
           className="list-item assignment"
           key={index}
-        >{`${assignment.student} got ${assignment.book}`}</div>
+        >{`${assignment.student.name} got ${assignment.book.name}`}</div>
       ))}
     </div>
   );

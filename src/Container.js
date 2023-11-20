@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useState, useEffect } from "react";
-import { difference, sample } from "lodash";
+import { shuffle, sample, minBy } from "lodash";
 
 import { getCurrentDateTime } from "./helpers";
 import {
@@ -59,11 +59,15 @@ const App = () => {
     setRounds([...rounds, { documentId, ...round }]);
   };
 
-  const updateBook = async (book) => {
-    const { documentId, ...b } = book;
-    await updateDocFromCollection("books", documentId, b);
-    const restOfBooks = books.filter((b) => b.id !== book.id);
-    setBooks([...restOfBooks, { documentId, ...b }]);
+  const updateBooks = (booksToUpdate) => {
+    booksToUpdate.forEach(async (book) => {
+      // We don't want to save in database the documentId
+      const { documentId, ...b } = book;
+      await updateDocFromCollection("books", documentId, b);
+    });
+    const updateIds = booksToUpdate.map((b) => b.id);
+    const restOfBooks = books.filter((b) => !updateIds.includes(b.id));
+    setBooks([...restOfBooks, ...booksToUpdate]);
   };
 
   const removeStudent = async (documentId, studentId) => {
@@ -92,17 +96,13 @@ const App = () => {
   };
 
   const resetBooks = async ({ booksToReset }) => {
-    // Update classroomBooks to be unassigned in db and local state
+    // Update books to be unassigned in db and local state
     const newBooks = booksToReset.map((b) => ({
       ...b,
       assigned: null,
     }));
-    setBooks([...notClassroomBooks, ...newBooks]);
 
-    newBooks.forEach(async (book) => {
-      // We don't want to save in database the documentId
-      updateBook(book);
-    });
+    updateBooks(newBooks);
   };
 
   const removeRounds = async ({ customBooks } = {}) => {
@@ -129,10 +129,7 @@ const App = () => {
     }
   };
 
-  const assignBooksToStudents = () => {
-    const newAssignments = [];
-    let booksAlreadyAssigned = [];
-
+  const assignBooksToStudents = async () => {
     const availableBooks = classroomBooks.filter((b) => b.available);
     const notAvailableBooks = classroomBooks.filter((b) => !b.available);
     const studentIdsThatNotReturnedBook = notAvailableBooks.map(
@@ -142,44 +139,99 @@ const App = () => {
       (s) => !studentIdsThatNotReturnedBook.includes(s.id)
     );
 
-    studentsConsideredForRound.forEach((student) => {
-      const bookOwnedByStudent = classroomBooks.find(
-        (b) => b.owner === student.id
-      );
-      const previousBooksAssignedToStudent = classroomRounds.filter((round) => {
-        const assignmentsToStudent = round.assignments.filter(
-          (assignment) => assignment.student.id === student.id
-        );
+    const buildRound = () => {
+      let booksAlreadyAssigned = [];
+      let studentsRepeating = 0;
+      const newAssignments = [];
 
-        return assignmentsToStudent.map((ats) => ats.book);
-      });
+      try {
+        shuffle(studentsConsideredForRound).forEach((student) => {
+          const bookOwnedByStudent = classroomBooks.find(
+            (b) => b.owner === student.id
+          );
+          const previousBooksAssignedToStudent = classroomRounds.reduce(
+            (acc, round) => {
+              const assignmentToStudent = round.assignments.find(
+                (assignment) => assignment.student.id === student.id
+              );
 
-      const targetBooks = difference(availableBooks, [
-        bookOwnedByStudent,
-        ...previousBooksAssignedToStudent,
-        ...booksAlreadyAssigned,
-      ]);
+              return assignmentToStudent
+                ? [...acc, assignmentToStudent.book]
+                : acc;
+            },
+            []
+          );
 
-      const book = sample(targetBooks);
+          const getTargetBooks = (customRestrictedIds) => {
+            const baseRestictedIds = [
+              bookOwnedByStudent.id,
+              ...previousBooksAssignedToStudent.map((pb) => pb.id),
+              ...booksAlreadyAssigned.map((ba) => ba.id),
+            ];
+            return availableBooks.filter(
+              (b) => !(customRestrictedIds || baseRestictedIds).includes(b.id)
+            );
+          };
 
-      newAssignments.push({
-        student,
-        book,
-      });
+          let targetBooks = getTargetBooks();
 
-      booksAlreadyAssigned = [...booksAlreadyAssigned, book];
-    });
+          if (!targetBooks.length) {
+            const restrictedIds = [
+              bookOwnedByStudent.id,
+              ...booksAlreadyAssigned.map((ba) => ba.id),
+            ];
+            targetBooks = getTargetBooks(restrictedIds);
+          }
+
+          const book = sample(targetBooks);
+
+          newAssignments.push({
+            student,
+            book,
+          });
+
+          booksAlreadyAssigned = [...booksAlreadyAssigned, book];
+
+          if (
+            previousBooksAssignedToStudent.map((pb) => pb.id).includes(book.id)
+          ) {
+            studentsRepeating++;
+          }
+        });
+
+        return { assignments: newAssignments, studentsRepeating };
+      } catch {}
+    };
+
+    const ITERATIONS = 100;
+    let assignmentsBag = [];
+    for (let index = 1; index <= ITERATIONS; index++) {
+      assignmentsBag = [...assignmentsBag, buildRound()];
+    }
+
+    const finalAssignments = minBy(
+      assignmentsBag,
+      "studentsRepeating"
+    )?.assignments;
+
+    console.log(
+      "repeating",
+      minBy(assignmentsBag, "studentsRepeating")?.studentsRepeating
+    );
 
     addRound({
       round: classroomRounds.length + 1,
       date: getCurrentDateTime(),
-      assignments: newAssignments,
+      assignments: finalAssignments,
       classroom: selectedClassroom.id,
     });
 
-    newAssignments.forEach(({ student, book }) => {
-      updateBook({ ...book, assigned: student.id });
-    });
+    const booksToUpdate = finalAssignments.map(({ student, book }) => ({
+      ...book,
+      assigned: student.id,
+    }));
+
+    updateBooks(booksToUpdate);
   };
 
   const handleSelectedClassroom = (classroom) => {
@@ -222,19 +274,11 @@ const App = () => {
     addStudent,
     removeStudent,
     addBook,
-    updateBook,
+    updateBooks,
     removeBook,
     assignBooksToStudents,
     removeRounds,
   };
-
-  // console.log("Classrooms:", classrooms);
-  // console.log("Students:", classroomStudents);
-  console.log("Books:", classroomBooks);
-  console.log(
-    "Rounds:",
-    classroomRounds.map((r) => r.assignments)
-  );
 
   return <Presentational {...presentationalProps} />;
 };

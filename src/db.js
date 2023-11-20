@@ -10,19 +10,25 @@ import {
 import { db } from "./firebase";
 
 export const getCollection = async (collectionName) => {
-  const col = collection(db, collectionName);
-  const snapshot = await getDocs(col);
-  return snapshot.docs.map((doc) => ({ documentId: doc.id, ...doc.data() }));
+  try {
+    const col = collection(db, collectionName);
+    const snapshot = await getDocs(col);
+    return snapshot.docs.map((doc) => ({ documentId: doc.id, ...doc.data() }));
+  } catch {}
 };
 
 export const saveCollection = async (collectionName, item) => {
-  const col = collection(db, collectionName);
-  const docRef = await addDoc(col, item);
-  return docRef.id;
+  try {
+    const col = collection(db, collectionName);
+    const docRef = await addDoc(col, item);
+    return docRef.id;
+  } catch {}
 };
 
 export const removeDocFromCollection = async (collectionName, documentId) => {
-  await deleteDoc(doc(db, collectionName, documentId));
+  try {
+    await deleteDoc(doc(db, collectionName, documentId));
+  } catch {}
 };
 
 export const updateDocFromCollection = async (
@@ -30,6 +36,8 @@ export const updateDocFromCollection = async (
   documentId,
   data
 ) => {
-  const documentRef = doc(db, collectionName, documentId);
-  await updateDoc(documentRef, data);
+  try {
+    const documentRef = doc(db, collectionName, documentId);
+    await updateDoc(documentRef, data);
+  } catch {}
 };

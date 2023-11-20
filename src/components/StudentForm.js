@@ -11,7 +11,6 @@ const StudentForm = ({ students, selectedClassroom, addStudent }) => {
         id: new Date().getTime(),
         name: studentName,
         classroomId: selectedClassroom?.id,
-        position: students.length + 1,
       };
       addStudent(student);
       setStudentName("");

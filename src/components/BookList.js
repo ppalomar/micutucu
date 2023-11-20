@@ -1,9 +1,9 @@
 // src/components/BookList.js
 import React from "react";
 
-const BookList = ({ books, students, updateBook, removeBook }) => {
+const BookList = ({ books, students, updateBooks, removeBook }) => {
   const handleOnClick = (book) => {
-    updateBook({ ...book, available: !book.available });
+    updateBooks([{ ...book, available: !book.available }]);
   };
 
   const sortedBooks = books.sort((a, b) => a.name.localeCompare(b.name));

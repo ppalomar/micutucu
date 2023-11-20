@@ -88,9 +88,15 @@ const App = () => {
     await removeDocFromCollection("students", documentId);
   };
 
-  const resetBooks = async ({ booksToReset }) => {
+  const removeBook = async ({ documentId } = {}) => {
+    await removeDocFromCollection("books", documentId);
+    const newBooks = classroomBooks.filter((b) => b.documentId !== documentId);
+    setBooks([...notClassroomBooks, ...newBooks]);
+  };
+
+  const resetBooks = async ({ booksToReset } = {}) => {
     // Update books to be unassigned in db and local state
-    const newBooks = booksToReset.map((b) => ({
+    const newBooks = booksToReset?.map((b) => ({
       ...b,
       assigned: null,
     }));
@@ -111,13 +117,14 @@ const App = () => {
     resetBooks({ booksToReset: customBooks || classroomBooks });
   };
 
-  const removeBook = async ({ documentId } = {}) => {
-    await removeDocFromCollection("books", documentId);
-    const newBooks = classroomBooks.filter((b) => b.documentId !== documentId);
-    setBooks([...notClassroomBooks, ...newBooks]);
-  };
-
   const assignBooksToStudents = async () => {
+    if (
+      classroomRounds.length > 0 &&
+      classroomRounds.length % (classroomStudents.length - 1) === 0
+    ) {
+      resetBooks({ booksToReset: classroomBooks });
+    }
+
     const availableBooks = classroomBooks.filter((b) => b.available);
     const notAvailableBooks = classroomBooks.filter((b) => !b.available);
     const studentIdsThatNotReturnedBook = notAvailableBooks.map(

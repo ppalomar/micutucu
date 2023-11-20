@@ -1,4 +1,16 @@
-/* @import './styles/tailwind.css'; */
+@keyframes heartbeat {
+    0% {
+      box-shadow: 0 0 5px rgba(255, 0, 0, 0.7);
+    }
+  
+    50% {
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+  
+    100% {
+      box-shadow: 0 0 5px rgba(255, 0, 0, 0.7);
+    }
+  }
 
 body {
     font-family: 'Montserrat', sans-serif;
@@ -106,6 +118,16 @@ button:hover {
     flex: 4
 }
 
+.section.rounds.clean {
+    border: 1px solid #ffd1d5;
+    animation: heartbeat 1s infinite;
+    transform-origin: center;
+}
+
+.section.rounds .clean {
+    color: #c44569;
+}
+
 .section-separator {
     border-bottom: 1px dashed white;
     margin-top: 16px;
@@ -173,6 +195,10 @@ button:hover {
     display: none;
     margin-left: auto;
     cursor: pointer;
+}
+
+.list-item-delete:hover, .delete-round:hover {
+    color: #c44569;
 }
 
 .list-item > .active-text{

@@ -13,12 +13,13 @@ const ClassroomList = ({
         return (
           <div
             title="Select this classroom"
-            className={`list-item ${isActive ? "active" : ""}`}
+            className={`list-item classroom ${isActive ? "active" : ""}`}
             key={classroom.id}
             onClick={
               isActive ? () => {} : () => handleSelectedClassroom(classroom)
             }
           >
+            <span class="material-symbols-rounded">groups</span>
             {classroom.name}
             {isActive && <div className="active-text">(active)</div>}
           </div>

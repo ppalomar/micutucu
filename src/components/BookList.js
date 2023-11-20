@@ -25,15 +25,21 @@ const BookList = ({ books, students, updateBooks, removeBook }) => {
             onClick={() => handleOnClick(book)}
           >
             <div className="book-display">
+              <span class="material-symbols-rounded">menu_book</span>
               <div className="book-name">{book.name}</div>
               {book.assigned && (
-                <div className="book-assigned">
-                  Assigned: {getStudentName(book.assigned)}
-                </div>
+                <>
+                  <span title="Assigned" class="material-symbols-rounded">
+                    assignment_ind
+                  </span>
+                  <div className="book-assigned">
+                    {getStudentName(book.assigned)}
+                  </div>
+                </>
               )}
-              <div className="book-owner">
+              {/* <div className="book-owner">
                 Owner: {getStudentName(book.owner)}
-              </div>
+              </div> */}
             </div>
             <div className="list-item-delete">
               <span

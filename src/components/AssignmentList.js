@@ -14,10 +14,10 @@ const AssignmentList = ({ rounds }) => {
   return (
     <div className="list-div">
       {filteredAssignments.map((assignment, index) => (
-        <div
-          className="list-item assignment"
-          key={index}
-        >{`${assignment.student.name} got ${assignment.book.name}`}</div>
+        <div className="list-item assignment" key={index}>
+          <span class="material-symbols-rounded">assignment_ind</span>
+          {`${assignment.student.name} got ${assignment.book.name}`}
+        </div>
       ))}
     </div>
   );

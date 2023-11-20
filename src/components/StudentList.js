@@ -7,7 +7,8 @@ const StudentList = ({ students, removeStudent }) => {
   return (
     <div className="list-div">
       {sortedStudents.map((student) => (
-        <div className="list-item" key={student.id}>
+        <div className="list-item student" key={student.id}>
+          <span class="material-symbols-rounded">person</span>
           <div>{student.name}</div>
           <div className="list-item-delete">
             <span

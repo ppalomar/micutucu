@@ -126,8 +126,29 @@ button:hover {
     height: 20px;
 }
 
+.list-item.classroom > span {
+    margin-right: 5px;
+    position: relative;
+    top: -2px;
+    color: #82589F;
+}
+
+.list-item.student > span:nth-child(1) {
+    margin-right: 5px;
+    color: #82589F;
+}
+
 .list-item.book {
     cursor: pointer;
+}
+
+.list-item.book > .book-display > span {
+    margin-right: 5px;
+    color: #82589F
+}
+
+.list-item.book > .book-display span:nth-child(2) {
+    margin-left: 15px;
 }
 
 .list-item.book.not-available {
@@ -161,6 +182,11 @@ button:hover {
 .list-item.assignment {
     border: 1px solid #82589F;
     font-weight: 400;
+}
+
+.list-item.assignment > span:nth-child(1) {
+    margin-right: 5px;
+    color: #82589F;
 }
 
 .classroom .list-item {
@@ -221,7 +247,7 @@ button:hover {
 }
 
 .book-display .book-name {
-    margin-right: 10px;
+    margin-right: 20px;
 }
 
 .book-display .book-assigned {

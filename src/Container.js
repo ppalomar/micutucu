@@ -41,7 +41,7 @@ const App = () => {
   // HELPERS ------------------------------------------------------------------
   const addClassroom = async (classroom) => {
     const documentId = await saveCollection("classrooms", classroom);
-    setBooks([...classrooms, { documentId, ...classroom }]);
+    setClassrooms([...classrooms, { documentId, ...classroom }]);
   };
 
   const addStudent = async (student) => {

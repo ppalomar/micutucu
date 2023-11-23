@@ -6,9 +6,13 @@ const ClassroomList = ({
   selectedClassroom,
   handleSelectedClassroom,
 }) => {
+  const sortedClassrooms = classrooms.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+
   return (
     <div className="list-div">
-      {classrooms.map((classroom) => {
+      {sortedClassrooms.map((classroom) => {
         const isActive = selectedClassroom?.id === classroom.id;
         return (
           <div

@@ -14,18 +14,26 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
+    font-weight: 100;
     background-color: #ece6ff;
     height: 100vh;
     margin: 0;
     padding: 0;
-};
+}
 
 h2 {
     font-size: 28px;
     margin: 0px 0px 20px 0px;
+    font-weight: 200;
+    color: #82589F;
 }
 
-h3 { margin-left: 5px; margin-top: 26px; }
+h3 {
+    font-weight: 200; 
+    margin-top: 8px;
+    margin-left: auto;
+    color: #82589F;
+}
 
 input, select {
     font-family: 'Montserrat', sans-serif;
@@ -65,6 +73,7 @@ button {
     padding: 0px 20px;
     font-size: 16px;
     width: 100%;
+    font-weight: 200;
 }
 
 button:hover {
@@ -76,7 +85,7 @@ button:hover {
     text-align: center;
     padding: 20px 0;
     color: #82589F;
-    font-weight: bold;
+    font-weight: 100;
     margin-right: 4px;
 }
 
@@ -85,6 +94,7 @@ button:hover {
     text-align: center;
     padding: 20px 0;
     color: #D6A2E8;
+    font-weight: 100;
 }
 
 .container {
@@ -146,6 +156,7 @@ button:hover {
     margin-bottom: 8px;
     align-items: center;
     height: 20px;
+    font-weight: 200;
 }
 
 .list-item.classroom > span {
@@ -291,6 +302,10 @@ button:hover {
         display: flex;
         flex-direction: column;
     };
+
+    .list-item {
+        font-weight: 400;
+    }
   }
   
 

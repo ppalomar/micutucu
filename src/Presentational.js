@@ -40,9 +40,6 @@ const Presentational = ({
     ? `Round ${lastRound.round} - ${lastRound.date}`
     : "";
 
-  // const recomendedClean = classroomRounds.length >= classroomStudents.length;
-  const recomendedClean = false;
-
   return (
     <div className="container">
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -86,15 +83,10 @@ const Presentational = ({
             removeBook={removeBook}
           />
         </div>
-        <div className={`section rounds ${recomendedClean ? "clean" : ""}`}>
+        <div className="section rounds">
           <div style={{ display: "flex" }}>
             <h2>Assignments</h2>
-            <div
-              className={`${recomendedClean ? "clean" : ""}`}
-              style={{ marginLeft: "auto" }}
-            >
-              <h3>{recomendedClean ? "Clean rounds" : lastRoundText}</h3>
-            </div>
+            <h3>{lastRoundText}</h3>
           </div>
           <div style={{ display: "flex" }}>
             <div style={{ flex: 3 }}>

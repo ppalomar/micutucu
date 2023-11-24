@@ -80,6 +80,17 @@ button:hover {
     background-color: #D6A2E8;
 }
 
+button:disabled {
+    background-color: #dfe6e9;
+    color: #82589F;
+    cursor: default;
+    opacity: 0.9;
+}
+
+button:disabled:hover {
+    background-color: #dfe6e9;
+}
+
 .title {
     font-size: 68px;
     text-align: center;
@@ -237,6 +248,7 @@ button:hover {
     display: flex;
     border: 1px solid #82589F;
     font-weight: 400;
+    background-color: #d9cdff;
 }
 
 .classroom .list-item:hover {

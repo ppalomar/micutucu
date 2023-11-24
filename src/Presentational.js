@@ -1,6 +1,4 @@
 import React from "react";
-import _ from "lodash";
-import { sortBy } from "lodash/fp";
 
 import ClassroomForm from "./components/ClassroomForm";
 import StudentForm from "./components/StudentForm";
@@ -9,8 +7,7 @@ import ClassroomList from "./components/ClassroomList";
 import StudentList from "./components/StudentList";
 import BookList from "./components/BookList";
 import AssignmentList from "./components/AssignmentList"; // Import the new component
-
-const sortByRound = sortBy(["round"]);
+import AssignmentHeader from "./components/AssignmentHeader";
 
 const Presentational = ({
   classrooms,
@@ -32,13 +29,8 @@ const Presentational = ({
   assignBooksToStudents,
   removeRounds,
 }) => {
-  const isButtonDisabled =
-    classroomStudents.length === 0 || classroomBooks.length === 0;
-
-  const lastRound = _.last(sortByRound(classroomRounds));
-  const lastRoundText = classroomRounds.length
-    ? `Round ${lastRound.round} - ${lastRound.date}`
-    : "";
+  const isButtonEnabled =
+    classroomStudents.length > 1 && classroomBooks.length > 1;
 
   return (
     <div className="container">
@@ -84,31 +76,12 @@ const Presentational = ({
           />
         </div>
         <div className="section rounds">
-          <div style={{ display: "flex" }}>
-            <h2>Assignments</h2>
-            <h3>{lastRoundText}</h3>
-          </div>
-          <div style={{ display: "flex" }}>
-            <div style={{ flex: 3 }}>
-              <button
-                disabled={isButtonDisabled}
-                onClick={assignBooksToStudents}
-              >
-                Assign Books to Students
-              </button>
-            </div>
-            <div style={{ display: "flex", flex: 1 }} className="delete-round">
-              <span
-                title="Delete all rounds"
-                class="material-symbols-rounded"
-                onClick={
-                  classroomRounds?.length ? () => removeRounds() : () => {}
-                }
-              >
-                delete
-              </span>
-            </div>
-          </div>
+          <AssignmentHeader
+            classroomRounds={classroomRounds}
+            isButtonEnabled={isButtonEnabled}
+            assignBooksToStudents={assignBooksToStudents}
+            removeRounds={removeRounds}
+          />
           <div className="section-separator" />
           <AssignmentList rounds={classroomRounds} />
         </div>

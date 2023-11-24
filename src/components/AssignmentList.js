@@ -5,7 +5,7 @@ const AssignmentList = ({ rounds }) => {
   if (!rounds.length) return;
 
   const lastRound = _.last(rounds);
-  const assignments = lastRound.assignments;
+  const assignments = lastRound?.assignments || [];
 
   const filteredAssignments = assignments.sort((a, b) =>
     a.student.name.localeCompare(b.student.name)

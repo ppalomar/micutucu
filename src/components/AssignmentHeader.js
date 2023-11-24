@@ -12,6 +12,7 @@ const AssignmentHeader = ({
   isButtonEnabled,
   assignBooksToStudents,
   removeRounds,
+  selectedClassroom,
 }) => {
   const { modal } = useApp();
   const { open, toggle: toggleRemovePopup } = modal;
@@ -60,7 +61,7 @@ const AssignmentHeader = ({
           open={open}
           onClose={toggleRemovePopup}
           onRemove={classroomRounds?.length ? () => removeRounds() : () => {}}
-          message={`Are you sure you want to remove all the rounds?`}
+          message={`Are you sure you want to remove all rounds from ${selectedClassroom.name}?`}
         />
       )}
     </div>

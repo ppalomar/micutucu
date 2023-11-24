@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useApp } from "../context";
 import RemovePopup from "./RemovePopup";
 
-const StudentList = ({ students, removeStudent }) => {
+const StudentList = ({ students, removeStudent, selectedClassroom }) => {
   const { modal } = useApp();
   const { open, toggle: toggleRemovePopup } = modal;
 
@@ -46,7 +46,7 @@ const StudentList = ({ students, removeStudent }) => {
           onRemove={() =>
             removeStudent(selectedStudent.documentId, selectedStudent.id)
           }
-          message={`Are you sure you want to remove ${selectedStudent.name} and the owned book?`}
+          message={`Are you sure you want to remove ${selectedStudent.name} and the owned book from ${selectedClassroom?.name}?`}
         />
       )}
     </div>

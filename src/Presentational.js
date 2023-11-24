@@ -57,8 +57,8 @@ const Presentational = ({
           <div className="section-separator" />
           <StudentList
             students={classroomStudents}
-            classrooms={classrooms}
             removeStudent={removeStudent}
+            selectedClassroom={selectedClassroom}
           />
         </div>
         <div className="section books">
@@ -73,6 +73,7 @@ const Presentational = ({
             students={classroomStudents}
             updateBooks={updateBooks}
             removeBook={removeBook}
+            selectedClassroom={selectedClassroom}
           />
         </div>
         <div className="section rounds">
@@ -81,6 +82,7 @@ const Presentational = ({
             isButtonEnabled={isButtonEnabled}
             assignBooksToStudents={assignBooksToStudents}
             removeRounds={removeRounds}
+            selectedClassroom={selectedClassroom}
           />
           <div className="section-separator" />
           <AssignmentList rounds={classroomRounds} />

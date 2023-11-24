@@ -1,16 +1,29 @@
 // src/components/BookList.js
-import React from "react";
+import React, { useState } from "react";
+import { useApp } from "../context";
+import RemovePopup from "./RemovePopup";
 
 const BookList = ({ books, students, updateBooks, removeBook }) => {
-  const handleOnClick = (book) => {
-    updateBooks([{ ...book, available: !book.available }]);
-  };
+  const { modal } = useApp();
+  const { open, toggle: toggleRemovePopup } = modal;
 
   const sortedBooks = books.sort((a, b) => a.name.localeCompare(b.name));
 
   const getStudentName = (id) => {
     const student = students.find((std) => std.id === id);
     return student ? student.name : "Unknown Owner";
+  };
+
+  const handleAvailabilityOnClick = (book) => {
+    updateBooks([{ ...book, available: !book.available }]);
+  };
+
+  const [selectedBook, setSelectedBook] = useState(null);
+
+  const handleDeleteClick = (event, book) => {
+    event.stopPropagation();
+    setSelectedBook(book);
+    toggleRemovePopup();
   };
 
   return (
@@ -22,14 +35,14 @@ const BookList = ({ books, students, updateBooks, removeBook }) => {
               book.available ? "available" : "not-available"
             }`}
             key={book.id}
-            onClick={() => handleOnClick(book)}
+            onClick={() => handleAvailabilityOnClick(book)}
           >
             <div className="book-display">
-              <span class="material-symbols-rounded">menu_book</span>
+              <span className="material-symbols-rounded">menu_book</span>
               <div className="book-name">{book.name}</div>
               {book.assigned && (
                 <>
-                  <span title="Assigned" class="material-symbols-rounded">
+                  <span title="Assigned" className="material-symbols-rounded">
                     assignment_ind
                   </span>
                   <div className="book-assigned">
@@ -37,15 +50,12 @@ const BookList = ({ books, students, updateBooks, removeBook }) => {
                   </div>
                 </>
               )}
-              {/* <div className="book-owner">
-                Owner: {getStudentName(book.owner)}
-              </div> */}
             </div>
             <div className="list-item-delete">
               <span
                 title="Delete book"
-                class="material-symbols-rounded"
-                onClick={() => removeBook({ documentId: book.documentId })}
+                className="material-symbols-rounded"
+                onClick={(event) => handleDeleteClick(event, book)}
               >
                 delete
               </span>
@@ -53,6 +63,14 @@ const BookList = ({ books, students, updateBooks, removeBook }) => {
           </div>
         ))}
       </div>
+      {selectedBook && (
+        <RemovePopup
+          open={open}
+          onClose={toggleRemovePopup}
+          onRemove={() => removeBook({ documentId: selectedBook.documentId })}
+          message={`Are you sure you want to remove ${selectedBook.name}?`}
+        />
+      )}
     </div>
   );
 };

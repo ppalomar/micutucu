@@ -26,6 +26,12 @@ const BookList = ({ books, students, updateBooks, removeBook }) => {
     toggleRemovePopup();
   };
 
+  React.useEffect(() => {
+    if (!open) {
+      setSelectedBook(null);
+    }
+  }, [open]);
+
   return (
     <div>
       <div className="list-div">

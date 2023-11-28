@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useState, useEffect } from "react";
-import { shuffle, sample, minBy } from "lodash";
+import { shuffle, sample, minBy, maxBy } from "lodash";
 
 import { getCurrentDateTime } from "./helpers";
 import {
@@ -18,6 +18,7 @@ const App = () => {
   const [books, setBooks] = useState([]);
   const [rounds, setRounds] = useState([]);
   const [selectedClassroom, setSelectedClassroom] = useState(null);
+  const [selectedRound, setSelectedRound] = useState(null);
 
   const classroomStudents = students?.filter(
     (s) => s.classroomId === selectedClassroom?.id
@@ -31,8 +32,9 @@ const App = () => {
   const notClassroomBooks = books?.filter(
     (b) => b?.classroomId !== selectedClassroom?.id
   );
-  const classroomRounds = rounds?.filter(
-    (r) => r?.classroom === selectedClassroom?.id
+  const classroomRounds = React.useMemo(
+    () => rounds?.filter((r) => r?.classroom === selectedClassroom?.id),
+    [rounds, selectedClassroom?.id]
   );
   const notClassroomRounds = rounds?.filter(
     (r) => r?.classroom !== selectedClassroom?.id
@@ -230,6 +232,18 @@ const App = () => {
   const handleSelectedClassroom = (classroom) => {
     setSelectedClassroom(classroom);
   };
+
+  const handleSelectedRound = (direction) => {
+    if (direction === "back") {
+      setSelectedRound(
+        classroomRounds.find((r) => r?.round === selectedRound?.round - 1)
+      );
+    } else {
+      setSelectedRound(
+        classroomRounds.find((r) => r?.round === selectedRound?.round + 1)
+      );
+    }
+  };
   //END HELPERS ---------------------------------------------------------------
 
   // EFFECTS ------------------------------------------------------------------
@@ -254,6 +268,16 @@ const App = () => {
 
     fetchData();
   }, []);
+
+  // when classroomRounds changes it selects the last one
+  useEffect(() => {
+    if (classroomRounds.length) {
+      const lastRound = maxBy(classroomRounds, "round");
+      setSelectedRound(lastRound);
+    } else {
+      setSelectedRound(null);
+    }
+  }, [selectedClassroom, classroomRounds]);
   // END EFFECTS --------------------------------------------------------------
 
   const presentationalProps = {
@@ -261,16 +285,18 @@ const App = () => {
     classroomStudents,
     classroomBooks,
     classroomRounds,
-    addClassroom,
     selectedClassroom,
+    selectedRound,
     handleSelectedClassroom,
+    handleSelectedRound,
+    addClassroom,
     addStudent,
-    removeStudent,
     addBook,
     updateBooks,
+    removeStudent,
     removeBook,
-    assignBooksToStudents,
     removeRounds,
+    assignBooksToStudents,
   };
 
   return <Presentational {...presentationalProps} />;

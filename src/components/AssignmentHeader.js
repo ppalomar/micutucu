@@ -1,25 +1,22 @@
 import React from "react";
-import _ from "lodash";
-import { sortBy } from "lodash/fp";
 
 import { useApp } from "../context";
 import RemovePopup from "./RemovePopup";
 
-const sortByRound = sortBy(["round"]);
-
 const AssignmentHeader = ({
   classroomRounds,
+  selectedRound,
   isButtonEnabled,
   assignBooksToStudents,
   removeRounds,
   selectedClassroom,
+  handleSelectedRound,
 }) => {
   const { modal } = useApp();
   const { open, toggle: toggleRemovePopup } = modal;
 
-  const lastRound = _.last(sortByRound(classroomRounds));
-  const lastRoundText = classroomRounds.length
-    ? `Round ${lastRound.round} - ${lastRound.date}`
+  const roundText = selectedRound
+    ? `Round ${selectedRound.round} - ${selectedRound.date}`
     : "";
 
   const handleDeleteClick = () => {
@@ -34,11 +31,45 @@ const AssignmentHeader = ({
     }
   }, [open]);
 
+  const visibleArrows = classroomRounds.length > 1;
+  const isEnabledBackArrow = selectedRound?.round > 1;
+  const isEnabledForwardArrow = selectedRound?.round < classroomRounds.length;
+
   return (
     <div>
       <div style={{ display: "flex" }}>
         <h2>Assignments</h2>
-        <h3>{lastRoundText}</h3>
+        <h3 className="round-info">
+          {visibleArrows && (
+            <>
+              <div className={!isEnabledBackArrow && "disabled"}>
+                <span
+                  onClick={
+                    isEnabledBackArrow
+                      ? () => handleSelectedRound("back")
+                      : () => {}
+                  }
+                  class="material-symbols-rounded"
+                >
+                  arrow_back
+                </span>
+              </div>
+              <div className={!isEnabledForwardArrow && "disabled"}>
+                <span
+                  onClick={
+                    isEnabledForwardArrow
+                      ? () => handleSelectedRound("forward")
+                      : () => {}
+                  }
+                  class="material-symbols-rounded"
+                >
+                  arrow_forward
+                </span>
+              </div>
+            </>
+          )}
+          {roundText}
+        </h3>
       </div>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 3 }}>
@@ -60,7 +91,7 @@ const AssignmentHeader = ({
         <RemovePopup
           open={open}
           onClose={toggleRemovePopup}
-          onRemove={classroomRounds?.length ? () => removeRounds() : () => {}}
+          onRemove={selectedRound ? () => removeRounds() : () => {}}
           message={`Are you sure you want to remove all rounds from ${selectedClassroom.name}?`}
         />
       )}
@@ -68,4 +99,4 @@ const AssignmentHeader = ({
   );
 };
 
-export default AssignmentHeader;
+export default React.memo(AssignmentHeader);

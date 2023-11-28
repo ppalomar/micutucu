@@ -1,11 +1,9 @@
 import React from "react";
-import _ from "lodash";
 
-const AssignmentList = ({ rounds }) => {
-  if (!rounds.length) return;
+const AssignmentList = ({ selectedRound }) => {
+  if (!selectedRound) return;
 
-  const lastRound = _.last(rounds);
-  const assignments = lastRound?.assignments || [];
+  const assignments = selectedRound?.assignments || [];
 
   const filteredAssignments = assignments.sort((a, b) =>
     a.student.name.localeCompare(b.student.name)

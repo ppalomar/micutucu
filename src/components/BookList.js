@@ -5,7 +5,7 @@ import RemovePopup from "./RemovePopup";
 
 const BookList = ({
   books,
-  students,
+  // students,
   updateBooks,
   removeBook,
   selectedClassroom,
@@ -15,10 +15,10 @@ const BookList = ({
 
   const sortedBooks = books.sort((a, b) => a.name.localeCompare(b.name));
 
-  const getStudentName = (id) => {
-    const student = students.find((std) => std.id === id);
-    return student ? student.name : "Unknown Owner";
-  };
+  // const getStudentName = (id) => {
+  //   const student = students.find((std) => std.id === id);
+  //   return student ? student.name : "Unknown Owner";
+  // };
 
   const handleAvailabilityOnClick = (book) => {
     updateBooks([{ ...book, available: !book.available }]);

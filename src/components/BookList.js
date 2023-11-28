@@ -52,7 +52,7 @@ const BookList = ({
             <div className="book-display">
               <span className="material-symbols-rounded">menu_book</span>
               <div className="book-name">{book.name}</div>
-              {book.assigned && (
+              {/* {book.assigned && (
                 <>
                   <span title="Assigned" className="material-symbols-rounded">
                     assignment_ind
@@ -61,7 +61,7 @@ const BookList = ({
                     {getStudentName(book.assigned)}
                   </div>
                 </>
-              )}
+              )} */}
             </div>
             <div className="list-item-delete">
               <span

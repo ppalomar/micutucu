@@ -28,6 +28,8 @@ const Presentational = ({
 
   assignBooksToStudents,
   removeRounds,
+  selectedRound,
+  handleSelectedRound,
 }) => {
   const isButtonEnabled =
     classroomStudents.length > 1 && classroomBooks.length > 1;
@@ -79,13 +81,15 @@ const Presentational = ({
         <div className="section rounds">
           <AssignmentHeader
             classroomRounds={classroomRounds}
+            selectedRound={selectedRound}
             isButtonEnabled={isButtonEnabled}
             assignBooksToStudents={assignBooksToStudents}
             removeRounds={removeRounds}
             selectedClassroom={selectedClassroom}
+            handleSelectedRound={handleSelectedRound}
           />
           <div className="section-separator" />
-          <AssignmentList rounds={classroomRounds} />
+          <AssignmentList selectedRound={selectedRound} />
         </div>
       </div>
     </div>

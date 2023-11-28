@@ -282,6 +282,23 @@ button:disabled:hover {
     margin-left: auto;
 }
 
+.round-info{
+    display: flex;
+}
+
+.round-info span {
+    cursor: pointer;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.round-info .disabled > span {
+    cursor: default;
+    color: #82589F;
+    font-weight: 200;
+    color: white;
+}
+
 .delete-round{
     margin-left: auto;
     cursor: pointer;

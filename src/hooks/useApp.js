@@ -10,6 +10,7 @@ const useApp = ({ classrooms, setSelectedClassroom }) => {
     );
     if (classrooms?.length && storedSelectedClassroomId) {
       setSelectedClassroom(
+        // eslint-disable-next-line eqeqeq
         classrooms.find((c) => c.id == storedSelectedClassroomId)
       );
     }

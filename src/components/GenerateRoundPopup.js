@@ -6,25 +6,25 @@ import Button from "@mui/material/Button";
 
 import { useApp } from "../context";
 
-const RemovePopup = ({ open, onRemove, message }) => {
+const GenerateRoundPopup = ({ open, generateRoundHandler, message }) => {
   const { modal } = useApp();
-  const { toggleRemovePopup } = modal;
+  const { toggleGenerateRoundPopup } = modal;
 
   const handleCancel = () => {
-    toggleRemovePopup();
+    toggleGenerateRoundPopup();
   };
 
-  const handleRemove = () => {
-    onRemove();
-    toggleRemovePopup();
+  const handleGenerateRound = () => {
+    generateRoundHandler();
+    toggleGenerateRoundPopup();
   };
 
   return (
     <Modal
       open={open}
-      onClose={toggleRemovePopup}
-      aria-labelledby="remove-popup"
-      aria-describedby="popup-to-confirm-remove-action"
+      onClose={toggleGenerateRoundPopup}
+      aria-labelledby="generate-round-popup"
+      aria-describedby="popup-to-confirm-generate-round-action"
       style={{
         display: "flex",
         alignItems: "center",
@@ -33,14 +33,14 @@ const RemovePopup = ({ open, onRemove, message }) => {
       }}
       disableBackdropClick
     >
-      <div className="popup remove-popup">
+      <div className="popup generate-round-popup">
         <Typography gutterBottom>{message}</Typography>
         <div>
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleRemove}>
-            Remove
+          <Button variant="contained" onClick={handleGenerateRound}>
+            Generate Round
           </Button>
         </div>
       </div>
@@ -48,4 +48,4 @@ const RemovePopup = ({ open, onRemove, message }) => {
   );
 };
 
-export default RemovePopup;
+export default GenerateRoundPopup;

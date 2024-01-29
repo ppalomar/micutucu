@@ -3,16 +3,23 @@ import React, { createContext, useContext, useState } from "react";
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [open, setOpen] = useState(false);
+  const [openRemovePopup, setOpenRemovePopup] = useState(false);
+  const [openGenerateRoundPopup, setOpenGenerateRoundPopup] = useState(false);
 
-  const toggle = () => {
-    setOpen(!open);
+  const toggleRemovePopup = () => {
+    setOpenRemovePopup(!openRemovePopup);
+  };
+
+  const toggleGenerateRoundPopup = () => {
+    setOpenGenerateRoundPopup(!openGenerateRoundPopup);
   };
 
   const initialState = {
     modal: {
-      open,
-      toggle,
+      openRemovePopup,
+      toggleRemovePopup,
+      openGenerateRoundPopup,
+      toggleGenerateRoundPopup,
     },
   };
 

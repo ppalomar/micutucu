@@ -11,7 +11,7 @@ const BookList = ({
   selectedClassroom,
 }) => {
   const { modal } = useApp();
-  const { open, toggle: toggleRemovePopup } = modal;
+  const { openRemovePopup, toggleRemovePopup } = modal;
 
   const sortedBooks = books.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -33,10 +33,10 @@ const BookList = ({
   };
 
   React.useEffect(() => {
-    if (!open) {
+    if (!openRemovePopup) {
       setSelectedBook(null);
     }
-  }, [open]);
+  }, [openRemovePopup]);
 
   return (
     <div>
@@ -77,7 +77,7 @@ const BookList = ({
       </div>
       {selectedBook && (
         <RemovePopup
-          open={open}
+          open={openRemovePopup}
           onClose={toggleRemovePopup}
           onRemove={() => removeBook({ documentId: selectedBook.documentId })}
           message={`Are you sure you want to remove ${selectedBook.name} from ${selectedClassroom?.name}?`}

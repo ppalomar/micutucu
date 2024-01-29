@@ -9,7 +9,7 @@ import {
   getCollection,
   removeDocFromCollection,
 } from "./db";
-
+import { useApp } from "./hooks";
 import Presentational from "./Presentational";
 
 const App = () => {
@@ -19,6 +19,11 @@ const App = () => {
   const [rounds, setRounds] = useState([]);
   const [selectedClassroom, setSelectedClassroom] = useState(null);
   const [selectedRound, setSelectedRound] = useState(null);
+
+  const { storeSelectedClassroom } = useApp({
+    classrooms,
+    setSelectedClassroom,
+  });
 
   const classroomStudents = students?.filter(
     (s) => s.classroomId === selectedClassroom?.id
@@ -44,6 +49,7 @@ const App = () => {
   const addClassroom = async (classroom) => {
     const documentId = await saveCollection("classrooms", classroom);
     setClassrooms([...classrooms, { documentId, ...classroom }]);
+    storeSelectedClassroom(classroom.id);
   };
 
   const addStudent = async (student) => {
@@ -231,6 +237,7 @@ const App = () => {
 
   const handleSelectedClassroom = (classroom) => {
     setSelectedClassroom(classroom);
+    storeSelectedClassroom(classroom.id);
   };
 
   const handleSelectedRound = (direction) => {
@@ -259,8 +266,6 @@ const App = () => {
         setBooks(booksSnapshot);
         setClassrooms(classroomsSnapshot);
         setRounds(roundsSnapshot);
-
-        setSelectedClassroom(classroomsSnapshot?.[0]);
       } catch (error) {
         console.error("Error fetching data from Firestore:", error);
       }

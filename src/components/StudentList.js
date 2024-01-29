@@ -5,7 +5,7 @@ import RemovePopup from "./RemovePopup";
 
 const StudentList = ({ students, removeStudent, selectedClassroom }) => {
   const { modal } = useApp();
-  const { open, toggle: toggleRemovePopup } = modal;
+  const { openRemovePopup, toggleRemovePopup } = modal;
 
   const sortedStudents = students.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -17,10 +17,10 @@ const StudentList = ({ students, removeStudent, selectedClassroom }) => {
   };
 
   React.useEffect(() => {
-    if (!open) {
+    if (!openRemovePopup) {
       setSelectedStudent(null);
     }
-  }, [open]);
+  }, [openRemovePopup]);
 
   return (
     <div className="list-div">
@@ -41,7 +41,7 @@ const StudentList = ({ students, removeStudent, selectedClassroom }) => {
       ))}
       {selectedStudent && (
         <RemovePopup
-          open={open}
+          open={openRemovePopup}
           onClose={toggleRemovePopup}
           onRemove={() =>
             removeStudent(selectedStudent.documentId, selectedStudent.id)

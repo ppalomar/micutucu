@@ -2,6 +2,7 @@ import React from "react";
 
 import { useApp } from "../context";
 import RemovePopup from "./RemovePopup";
+import GenerateRoundPopup from "./GenerateRoundPopup";
 
 const AssignmentHeader = ({
   classroomRounds,
@@ -13,7 +14,12 @@ const AssignmentHeader = ({
   handleSelectedRound,
 }) => {
   const { modal } = useApp();
-  const { open, toggle: toggleRemovePopup } = modal;
+  const {
+    openRemovePopup,
+    toggleRemovePopup,
+    openGenerateRoundPopup,
+    toggleGenerateRoundPopup,
+  } = modal;
 
   const roundText = selectedRound
     ? `Round ${selectedRound.round} - ${selectedRound.date}`
@@ -26,10 +32,10 @@ const AssignmentHeader = ({
 
   const [selectedRounds, setSelectedRounds] = React.useState(false);
   React.useEffect(() => {
-    if (!open) {
+    if (!openRemovePopup) {
       setSelectedRounds(false);
     }
-  }, [open]);
+  }, [openRemovePopup]);
 
   const visibleArrows = classroomRounds.length > 1;
   const isEnabledBackArrow = selectedRound?.round > 1;
@@ -73,7 +79,10 @@ const AssignmentHeader = ({
       </div>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 3 }}>
-          <button disabled={!isButtonEnabled} onClick={assignBooksToStudents}>
+          <button
+            disabled={!isButtonEnabled}
+            onClick={toggleGenerateRoundPopup}
+          >
             Assign Books to Students
           </button>
         </div>
@@ -89,10 +98,18 @@ const AssignmentHeader = ({
       </div>
       {selectedRounds && (
         <RemovePopup
-          open={open}
+          open={openRemovePopup}
           onClose={toggleRemovePopup}
           onRemove={selectedRound ? () => removeRounds() : () => {}}
           message={`Are you sure you want to remove all rounds from ${selectedClassroom.name}?`}
+        />
+      )}
+      {selectedClassroom && (
+        <GenerateRoundPopup
+          open={openGenerateRoundPopup}
+          onClose={toggleGenerateRoundPopup}
+          generateRoundHandler={assignBooksToStudents}
+          message={`You are gonna create a new round in ${selectedClassroom.name}. Proceed?`}
         />
       )}
     </div>

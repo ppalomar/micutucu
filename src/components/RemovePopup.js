@@ -4,10 +4,10 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-import { useApp } from "../context";
+import { useAppContext } from "../context";
 
 const RemovePopup = ({ open, onRemove, message }) => {
-  const { modal } = useApp();
+  const { modal } = useAppContext();
   const { toggleRemovePopup } = modal;
 
   const handleCancel = () => {

@@ -366,6 +366,13 @@ button:disabled:hover {
     background-color: #2ecc71;
 }
 
+.dev-environment-header {
+    background-color: #27ae60;
+    padding: 5px;
+    color: white;
+    text-align: center;
+}
+
 /* Media query to change styles for screens less than 700px */
 @media (max-width: 1440px) {
     .main-section {
@@ -377,7 +384,3 @@ button:disabled:hover {
         font-weight: 400;
     }
   }
-  
-
-
-

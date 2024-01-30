@@ -4,10 +4,10 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-import { useApp } from "../context";
+import { useAppContext } from "../context";
 
 const GenerateRoundPopup = ({ open, generateRoundHandler, message }) => {
-  const { modal } = useApp();
+  const { modal } = useAppContext();
   const { toggleGenerateRoundPopup } = modal;
 
   const handleCancel = () => {

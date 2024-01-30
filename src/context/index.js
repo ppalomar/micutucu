@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 
+import { STORED_ENVIRONMENT_KEY } from "../constants";
+
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -15,6 +17,7 @@ export const AppProvider = ({ children }) => {
   };
 
   const initialState = {
+    isDevEnvironment: localStorage.getItem(STORED_ENVIRONMENT_KEY) === "DEV",
     modal: {
       openRemovePopup,
       toggleRemovePopup,
@@ -28,6 +31,6 @@ export const AppProvider = ({ children }) => {
   );
 };
 
-export const useApp = () => {
+export const useAppContext = () => {
   return useContext(AppContext);
 };

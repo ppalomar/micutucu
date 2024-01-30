@@ -1,24 +1,12 @@
-// src/components/BookList.js
 import React, { useState } from "react";
 import { useAppContext } from "../context";
 import RemovePopup from "./RemovePopup";
 
-const BookList = ({
-  books,
-  // students,
-  updateBooks,
-  removeBook,
-  selectedClassroom,
-}) => {
+const BookList = ({ books, updateBooks, removeBook, selectedClassroom }) => {
   const { modal } = useAppContext();
   const { openRemovePopup, toggleRemovePopup } = modal;
 
   const sortedBooks = books.sort((a, b) => a.name.localeCompare(b.name));
-
-  // const getStudentName = (id) => {
-  //   const student = students.find((std) => std.id === id);
-  //   return student ? student.name : "Unknown Owner";
-  // };
 
   const handleAvailabilityOnClick = (book) => {
     updateBooks([{ ...book, available: !book.available }]);
@@ -52,16 +40,19 @@ const BookList = ({
             <div className="book-display">
               <span className="material-symbols-rounded">menu_book</span>
               <div className="book-name">{book.name}</div>
-              {/* {book.assigned && (
-                <>
-                  <span title="Assigned" className="material-symbols-rounded">
-                    assignment_ind
-                  </span>
-                  <div className="book-assigned">
-                    {getStudentName(book.assigned)}
+              {!book.available && (
+                <div className="book-not-available">
+                  <div>Not Available</div>
+                  <div>
+                    <span
+                      title="The student didn't return the book. She/he will NOT receive book in the next generated round"
+                      className="material-symbols-rounded"
+                    >
+                      info
+                    </span>
                   </div>
-                </>
-              )} */}
+                </div>
+              )}
             </div>
             <div className="list-item-delete">
               <span

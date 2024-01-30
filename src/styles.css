@@ -200,6 +200,20 @@ button:disabled:hover {
     border: 1px dashed #f39c12;
 }
 
+.book-not-available {
+    display: flex;
+    align-items: center;
+    color: #e74c3c;
+    font-weight: 400;
+}
+
+.book-not-available span {
+    margin-left: 5px;
+    position: relative;
+    top: 2px;
+    cursor: default;
+}
+
 .list-item.book:hover {
     border: 1px dashed #D6A2E8;
 }

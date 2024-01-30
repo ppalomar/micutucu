@@ -1,10 +1,10 @@
 // src/components/StudentList.js
 import React, { useState } from "react";
-import { useApp } from "../context";
+import { useAppContext } from "../context";
 import RemovePopup from "./RemovePopup";
 
 const StudentList = ({ students, removeStudent, selectedClassroom }) => {
-  const { modal } = useApp();
+  const { modal } = useAppContext();
   const { openRemovePopup, toggleRemovePopup } = modal;
 
   const sortedStudents = students.sort((a, b) => a.name.localeCompare(b.name));

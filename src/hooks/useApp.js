@@ -1,7 +1,6 @@
 import React from "react";
 
-const MICUTUCU_LOCAL_STORAGE_PREFIX = `Micututu-`;
-const STORED_SELECTED_CLASSROOM = `${MICUTUCU_LOCAL_STORAGE_PREFIX}selected-classroom-id`;
+import { STORED_SELECTED_CLASSROOM } from "../constants";
 
 const useApp = ({ classrooms, setSelectedClassroom }) => {
   React.useEffect(() => {

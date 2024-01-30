@@ -30,12 +30,17 @@ const Presentational = ({
   removeRounds,
   selectedRound,
   handleSelectedRound,
+
+  isDevEnvironment,
 }) => {
   const isButtonEnabled =
     classroomStudents.length > 1 && classroomBooks.length > 1;
 
   return (
     <div className="container">
+      {isDevEnvironment && (
+        <div className="dev-environment-header">DEVELOPMENT ENVIRONMENT</div>
+      )}
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div className="title">Micu</div>
         <div className="title-second">tucu</div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useApp } from "../context";
+import { useAppContext } from "../context";
 import RemovePopup from "./RemovePopup";
 import GenerateRoundPopup from "./GenerateRoundPopup";
 
@@ -13,7 +13,7 @@ const AssignmentHeader = ({
   selectedClassroom,
   handleSelectedRound,
 }) => {
-  const { modal } = useApp();
+  const { modal } = useAppContext();
   const {
     openRemovePopup,
     toggleRemovePopup,

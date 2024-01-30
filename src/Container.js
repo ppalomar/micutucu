@@ -11,6 +11,7 @@ import {
 } from "./db";
 import { useApp } from "./hooks";
 import Presentational from "./Presentational";
+import { useAppContext } from "./context";
 
 const App = () => {
   const [classrooms, setClassrooms] = useState([]);
@@ -24,6 +25,8 @@ const App = () => {
     classrooms,
     setSelectedClassroom,
   });
+
+  const { isDevEnvironment } = useAppContext();
 
   const classroomStudents = students?.filter(
     (s) => s.classroomId === selectedClassroom?.id
@@ -302,6 +305,7 @@ const App = () => {
     removeBook,
     removeRounds,
     assignBooksToStudents,
+    isDevEnvironment,
   };
 
   return <Presentational {...presentationalProps} />;

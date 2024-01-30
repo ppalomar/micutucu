@@ -1,6 +1,6 @@
 // src/components/BookList.js
 import React, { useState } from "react";
-import { useApp } from "../context";
+import { useAppContext } from "../context";
 import RemovePopup from "./RemovePopup";
 
 const BookList = ({
@@ -10,7 +10,7 @@ const BookList = ({
   removeBook,
   selectedClassroom,
 }) => {
-  const { modal } = useApp();
+  const { modal } = useAppContext();
   const { openRemovePopup, toggleRemovePopup } = modal;
 
   const sortedBooks = books.sort((a, b) => a.name.localeCompare(b.name));

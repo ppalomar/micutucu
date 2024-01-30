@@ -32,7 +32,16 @@ const BookForm = ({ students, selectedClassroom, addBook }) => {
 
   return (
     <div>
-      <h2>Books</h2>
+      <h2>
+        Books{" "}
+        <span
+          title="Click in the book to mark/unmark it as not available"
+          className="material-symbols-rounded"
+          style={{ cursor: "default" }}
+        >
+          info
+        </span>
+      </h2>
       <form onSubmit={handleSubmit}>
         <div style={{ display: "flex" }}>
           <div style={{ flex: 7, marginRight: 20 }}>

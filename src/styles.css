@@ -246,6 +246,12 @@ button:disabled:hover {
     font-weight: 400;
 }
 
+.list-item.assignment.not-returned {
+    border: 1px dashed gray;
+    font-weight: 400;   
+    color: gray;
+}
+
 .list-item.assignment > span:nth-child(1) {
     margin-right: 5px;
     color: #82589F;

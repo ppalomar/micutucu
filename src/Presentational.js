@@ -94,7 +94,10 @@ const Presentational = ({
             handleSelectedRound={handleSelectedRound}
           />
           <div className="section-separator" />
-          <AssignmentList selectedRound={selectedRound} />
+          <AssignmentList
+            selectedRound={selectedRound}
+            students={classroomStudents}
+          />
         </div>
       </div>
     </div>

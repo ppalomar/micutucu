@@ -77,7 +77,7 @@ const Presentational = ({
           <div className="section-separator" />
           <BookList
             books={classroomBooks}
-            // students={classroomStudents}
+            students={classroomStudents}
             updateBooks={updateBooks}
             removeBook={removeBook}
             selectedClassroom={selectedClassroom}

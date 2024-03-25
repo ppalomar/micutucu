@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { useAppContext } from "../context";
 import RemovePopup from "./RemovePopup";
 
-const BookList = ({ books, updateBooks, removeBook, selectedClassroom }) => {
+const BookList = ({
+  books,
+  updateBooks,
+  removeBook,
+  selectedClassroom,
+  students,
+}) => {
   const { modal } = useAppContext();
   const { openRemovePopup, toggleRemovePopup } = modal;
 
@@ -26,6 +32,13 @@ const BookList = ({ books, updateBooks, removeBook, selectedClassroom }) => {
     }
   }, [openRemovePopup]);
 
+  const getStudentName = React.useCallback(
+    (ownerId) => {
+      return students?.find((s) => s.id === ownerId)?.name;
+    },
+    [students]
+  );
+
   return (
     <div>
       <div className="list-div">
@@ -38,7 +51,12 @@ const BookList = ({ books, updateBooks, removeBook, selectedClassroom }) => {
             onClick={() => handleAvailabilityOnClick(book)}
           >
             <div className="book-display">
-              <span className="material-symbols-rounded">menu_book</span>
+              <span
+                title={`Owner: ${getStudentName(book.owner)}`}
+                className="material-symbols-rounded"
+              >
+                menu_book
+              </span>
               <div className="book-name">{book.name}</div>
               {!book.available && (
                 <div className="book-not-available">

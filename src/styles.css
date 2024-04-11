@@ -242,6 +242,8 @@ button:disabled:hover {
     display: none;
     margin-left: auto;
     cursor: pointer;
+    position: relative;
+    top: 2px;
 }
 
 .student > .list-item-delete {

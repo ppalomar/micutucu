@@ -190,6 +190,7 @@ button:disabled:hover {
 }
 .student-books-count.error {
     color: #e74c3c;
+    font-weight: 400;
 }
 
 .list-item.book {

@@ -182,6 +182,16 @@ button:disabled:hover {
     color: #82589F;
 }
 
+.student-books-count {
+    margin-left: auto;
+    margin-right: 20px;
+    font-size: 12px;
+    cursor: default;
+}
+.student-books-count.error {
+    color: #e74c3c;
+}
+
 .list-item.book {
     cursor: pointer;
 }
@@ -231,6 +241,10 @@ button:disabled:hover {
     display: none;
     margin-left: auto;
     cursor: pointer;
+}
+
+.student > .list-item-delete {
+    margin-left: 0;
 }
 
 .list-item-delete:hover, .delete-round:hover {
@@ -343,6 +357,7 @@ button:disabled:hover {
 
 .book-display .book-owner {
     font-size: 12px;
+    margin-right: 20px;
 }
 
 .popup {

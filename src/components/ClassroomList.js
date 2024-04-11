@@ -25,7 +25,7 @@ const ClassroomList = ({
           >
             <span class="material-symbols-rounded">groups</span>
             {classroom.name}
-            {isActive && <div className="active-text">(active)</div>}
+            {isActive && <div className="active-text">(selected)</div>}
           </div>
         );
       })}

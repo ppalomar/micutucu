@@ -64,6 +64,7 @@ const Presentational = ({
           <div className="section-separator" />
           <StudentList
             students={classroomStudents}
+            books={classroomBooks}
             removeStudent={removeStudent}
             selectedClassroom={selectedClassroom}
           />

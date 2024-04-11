@@ -32,7 +32,7 @@ const BookList = ({
     }
   }, [openRemovePopup]);
 
-  const getStudentName = React.useCallback(
+  const getOwnerName = React.useCallback(
     (ownerId) => {
       return students?.find((s) => s.id === ownerId)?.name;
     },
@@ -51,13 +51,11 @@ const BookList = ({
             onClick={() => handleAvailabilityOnClick(book)}
           >
             <div className="book-display">
-              <span
-                title={`Owner: ${getStudentName(book.owner)}`}
-                className="material-symbols-rounded"
-              >
-                menu_book
-              </span>
+              <span className="material-symbols-rounded">menu_book</span>
               <div className="book-name">{book.name}</div>
+              <div className="book-owner">
+                Owner: {getOwnerName(book.owner)}
+              </div>
               {!book.available && (
                 <div className="book-not-available">
                   <div>Not Available</div>

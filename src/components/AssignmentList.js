@@ -24,7 +24,7 @@ const AssignmentList = ({ selectedRound, students }) => {
       {studentsWithoutBook.map((student) => (
         <div className="list-item assignment not-returned" key={student.id}>
           <span class="material-symbols-rounded">info</span>
-          {`${student.name} is not allowed to receive book`}
+          {`${student.name} is not allowed to receive a book`}
         </div>
       ))}
     </div>

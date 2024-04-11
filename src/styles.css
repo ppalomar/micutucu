@@ -361,6 +361,11 @@ button:disabled:hover {
     margin-right: 20px;
 }
 
+.book-display .book-owner.error {  
+    color: #e74c3c;
+    font-weight: 400;
+}
+
 .popup {
     font-family: 'Montserrat', sans-serif;
     background-color: #ece6ff;

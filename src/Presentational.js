@@ -72,6 +72,7 @@ const Presentational = ({
         <div className="section books">
           <BookForm
             students={classroomStudents}
+            books={classroomBooks}
             selectedClassroom={selectedClassroom}
             addBook={addBook}
           />

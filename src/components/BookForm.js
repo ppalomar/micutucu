@@ -1,9 +1,13 @@
 // src/components/BookForm.js
 import React, { useState } from "react";
 
-const BookForm = ({ students, selectedClassroom, addBook }) => {
+const BookForm = ({ students, books, selectedClassroom, addBook }) => {
   const [bookName, setBookName] = useState("");
   const [selectedStudent, setSelectedStudent] = useState("");
+
+  const studentsAreNotOwnersYet = students.filter(
+    (s) => !books.map((b) => b.owner).includes(s.id)
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +66,7 @@ const BookForm = ({ students, selectedClassroom, addBook }) => {
               <option value="" disabled>
                 Select Owner
               </option>
-              {students.map((student) => (
+              {studentsAreNotOwnersYet.map((student) => (
                 <option key={student.id} value={student.id}>
                   {student.name}
                 </option>

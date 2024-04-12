@@ -259,7 +259,7 @@ button:disabled:hover {
     top: 2px;
 }
 
-.student > .list-item-delete {
+.student.error > .list-item-delete {
     margin-left: 0;
 }
 

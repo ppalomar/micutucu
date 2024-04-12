@@ -57,7 +57,7 @@ const BookList = ({
             <div
               className={`list-item book ${
                 book.available ? "available" : "not-available"
-              }`}
+              } ${booksCount > 1 && "error"}`}
               key={book.id}
               onClick={() => handleAvailabilityOnClick(book)}
             >

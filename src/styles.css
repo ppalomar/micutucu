@@ -188,6 +188,11 @@ button:disabled:hover {
     font-size: 12px;
     cursor: default;
 }
+
+.list-item.student.error {
+    border-color: #e74c3c;
+}
+
 .student-books-count.error {
     color: #e74c3c;
     font-weight: 400;
@@ -209,6 +214,10 @@ button:disabled:hover {
 .list-item.book.not-available {
     background-color: #f8e187;
     border: 1px dashed #f39c12;
+}
+
+.list-item.book.error {
+    border-color: #e74c3c;
 }
 
 .book-not-available {

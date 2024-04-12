@@ -36,7 +36,10 @@ const StudentList = ({ students, books, removeStudent, selectedClassroom }) => {
         const booksCount = studentBooks?.length || 0;
 
         return (
-          <div className="list-item student" key={student.id}>
+          <div
+            className={`list-item student ${booksCount !== 1 && "error"}`}
+            key={student.id}
+          >
             <span class="material-symbols-rounded">person</span>
             <div>{student.name}</div>
             <div

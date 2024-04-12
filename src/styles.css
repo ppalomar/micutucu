@@ -259,7 +259,7 @@ button:disabled:hover {
     top: 2px;
 }
 
-.student.error > .list-item-delete {
+.student.error > .list-item-delete, .book > .list-item-delete {
     margin-left: 0;
 }
 
@@ -371,9 +371,19 @@ button:disabled:hover {
     margin-right: 10px;
 }
 
-.book-display .book-owner {
+.book-owner {
     font-size: 12px;
     margin-right: 20px;
+    margin-left: auto;
+    position: relative;
+    top: -2px;
+}
+
+.book-owner > span {
+    font-size: 14px;
+    position: relative;
+    top: 3px;
+    margin-right: 1px;
 }
 
 .book-display .book-owner.error {  

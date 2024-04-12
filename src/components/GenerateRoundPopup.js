@@ -35,12 +35,12 @@ const GenerateRoundPopup = ({ open, generateRoundHandler, message }) => {
     >
       <div className="popup generate-round-popup">
         <Typography gutterBottom>{message}</Typography>
-        <div>
+        <div className="actions-container">
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>
           <Button variant="contained" onClick={handleGenerateRound}>
-            Generate Round
+            Generate New Round
           </Button>
         </div>
       </div>

@@ -234,12 +234,7 @@ button:disabled:hover {
     border: 1px solid #82589F;
 }
 
-.list-item:hover .list-item-delete {
-    display: block;
-}
-
 .list-item-delete {
-    display: none;
     margin-left: auto;
     cursor: pointer;
     position: relative;
@@ -407,6 +402,11 @@ button:disabled:hover {
 
 .generate-round-popup Button:hover {
     background-color: #2ecc71;
+}
+
+.actions-container {
+    display: flex;
+    gap: 32px;
 }
 
 .dev-environment-header {

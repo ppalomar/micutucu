@@ -35,7 +35,7 @@ const RemovePopup = ({ open, onRemove, message }) => {
     >
       <div className="popup remove-popup">
         <Typography gutterBottom>{message}</Typography>
-        <div>
+        <div className="actions-container">
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>

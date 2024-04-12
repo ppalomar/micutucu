@@ -45,7 +45,7 @@ const BookForm = ({ students, books, selectedClassroom, addBook }) => {
           info
         </span>
         <span className="book-header-info">
-          Click in the book to mark/unmark it as not available.
+          Click on the book to mark/unmark it as not available.
         </span>
       </h2>
       <form onSubmit={handleSubmit}>

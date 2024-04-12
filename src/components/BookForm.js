@@ -35,15 +35,17 @@ const BookForm = ({ students, books, selectedClassroom, addBook }) => {
   };
 
   return (
-    <div>
+    <div className="book-header">
       <h2>
         Books{" "}
         <span
-          title="Click in the book to mark/unmark it as not available"
           className="material-symbols-rounded"
           style={{ cursor: "default" }}
         >
           info
+        </span>
+        <span className="book-header-info">
+          Click in the book to mark/unmark it as not available.
         </span>
       </h2>
       <form onSubmit={handleSubmit}>

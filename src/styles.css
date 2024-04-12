@@ -198,6 +198,18 @@ button:disabled:hover {
     font-weight: 400;
 }
 
+.book-header h2 span {
+    position: relative;
+    top: 3px;
+}
+
+.book-header h2 span.book-header-info {
+    font-size: 12px;
+    font-weight: 300;
+    top: -4px;
+
+}
+
 .list-item.book {
     cursor: pointer;
 }

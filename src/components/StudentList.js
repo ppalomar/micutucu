@@ -22,9 +22,9 @@ const StudentList = ({ students, books, removeStudent, selectedClassroom }) => {
     }
   }, [openRemovePopup]);
 
-  const getStudentBooks = React.useCallback(
+  const getStudentNotOwner = React.useCallback(
     (studentId) => {
-      return books.filter((b) => b.owner === studentId);
+      return books.filter((b) => b.owner === studentId)?.length === 0;
     },
     [books]
   );
@@ -32,21 +32,18 @@ const StudentList = ({ students, books, removeStudent, selectedClassroom }) => {
   return (
     <div className="list-div">
       {sortedStudents.map((student) => {
-        const studentBooks = getStudentBooks(student.id);
-        const booksCount = studentBooks?.length || 0;
+        const studentNotOwner = getStudentNotOwner(student.id);
 
         return (
           <div
-            className={`list-item student ${booksCount !== 1 && "error"}`}
+            className={`list-item student ${studentNotOwner && "error"}`}
             key={student.id}
           >
             <span class="material-symbols-rounded">person</span>
             <div>{student.name}</div>
-            <div
-              className={`student-books-count ${booksCount !== 1 && "error"}`}
-            >
-              {booksCount} book{booksCount !== 1 && "s"}
-            </div>
+            {studentNotOwner && (
+              <div className="student-not-owner">No book owned yet</div>
+            )}
             <div className="list-item-delete">
               <span
                 title="Delete student"

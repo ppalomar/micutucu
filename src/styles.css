@@ -182,20 +182,17 @@ button:disabled:hover {
     color: #82589F;
 }
 
-.student-books-count {
+.student-not-owner{
     margin-left: auto;
-    margin-right: 20px;
+    margin-right: 10px;
     font-size: 12px;
     cursor: default;
+    color: #e74c3c;
+    font-weight: 400;
 }
 
 .list-item.student.error {
     border-color: #e74c3c;
-}
-
-.student-books-count.error {
-    color: #e74c3c;
-    font-weight: 400;
 }
 
 .book-header h2 span {

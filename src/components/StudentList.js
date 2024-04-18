@@ -42,7 +42,7 @@ const StudentList = ({ students, books, removeStudent, selectedClassroom }) => {
             <span class="material-symbols-rounded">person</span>
             <div>{student.name}</div>
             {studentNotOwner && (
-              <div className="student-not-owner">No book owned yet</div>
+              <div className="student-not-owner">Book not provided</div>
             )}
             <div className="list-item-delete">
               <span

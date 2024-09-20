@@ -40,7 +40,7 @@ const GenerateRoundPopup = ({ open, generateRoundHandler, message }) => {
             Cancel
           </Button>
           <Button variant="contained" onClick={handleGenerateRound}>
-            Generate New Round
+            New Round
           </Button>
         </div>
       </div>

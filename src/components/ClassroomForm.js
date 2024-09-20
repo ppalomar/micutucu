@@ -20,8 +20,8 @@ const ClassroomForm = ({ addClassroom }) => {
     <div>
       <h2>Classrooms</h2>
       <form onSubmit={handleSubmit}>
-        <div style={{ display: "flex" }}>
-          <div style={{ flex: 10, marginRight: 20 }}>
+        <div style={{ display: "flex", height: "38px" }}>
+          {/* <div style={{ flex: 10, marginRight: 20 }}>
             <input
               type="text"
               placeholder="Enter classroom name"
@@ -31,7 +31,7 @@ const ClassroomForm = ({ addClassroom }) => {
           </div>
           <div style={{ flex: 2 }}>
             <button type="submit">Add</button>
-          </div>
+          </div> */}
         </div>
       </form>
     </div>

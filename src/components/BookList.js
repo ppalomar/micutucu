@@ -50,23 +50,23 @@ const BookList = ({
             key={book.id}
             onClick={() => handleAvailabilityOnClick(book)}
           >
+            {!book.available && (
+              <div className="book-not-available">
+                <div>Not Available</div>
+
+                <span
+                  title="The student didn't return the book. She/he will NOT receive book in the next generated round"
+                  className="material-symbols-rounded"
+                >
+                  info
+                </span>
+              </div>
+            )}
             <div className="book-display">
               <span className="material-symbols-rounded">menu_book</span>
               <div className="book-name">{book.name}</div>
             </div>
-            {!book.available && (
-              <div className="book-not-available">
-                <div>Not Available</div>
-                <div>
-                  <span
-                    title="The student didn't return the book. She/he will NOT receive book in the next generated round"
-                    className="material-symbols-rounded"
-                  >
-                    info
-                  </span>
-                </div>
-              </div>
-            )}
+
             <div className="book-owner">
               <span class="material-symbols-rounded">person</span>
               Owner: {getOwnerName(book.owner)}

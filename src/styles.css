@@ -127,13 +127,13 @@ button:disabled:hover {
 }
 
 .classroom{
-    flex: 2
+    flex: 1
 }
 .students{
     flex: 2
 }
 .books{
-    flex: 4
+    flex: 5
 }
 .rounds{
     flex: 4
@@ -175,6 +175,7 @@ button:disabled:hover {
     position: relative;
     top: -2px;
     color: #82589F;
+    opacity: 0.5;
 }
 
 .list-item.student > span:nth-child(1) {
@@ -234,13 +235,11 @@ button:disabled:hover {
     align-items: center;
     color: #e74c3c;
     font-weight: 400;
+    margin-right: 5px;
 }
 
 .book-not-available span {
-    margin-left: 5px;
-    position: relative;
-    top: 2px;
-    cursor: default;
+    margin-left: 1px;
 }
 
 .list-item.book:hover {
@@ -296,9 +295,13 @@ button:disabled:hover {
 
 .classroom .list-item.active{
     display: flex;
-    border: 1px solid #82589F;
+    border: 2px solid #82589F;
     font-weight: 400;
     background-color: #d9cdff;
+}
+
+.classroom .list-item.active > span{
+    opacity: 1.1;
 }
 
 .classroom .list-item:hover {
@@ -311,6 +314,7 @@ button:disabled:hover {
 
 .main-section {
     display: flex;
+    font-size: 14px;
 };
 
 .round-title {
@@ -373,7 +377,7 @@ button:disabled:hover {
 
 .book-owner {
     font-size: 12px;
-    margin-right: 20px;
+    margin-right: 5px;
     margin-left: auto;
     position: relative;
     top: -2px;
@@ -445,10 +449,18 @@ button:disabled:hover {
 }
 
 /* Media query to change styles for screens less than 700px */
-@media (max-width: 1440px) {
+@media (max-width: 1920px) {
+    .main-section {
+        font-size: 12px;
+    };
+  }
+
+/* Media query to change styles for screens less than 700px */
+@media (max-width: 1520px) {
     .main-section {
         display: flex;
         flex-direction: column;
+        font-size: 16px;
     };
 
     .list-item {

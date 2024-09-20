@@ -167,7 +167,7 @@ button:disabled:hover {
     margin-bottom: 8px;
     align-items: center;
     height: 20px;
-    font-weight: 200;
+    font-weight: 400;
 }
 
 .list-item.classroom > span {
@@ -291,12 +291,13 @@ button:disabled:hover {
     border: 1px dashed #bdc3c7;
     color: #2c3e50;
     cursor: pointer;
+    font-weight: 200;
 }
 
 .classroom .list-item.active{
     display: flex;
-    border: 2px solid #82589F;
     font-weight: 400;
+    border: 2px solid #82589F;
     background-color: #d9cdff;
 }
 
@@ -338,6 +339,7 @@ button:disabled:hover {
 
 .round-info{
     display: flex;
+    font-weight: 400;
 }
 
 .round-info span {
@@ -377,6 +379,7 @@ button:disabled:hover {
 
 .book-owner {
     font-size: 12px;
+    font-weight: 200;
     margin-right: 5px;
     margin-left: auto;
     position: relative;
@@ -453,6 +456,10 @@ button:disabled:hover {
     .main-section {
         font-size: 12px;
     };
+
+    .list-item {
+        font-weight: 400;
+    }
   }
 
 /* Media query to change styles for screens less than 700px */

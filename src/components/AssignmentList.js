@@ -18,7 +18,9 @@ const AssignmentList = ({ selectedRound, students }) => {
       {filteredAssignments.map((assignment, index) => (
         <div className="list-item assignment" key={index}>
           <span class="material-symbols-rounded">assignment_ind</span>
-          {`${assignment.student.name} got ${assignment.book.name}`}
+          {assignment.student.name}
+          <span class="material-symbols-rounded">chevron_right</span>
+          {assignment.book.name}
         </div>
       ))}
       {studentsWithoutBook.map((student) => (

@@ -13,12 +13,7 @@ import NewCyclePopup from "./NewCyclePopup";
 const BookList = () => {
   // Get state and functions from context hooks
   const { modal } = useModal();
-  const {
-    openRemovePopup,
-    toggleRemovePopup,
-    openNewCyclePopup,
-    toggleNewCyclePopup,
-  } = modal;
+  const { openRemovePopup, toggleRemovePopup, toggleNewCyclePopup } = modal;
 
   const { updateBooks, removeBook, getClassroomBooks, removeClassroomBooks } =
     useBook();

@@ -90,7 +90,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
               </div>
             </>
           )}
-          {roundText}
+          <div style={{ marginTop: 3 }}>{roundText}</div>
         </h3>
       </div>
       <div style={{ display: "flex" }}>

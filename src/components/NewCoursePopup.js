@@ -1,18 +1,18 @@
-// src/components/NewCyclePopup.js
+// src/components/NewCoursePopup.js
 import React from "react";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useModal } from "../context";
 
-const NewCyclePopup = ({ onConfirm, message }) => {
+const NewCoursePopup = ({ onConfirm, message }) => {
   // Get modal state and functions from context
   const { modal } = useModal();
-  const { openNewCyclePopup, toggleNewCyclePopup } = modal;
+  const { openNewCoursePopup, toggleNewCoursePopup } = modal;
 
   // Handle cancel button click
   const handleCancel = () => {
-    toggleNewCyclePopup();
+    toggleNewCoursePopup();
   };
 
   // Handle confirm button click
@@ -21,15 +21,15 @@ const NewCyclePopup = ({ onConfirm, message }) => {
     if (onConfirm) {
       onConfirm();
     }
-    toggleNewCyclePopup();
+    toggleNewCoursePopup();
   };
 
   return (
     <Modal
-      open={openNewCyclePopup}
-      onClose={toggleNewCyclePopup}
-      aria-labelledby="new-cycle-popup"
-      aria-describedby="popup-to-confirm-new-cycle-action"
+      open={openNewCoursePopup}
+      onClose={toggleNewCoursePopup}
+      aria-labelledby="new-course-popup"
+      aria-describedby="popup-to-confirm-new-course-action"
       style={{
         display: "flex",
         alignItems: "center",
@@ -38,18 +38,14 @@ const NewCyclePopup = ({ onConfirm, message }) => {
       }}
       disableBackdropClick
     >
-      <div className="popup new-cycle-popup">
+      <div className="popup new-course-popup">
         <Typography gutterBottom>{message}</Typography>
         <div className="actions-container">
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>
-          <Button
-            variant="contained"
-            onClick={handleConfirm}
-            style={{ backgroundColor: "#e74c3c" }}
-          >
-            Start New Books Cycle
+          <Button variant="contained" onClick={handleConfirm}>
+            Start New Course
           </Button>
         </div>
       </div>
@@ -57,4 +53,4 @@ const NewCyclePopup = ({ onConfirm, message }) => {
   );
 };
 
-export default NewCyclePopup;
+export default NewCoursePopup;

@@ -116,7 +116,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
         </h3>
       </div>
       <div style={{ display: "flex" }}>
-        <div style={{ flex: 3 }}>
+        <div style={{ flex: 1 }}>
           <button
             disabled={!isButtonEnabled}
             onClick={toggleGenerateRoundPopup}
@@ -124,7 +124,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
             Assign Books to Students
           </button>
         </div>
-        <div style={{ display: "flex", flex: 1 }} className="delete-round">
+        {/* <div style={{ display: "flex", flex: 1 }} className="delete-round">
           <span
             title="Delete all rounds"
             className="material-symbols-rounded"
@@ -132,16 +132,16 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
           >
             delete
           </span>
-        </div>
+        </div> */}
       </div>
-      {selectedRounds && (
+      {/* {selectedRounds && (
         <RemovePopup
           open={openRemovePopup}
           onClose={toggleRemovePopup}
           onRemove={selectedRound ? () => removeRounds() : () => {}}
           message={`Are you sure you want to remove all rounds from ${selectedClassroom?.name}?`}
         />
-      )}
+      )} */}
       {selectedClassroom && (
         <GenerateRoundPopup
           open={openGenerateRoundPopup}

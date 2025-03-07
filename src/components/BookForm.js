@@ -51,6 +51,8 @@ const BookForm = () => {
     }
   };
 
+  const isAddButtonDisabled = !bookName || !selectedStudent;
+
   return (
     <div className="book-header">
       <h2>
@@ -93,7 +95,9 @@ const BookForm = () => {
             </select>
           </div>
           <div style={{ flex: 1 }}>
-            <button type="submit">Add</button>
+            <button disabled={isAddButtonDisabled} type="submit">
+              Add
+            </button>
           </div>
         </div>
       </form>

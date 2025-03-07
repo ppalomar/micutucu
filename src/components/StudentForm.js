@@ -24,6 +24,8 @@ const StudentForm = () => {
     }
   };
 
+  const isAddButtonDisabled = !studentName || !selectedClassroom;
+
   return (
     <div>
       <h2>Students</h2>
@@ -39,7 +41,9 @@ const StudentForm = () => {
             />
           </div>
           <div style={{ flex: 2 }}>
-            <button type="submit">Add</button>
+            <button disabled={isAddButtonDisabled} type="submit">
+              Add
+            </button>
           </div>
         </div>
       </form>

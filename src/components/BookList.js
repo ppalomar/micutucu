@@ -1,16 +1,25 @@
 // src/components/BookList.js
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useModal, useBook, useStudent, useClassroom } from "../context";
+import {
+  useModal,
+  useBook,
+  useStudent,
+  useClassroom,
+  useRound,
+} from "../context";
 import RemovePopup from "./RemovePopup";
+import NewCyclePopup from "./NewCyclePopup";
 
 const BookList = () => {
   // Get state and functions from context hooks
   const { modal } = useModal();
-  const { openRemovePopup, toggleRemovePopup } = modal;
+  const { openRemovePopup, toggleRemovePopup, toggleNewCyclePopup } = modal;
 
-  const { updateBooks, removeBook, getClassroomBooks } = useBook();
+  const { updateBooks, removeBook, getClassroomBooks, removeClassroomBooks } =
+    useBook();
   const { getClassroomStudents } = useStudent();
   const { selectedClassroom } = useClassroom();
+  const { removeRounds } = useRound();
 
   // Local state for the book selected for removal
   const [selectedBook, setSelectedBook] = useState(null);
@@ -39,6 +48,24 @@ const BookList = () => {
     event.stopPropagation();
     setSelectedBook(book);
     toggleRemovePopup();
+  };
+
+  // Handler for starting a new book cycle
+  const handleStartNewCycle = async () => {
+    if (selectedClassroom) {
+      // First remove all rounds
+      const roundsResult = await removeRounds();
+      if (!roundsResult.success) {
+        console.error("Failed to remove rounds:", roundsResult.error);
+        return;
+      }
+
+      // Then remove all books for the classroom
+      const booksResult = await removeClassroomBooks(selectedClassroom.id);
+      if (!booksResult.success) {
+        console.error("Failed to remove books:", booksResult.error);
+      }
+    }
   };
 
   // Clear selected book when popup closes
@@ -109,12 +136,26 @@ const BookList = () => {
           </div>
         ))}
       </div>
+      <div style={{ marginTop: 20 }}>
+        <button
+          onClick={toggleNewCyclePopup}
+          disabled={!selectedClassroom || sortedBooks.length === 0}
+        >
+          Start New Books Cycle
+        </button>
+      </div>
       {selectedBook && (
         <RemovePopup
           open={openRemovePopup}
           onClose={toggleRemovePopup}
           onRemove={handleRemoveBook}
           message={`Are you sure you want to remove ${selectedBook.name} from ${selectedClassroom?.name}?`}
+        />
+      )}
+      {selectedClassroom && (
+        <NewCyclePopup
+          onConfirm={handleStartNewCycle}
+          message={`Are you sure you want to start a new book cycle for ${selectedClassroom?.name}? This will delete all books and rounds for this classroom.`}
         />
       )}
     </div>

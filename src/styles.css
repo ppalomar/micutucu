@@ -118,7 +118,6 @@ button:disabled:hover {
     display: flex; 
     flex-direction:column; 
     padding: 20px;
-    padding-bottom: 40px;
 
     background-color: #e0d6ff;
     margin: 10px;
@@ -692,3 +691,15 @@ button:disabled:hover {
       align-items: center;
     }
   }
+
+.generate-round-popup Button:hover {
+    background-color: #2ecc71;
+}
+
+.new-cycle-popup Button {
+    background-color: #e74c3c;
+}
+
+.new-cycle-popup Button:hover {
+    background-color: #c0392b;
+}

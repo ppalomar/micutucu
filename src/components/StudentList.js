@@ -1,33 +1,62 @@
 // src/components/StudentList.js
-import React, { useState } from "react";
-import { useAppContext } from "../context";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useModal, useStudent, useBook, useClassroom } from "../context";
 import RemovePopup from "./RemovePopup";
 
-const StudentList = ({ students, books, removeStudent, selectedClassroom }) => {
-  const { modal } = useAppContext();
+const StudentList = () => {
+  // Get state and functions from context hooks
+  const { modal } = useModal();
   const { openRemovePopup, toggleRemovePopup } = modal;
 
-  const sortedStudents = students.sort((a, b) => a.name.localeCompare(b.name));
+  const { removeStudent, getClassroomStudents } = useStudent();
+  const { getClassroomBooks } = useBook();
+  const { selectedClassroom } = useClassroom();
 
+  // Local state for the student selected for removal
   const [selectedStudent, setSelectedStudent] = useState(null);
 
+  // Get students and books for the selected classroom
+  const classroomStudents = selectedClassroom
+    ? getClassroomStudents(selectedClassroom.id)
+    : [];
+
+  const classroomBooks = useMemo(
+    () => (selectedClassroom ? getClassroomBooks(selectedClassroom.id) : []),
+    [getClassroomBooks, selectedClassroom]
+  );
+
+  // Sort students by name
+  const sortedStudents = classroomStudents.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+
+  // Handle delete button click
   const handleDeleteClick = (student) => {
     setSelectedStudent(student);
     toggleRemovePopup();
   };
 
-  React.useEffect(() => {
+  // Clear selected student when popup closes
+  useEffect(() => {
     if (!openRemovePopup) {
       setSelectedStudent(null);
     }
   }, [openRemovePopup]);
 
-  const getStudentNotOwner = React.useCallback(
+  // Check if a student has provided a book
+  const getStudentNotOwner = useCallback(
     (studentId) => {
-      return books.filter((b) => b.owner === studentId)?.length === 0;
+      return classroomBooks.filter((b) => b.owner === studentId)?.length === 0;
     },
-    [books]
+    [classroomBooks]
   );
+
+  // Handle student removal
+  const handleRemoveStudent = () => {
+    if (selectedStudent) {
+      removeStudent(selectedStudent.documentId, selectedStudent.id);
+    }
+  };
 
   return (
     <div className="list-div">
@@ -39,7 +68,7 @@ const StudentList = ({ students, books, removeStudent, selectedClassroom }) => {
             className={`list-item student ${studentNotOwner && "error"}`}
             key={student.id}
           >
-            <span class="material-symbols-rounded">person</span>
+            <span className="material-symbols-rounded">person</span>
             <div>{student.name}</div>
             {studentNotOwner && (
               <div className="student-not-owner">Book not provided</div>
@@ -47,7 +76,7 @@ const StudentList = ({ students, books, removeStudent, selectedClassroom }) => {
             <div className="list-item-delete">
               <span
                 title="Delete student"
-                class="material-symbols-rounded"
+                className="material-symbols-rounded"
                 onClick={() => handleDeleteClick(student)}
               >
                 delete
@@ -60,9 +89,7 @@ const StudentList = ({ students, books, removeStudent, selectedClassroom }) => {
         <RemovePopup
           open={openRemovePopup}
           onClose={toggleRemovePopup}
-          onRemove={() =>
-            removeStudent(selectedStudent.documentId, selectedStudent.id)
-          }
+          onRemove={handleRemoveStudent}
           message={`Are you sure you want to remove ${selectedStudent.name} and the owned book from ${selectedClassroom?.name}?`}
         />
       )}
@@ -70,4 +97,4 @@ const StudentList = ({ students, books, removeStudent, selectedClassroom }) => {
   );
 };
 
-export default StudentList;
+export default React.memo(StudentList);

@@ -1,11 +1,10 @@
-// src/components/ClassroomList.js
 import React from "react";
+import { useClassroom } from "../context";
 
-const ClassroomList = ({
-  classrooms,
-  selectedClassroom,
-  handleSelectedClassroom,
-}) => {
+const ClassroomList = () => {
+  const { classrooms, selectedClassroom, setSelectedClassroom } =
+    useClassroom();
+
   const sortedClassrooms = classrooms.sort((a, b) =>
     a.name.localeCompare(b.name)
   );
@@ -16,16 +15,13 @@ const ClassroomList = ({
         const isActive = selectedClassroom?.id === classroom.id;
         return (
           <div
-            title="Select this classroom"
             className={`list-item classroom ${isActive ? "active" : ""}`}
             key={classroom.id}
             onClick={
-              isActive ? () => {} : () => handleSelectedClassroom(classroom)
+              isActive ? () => {} : () => setSelectedClassroom(classroom)
             }
           >
-            <span class="material-symbols-rounded">groups</span>
             {classroom.name}
-            {/* {isActive && <div className="active-text">(selected)</div>} */}
           </div>
         );
       })}

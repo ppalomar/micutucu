@@ -1,19 +1,12 @@
-import React from "react";
-
-import { useAppContext } from "../context";
+// src/components/AssignmentHeader.js
+import React, { useState, useEffect } from "react";
+import { useModal, useRound, useClassroom, useAssignment } from "../context";
 import RemovePopup from "./RemovePopup";
 import GenerateRoundPopup from "./GenerateRoundPopup";
 
-const AssignmentHeader = ({
-  classroomRounds,
-  selectedRound,
-  isButtonEnabled,
-  assignBooksToStudents,
-  removeRounds,
-  selectedClassroom,
-  handleSelectedRound,
-}) => {
-  const { modal } = useAppContext();
+const AssignmentHeader = ({ isButtonEnabled }) => {
+  // Get state and functions from context hooks
+  const { modal } = useModal();
   const {
     openRemovePopup,
     toggleRemovePopup,
@@ -21,25 +14,70 @@ const AssignmentHeader = ({
     toggleGenerateRoundPopup,
   } = modal;
 
-  const roundText = selectedRound
-    ? `Round ${selectedRound.round} - ${selectedRound.date}`
-    : "";
+  const { selectedRound, setSelectedRound, rounds, removeRounds } = useRound();
 
-  const handleDeleteClick = () => {
-    setSelectedRounds(true);
-    toggleRemovePopup();
-  };
+  const { selectedClassroom } = useClassroom();
+  const { assignBooksToStudents } = useAssignment();
 
-  const [selectedRounds, setSelectedRounds] = React.useState(false);
-  React.useEffect(() => {
+  // Local state for tracking if rounds are selected for deletion
+  const [selectedRounds, setSelectedRounds] = useState(false);
+
+  // Get classroom rounds - safely with null checks
+  const classroomRounds =
+    selectedClassroom && rounds
+      ? rounds.filter((round) => round.classroom === selectedClassroom.id)
+      : [];
+
+  // Reset selectedRounds when popup closes
+  useEffect(() => {
     if (!openRemovePopup) {
       setSelectedRounds(false);
     }
   }, [openRemovePopup]);
 
+  // Format the round text for display
+  const roundText = selectedRound
+    ? `Round ${selectedRound.round} - ${selectedRound.date}`
+    : "";
+
+  // Handle delete click for rounds
+  const handleDeleteClick = () => {
+    setSelectedRounds(true);
+    toggleRemovePopup();
+  };
+
+  // Handle navigation between rounds
+  const handleSelectedRound = (direction) => {
+    if (!selectedRound || !classroomRounds.length) return;
+
+    if (direction === "back") {
+      const prevRound = classroomRounds.find(
+        (r) => r.round === selectedRound.round - 1
+      );
+      if (prevRound) {
+        setSelectedRound(prevRound);
+      }
+    } else {
+      const nextRound = classroomRounds.find(
+        (r) => r.round === selectedRound.round + 1
+      );
+      if (nextRound) {
+        setSelectedRound(nextRound);
+      }
+    }
+  };
+
+  // Calculate navigation controls visibility
   const visibleArrows = classroomRounds.length > 1;
   const isEnabledBackArrow = selectedRound?.round > 1;
   const isEnabledForwardArrow = selectedRound?.round < classroomRounds.length;
+
+  // Handle round assignment
+  const handleAssignBooks = () => {
+    if (selectedClassroom) {
+      assignBooksToStudents(selectedClassroom.id);
+    }
+  };
 
   return (
     <div>
@@ -48,26 +86,26 @@ const AssignmentHeader = ({
         <h3 className="round-info">
           {visibleArrows && (
             <>
-              <div className={!isEnabledBackArrow && "disabled"}>
+              <div className={!isEnabledBackArrow ? "disabled" : ""}>
                 <span
                   onClick={
                     isEnabledBackArrow
                       ? () => handleSelectedRound("back")
                       : () => {}
                   }
-                  class="material-symbols-rounded"
+                  className="material-symbols-rounded"
                 >
                   arrow_back
                 </span>
               </div>
-              <div className={!isEnabledForwardArrow && "disabled"}>
+              <div className={!isEnabledForwardArrow ? "disabled" : ""}>
                 <span
                   onClick={
                     isEnabledForwardArrow
                       ? () => handleSelectedRound("forward")
                       : () => {}
                   }
-                  class="material-symbols-rounded"
+                  className="material-symbols-rounded"
                 >
                   arrow_forward
                 </span>
@@ -89,7 +127,7 @@ const AssignmentHeader = ({
         <div style={{ display: "flex", flex: 1 }} className="delete-round">
           <span
             title="Delete all rounds"
-            class="material-symbols-rounded"
+            className="material-symbols-rounded"
             onClick={() => isButtonEnabled && handleDeleteClick()}
           >
             delete
@@ -101,14 +139,14 @@ const AssignmentHeader = ({
           open={openRemovePopup}
           onClose={toggleRemovePopup}
           onRemove={selectedRound ? () => removeRounds() : () => {}}
-          message={`Are you sure you want to remove all rounds from ${selectedClassroom.name}?`}
+          message={`Are you sure you want to remove all rounds from ${selectedClassroom?.name}?`}
         />
       )}
       {selectedClassroom && (
         <GenerateRoundPopup
           open={openGenerateRoundPopup}
           onClose={toggleGenerateRoundPopup}
-          generateRoundHandler={assignBooksToStudents}
+          generateRoundHandler={handleAssignBooks}
           message={`You are gonna create a new round in ${selectedClassroom.name}. Proceed?`}
         />
       )}

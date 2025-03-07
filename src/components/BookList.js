@@ -1,43 +1,69 @@
-import React, { useState } from "react";
-import { useAppContext } from "../context";
+// src/components/BookList.js
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useModal, useBook, useStudent, useClassroom } from "../context";
 import RemovePopup from "./RemovePopup";
 
-const BookList = ({
-  books,
-  updateBooks,
-  removeBook,
-  selectedClassroom,
-  students,
-}) => {
-  const { modal } = useAppContext();
+const BookList = () => {
+  // Get state and functions from context hooks
+  const { modal } = useModal();
   const { openRemovePopup, toggleRemovePopup } = modal;
 
-  const sortedBooks = books.sort((a, b) => a.name.localeCompare(b.name));
+  const { updateBooks, removeBook, getClassroomBooks } = useBook();
+  const { getClassroomStudents } = useStudent();
+  const { selectedClassroom } = useClassroom();
 
+  // Local state for the book selected for removal
+  const [selectedBook, setSelectedBook] = useState(null);
+
+  // Get books and students for the selected classroom
+  const classroomBooks = selectedClassroom
+    ? getClassroomBooks(selectedClassroom.id)
+    : [];
+  const classroomStudents = useMemo(
+    () => (selectedClassroom ? getClassroomStudents(selectedClassroom.id) : []),
+    [getClassroomStudents, selectedClassroom]
+  );
+
+  // Sort books by name
+  const sortedBooks = classroomBooks.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+
+  // Toggle book availability when clicked
   const handleAvailabilityOnClick = (book) => {
     updateBooks([{ ...book, available: !book.available }]);
   };
 
-  const [selectedBook, setSelectedBook] = useState(null);
-
+  // Handle delete button click
   const handleDeleteClick = (event, book) => {
     event.stopPropagation();
     setSelectedBook(book);
     toggleRemovePopup();
   };
 
-  React.useEffect(() => {
+  // Clear selected book when popup closes
+  useEffect(() => {
     if (!openRemovePopup) {
       setSelectedBook(null);
     }
   }, [openRemovePopup]);
 
-  const getOwnerName = React.useCallback(
+  // Get owner name for a book
+  const getOwnerName = useCallback(
     (ownerId) => {
-      return students?.find((s) => s.id === ownerId)?.name;
+      return (
+        classroomStudents?.find((s) => s.id === ownerId)?.name || "Unknown"
+      );
     },
-    [students]
+    [classroomStudents]
   );
+
+  // Handle book removal
+  const handleRemoveBook = () => {
+    if (selectedBook) {
+      removeBook(selectedBook.documentId);
+    }
+  };
 
   return (
     <div>
@@ -68,7 +94,7 @@ const BookList = ({
             </div>
 
             <div className="book-owner">
-              <span class="material-symbols-rounded">person</span>
+              <span className="material-symbols-rounded">person</span>
               Owner: {getOwnerName(book.owner)}
             </div>
             <div className="list-item-delete">
@@ -87,7 +113,7 @@ const BookList = ({
         <RemovePopup
           open={openRemovePopup}
           onClose={toggleRemovePopup}
-          onRemove={() => removeBook({ documentId: selectedBook.documentId })}
+          onRemove={handleRemoveBook}
           message={`Are you sure you want to remove ${selectedBook.name} from ${selectedClassroom?.name}?`}
         />
       )}
@@ -95,4 +121,4 @@ const BookList = ({
   );
 };
 
-export default BookList;
+export default React.memo(BookList);

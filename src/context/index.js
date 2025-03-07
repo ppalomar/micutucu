@@ -1,36 +1,33 @@
-import React, { createContext, useContext, useState } from "react";
+// src/context/index.js
+import React from "react";
+import { AppProvider as ModalProvider } from "./ModalContext";
+import { BookProvider } from "./BookContext";
+import { StudentProvider } from "./StudentContext";
+import { ClassroomProvider } from "./ClassroomContext";
+import { RoundProvider } from "./RoundContext";
+import { AssignmentProvider } from "./AssignmentContext";
 
-import { STORED_ENVIRONMENT_KEY } from "../constants";
-
-const AppContext = createContext();
-
+// Combine all providers
 export const AppProvider = ({ children }) => {
-  const [openRemovePopup, setOpenRemovePopup] = useState(false);
-  const [openGenerateRoundPopup, setOpenGenerateRoundPopup] = useState(false);
-
-  const toggleRemovePopup = () => {
-    setOpenRemovePopup(!openRemovePopup);
-  };
-
-  const toggleGenerateRoundPopup = () => {
-    setOpenGenerateRoundPopup(!openGenerateRoundPopup);
-  };
-
-  const initialState = {
-    isDevEnvironment: localStorage.getItem(STORED_ENVIRONMENT_KEY) === "DEV",
-    modal: {
-      openRemovePopup,
-      toggleRemovePopup,
-      openGenerateRoundPopup,
-      toggleGenerateRoundPopup,
-    },
-  };
-
   return (
-    <AppContext.Provider value={initialState}>{children}</AppContext.Provider>
+    <ModalProvider>
+      <ClassroomProvider>
+        <StudentProvider>
+          <BookProvider>
+            <RoundProvider>
+              <AssignmentProvider>{children}</AssignmentProvider>
+            </RoundProvider>
+          </BookProvider>
+        </StudentProvider>
+      </ClassroomProvider>
+    </ModalProvider>
   );
 };
 
-export const useAppContext = () => {
-  return useContext(AppContext);
-};
+// Re-export all context hooks
+export { useModal } from "./ModalContext";
+export { useBook } from "./BookContext";
+export { useStudent } from "./StudentContext";
+export { useClassroom } from "./ClassroomContext";
+export { useRound } from "./RoundContext";
+export { useAssignment } from "./AssignmentContext";

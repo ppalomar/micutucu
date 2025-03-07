@@ -1,27 +1,39 @@
+// src/components/GenerateRoundPopup.js
 import React from "react";
-
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { useModal, useAssignment, useClassroom } from "../context";
 
-import { useAppContext } from "../context";
+const GenerateRoundPopup = () => {
+  // Get state and functions from context hooks
+  const { modal } = useModal();
+  const { openGenerateRoundPopup, toggleGenerateRoundPopup } = modal;
 
-const GenerateRoundPopup = ({ open, generateRoundHandler, message }) => {
-  const { modal } = useAppContext();
-  const { toggleGenerateRoundPopup } = modal;
+  const { selectedClassroom } = useClassroom();
+  const { assignBooksToStudents } = useAssignment();
 
+  // Handle cancel button click
   const handleCancel = () => {
     toggleGenerateRoundPopup();
   };
 
+  // Handle generate round button click
   const handleGenerateRound = () => {
-    generateRoundHandler();
-    toggleGenerateRoundPopup();
+    if (selectedClassroom) {
+      assignBooksToStudents(selectedClassroom.id);
+      toggleGenerateRoundPopup();
+    }
   };
+
+  // Create the confirmation message
+  const message = selectedClassroom
+    ? `You are gonna create a new round in ${selectedClassroom.name}. Proceed?`
+    : "You are going to create a new round. Proceed?";
 
   return (
     <Modal
-      open={open}
+      open={openGenerateRoundPopup}
       onClose={toggleGenerateRoundPopup}
       aria-labelledby="generate-round-popup"
       aria-describedby="popup-to-confirm-generate-round-action"

@@ -1,26 +1,17 @@
 // src/components/AssignmentHeader.js
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useModal, useRound, useClassroom, useAssignment } from "../context";
-import RemovePopup from "./RemovePopup";
 import GenerateRoundPopup from "./GenerateRoundPopup";
 
 const AssignmentHeader = ({ isButtonEnabled }) => {
   // Get state and functions from context hooks
   const { modal } = useModal();
-  const {
-    openRemovePopup,
-    toggleRemovePopup,
-    openGenerateRoundPopup,
-    toggleGenerateRoundPopup,
-  } = modal;
+  const { openGenerateRoundPopup, toggleGenerateRoundPopup } = modal;
 
-  const { selectedRound, setSelectedRound, rounds, removeRounds } = useRound();
+  const { selectedRound, setSelectedRound, rounds } = useRound();
 
   const { selectedClassroom } = useClassroom();
   const { assignBooksToStudents } = useAssignment();
-
-  // Local state for tracking if rounds are selected for deletion
-  const [selectedRounds, setSelectedRounds] = useState(false);
 
   // Get classroom rounds - safely with null checks
   const classroomRounds =
@@ -28,23 +19,10 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
       ? rounds.filter((round) => round.classroom === selectedClassroom.id)
       : [];
 
-  // Reset selectedRounds when popup closes
-  useEffect(() => {
-    if (!openRemovePopup) {
-      setSelectedRounds(false);
-    }
-  }, [openRemovePopup]);
-
   // Format the round text for display
   const roundText = selectedRound
     ? `Round ${selectedRound.round} - ${selectedRound.date}`
     : "";
-
-  // Handle delete click for rounds
-  const handleDeleteClick = () => {
-    setSelectedRounds(true);
-    toggleRemovePopup();
-  };
 
   // Handle navigation between rounds
   const handleSelectedRound = (direction) => {
@@ -124,24 +102,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
             Assign Books to Students
           </button>
         </div>
-        {/* <div style={{ display: "flex", flex: 1 }} className="delete-round">
-          <span
-            title="Delete all rounds"
-            className="material-symbols-rounded"
-            onClick={() => isButtonEnabled && handleDeleteClick()}
-          >
-            delete
-          </span>
-        </div> */}
       </div>
-      {/* {selectedRounds && (
-        <RemovePopup
-          open={openRemovePopup}
-          onClose={toggleRemovePopup}
-          onRemove={selectedRound ? () => removeRounds() : () => {}}
-          message={`Are you sure you want to remove all rounds from ${selectedClassroom?.name}?`}
-        />
-      )} */}
       {selectedClassroom && (
         <GenerateRoundPopup
           open={openGenerateRoundPopup}

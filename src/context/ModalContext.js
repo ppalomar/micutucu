@@ -9,6 +9,7 @@ const ModalContext = createContext();
 export const AppProvider = ({ children }) => {
   const [openRemovePopup, setOpenRemovePopup] = useState(false);
   const [openGenerateRoundPopup, setOpenGenerateRoundPopup] = useState(false);
+  const [openNewCyclePopup, setOpenNewCyclePopup] = useState(false);
   const [isDevEnvironment] = useState(
     localStorage.getItem(STORED_ENVIRONMENT_KEY) === "DEV"
   );
@@ -23,18 +24,27 @@ export const AppProvider = ({ children }) => {
     setOpenGenerateRoundPopup(!openGenerateRoundPopup);
   };
 
+  // Toggle new cycle popup
+  const toggleNewCyclePopup = () => {
+    setOpenNewCyclePopup(!openNewCyclePopup);
+  };
+
   // Create value object
   const value = {
     openRemovePopup,
     openGenerateRoundPopup,
+    openNewCyclePopup,
     toggleRemovePopup,
     toggleGenerateRoundPopup,
+    toggleNewCyclePopup,
     isDevEnvironment,
     modal: {
       openRemovePopup,
       toggleRemovePopup,
       openGenerateRoundPopup,
       toggleGenerateRoundPopup,
+      openNewCyclePopup,
+      toggleNewCyclePopup,
     },
   };
 

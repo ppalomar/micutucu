@@ -106,6 +106,35 @@ export const BookProvider = ({ children }) => {
     return books.filter((book) => book.classroomId === classroomId);
   };
 
+  // Remove all books for a classroom
+  const removeClassroomBooks = async (classroomId) => {
+    if (!classroomId) return { success: false, error: "No classroom selected" };
+
+    const classroomBooks = getClassroomBooks(classroomId);
+    if (!classroomBooks.length) return { success: true };
+
+    setLoading(true);
+    try {
+      // Remove all books from database
+      const promises = classroomBooks.map(async (book) => {
+        await removeDocFromCollection("books", book.documentId);
+      });
+
+      await Promise.all(promises);
+
+      // Update state
+      setBooks(books.filter((book) => book.classroomId !== classroomId));
+
+      return { success: true };
+    } catch (err) {
+      console.error("Error removing classroom books:", err);
+      setError("Failed to remove classroom books");
+      return { success: false, error: "Failed to remove classroom books" };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Initial fetch
   useEffect(() => {
     fetchBooks();
@@ -123,6 +152,7 @@ export const BookProvider = ({ children }) => {
         removeBook,
         resetBooks,
         getClassroomBooks,
+        removeClassroomBooks,
       }}
     >
       {children}

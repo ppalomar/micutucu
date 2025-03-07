@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useState, useEffect } from "react";
-import { shuffle, sample, minBy, maxBy } from "lodash";
+import { maxBy } from "lodash";
 
 import { getCurrentDateTime } from "./helpers";
 import {
@@ -129,6 +129,7 @@ const App = () => {
   };
 
   const assignBooksToStudents = async () => {
+    // Check if we need to reset the cycle
     if (
       classroomRounds.length > 0 &&
       classroomRounds.length % (classroomStudents.length - 1) === 0
@@ -136,106 +137,200 @@ const App = () => {
       resetBooks({ booksToReset: classroomBooks });
     }
 
+    // Get available books and eligible students
     const availableBooks = classroomBooks.filter((b) => b.available);
     const notAvailableBooks = classroomBooks.filter((b) => !b.available);
     const studentIdsThatNotReturnedBook = notAvailableBooks.map(
       (b) => b.assigned
     );
     const studentIdsOwningABook = classroomBooks.map((b) => b.owner);
+
+    // Only consider students who returned their books and own a book
     const studentsConsideredForRound = classroomStudents.filter(
       (s) =>
         !studentIdsThatNotReturnedBook.includes(s.id) &&
         studentIdsOwningABook.includes(s.id)
     );
 
-    const buildRound = () => {
-      let booksAlreadyAssigned = [];
-      let studentsRepeating = 0;
-      const newAssignments = [];
-
-      try {
-        shuffle(studentsConsideredForRound).forEach((student) => {
-          const bookOwnedByStudent = classroomBooks.find(
-            (b) => b.owner === student.id
-          );
-          const previousBooksAssignedToStudent = classroomRounds.reduce(
-            (acc, round) => {
-              const assignmentToStudent = round.assignments.find(
-                (assignment) => assignment.student.id === student.id
-              );
-
-              return assignmentToStudent
-                ? [...acc, assignmentToStudent.book]
-                : acc;
-            },
-            []
-          );
-
-          const getTargetBooks = (customRestrictedIds) => {
-            const baseRestictedIds = [
-              bookOwnedByStudent.id,
-              ...previousBooksAssignedToStudent.map((pb) => pb.id),
-              ...booksAlreadyAssigned.map((ba) => ba.id),
-            ];
-            return availableBooks.filter(
-              (b) => !(customRestrictedIds || baseRestictedIds).includes(b.id)
-            );
-          };
-
-          let targetBooks = getTargetBooks();
-
-          if (!targetBooks.length) {
-            const restrictedIds = [
-              bookOwnedByStudent.id,
-              ...booksAlreadyAssigned.map((ba) => ba.id),
-            ];
-            targetBooks = getTargetBooks(restrictedIds);
-          }
-
-          const book = sample(targetBooks);
-
-          newAssignments.push({
-            student,
-            book,
-          });
-
-          booksAlreadyAssigned = [...booksAlreadyAssigned, book];
-
-          if (
-            previousBooksAssignedToStudent.map((pb) => pb.id).includes(book.id)
-          ) {
-            studentsRepeating++;
-          }
-        });
-
-        return { assignments: newAssignments, studentsRepeating };
-      } catch {}
-    };
-
-    const ITERATIONS = 100;
-    let assignmentsBag = [];
-    for (let index = 1; index <= ITERATIONS; index++) {
-      assignmentsBag = [...assignmentsBag, buildRound()];
+    // If no eligible students or not enough books, handle accordingly
+    if (studentsConsideredForRound.length === 0) {
+      console.warn("No eligible students for this round");
+      return;
     }
 
-    const finalAssignments = minBy(
-      assignmentsBag,
-      "studentsRepeating"
-    )?.assignments;
+    if (availableBooks.length < studentsConsideredForRound.length) {
+      console.warn("Not enough available books for all students");
+      return;
+    }
 
-    addRound({
+    // Build history matrix - how many times each student has read each book
+    const readHistory = buildReadHistoryMatrix(
+      studentsConsideredForRound,
+      availableBooks,
+      classroomRounds
+    );
+
+    // Get optimal assignments using the improved algorithm
+    const assignments = getOptimalAssignments(
+      studentsConsideredForRound,
+      availableBooks,
+      readHistory
+    );
+
+    // Create the new round
+    const newRound = {
       round: classroomRounds.length + 1,
       date: getCurrentDateTime(),
-      assignments: finalAssignments,
+      assignments: assignments.map(({ student, book }) => ({ student, book })),
       classroom: selectedClassroom.id,
-    });
+    };
 
-    const booksToUpdate = finalAssignments.map(({ student, book }) => ({
+    // Save the round
+    await addRound(newRound);
+
+    // Update books with new assignments
+    const booksToUpdate = assignments.map(({ student, book }) => ({
       ...book,
       assigned: student.id,
     }));
 
     updateBooks(booksToUpdate);
+  };
+
+  // Build a matrix showing how many times each student has read each book
+  const buildReadHistoryMatrix = (students, books, rounds) => {
+    // Initialize the matrix with zeros
+    const history = {};
+    students.forEach((student) => {
+      history[student.id] = {};
+      books.forEach((book) => {
+        history[student.id][book.id] = 0;
+      });
+    });
+
+    // Count previous assignments
+    rounds.forEach((round) => {
+      round.assignments.forEach((assignment) => {
+        const studentId = assignment.student.id;
+        const bookId = assignment.book.id;
+
+        if (history[studentId] && history[studentId][bookId] !== undefined) {
+          history[studentId][bookId]++;
+        }
+      });
+    });
+
+    return history;
+  };
+
+  // Get optimal assignments using a greedy algorithm with constraints
+  const getOptimalAssignments = (students, books, readHistory) => {
+    // Create a score matrix for each student-book pair
+    // Lower score is better (0 = never read, 1 = read once, etc.)
+    const scoreMatrix = {};
+    students.forEach((student) => {
+      scoreMatrix[student.id] = {};
+      books.forEach((book) => {
+        // Start with read history count
+        let score = readHistory[student.id][book.id];
+
+        // Add penalty for own book (very high score)
+        if (book.owner === student.id) {
+          score += 1000;
+        }
+
+        scoreMatrix[student.id][book.id] = score;
+      });
+    });
+
+    // Sort students by how many books they've read total (fewer first)
+    const sortedStudents = [...students].sort((a, b) => {
+      const aTotal = Object.values(readHistory[a.id]).reduce(
+        (sum, count) => sum + count,
+        0
+      );
+      const bTotal = Object.values(readHistory[b.id]).reduce(
+        (sum, count) => sum + count,
+        0
+      );
+      return aTotal - bTotal;
+    });
+
+    // Assign books using greedy approach
+    const assignments = [];
+    const assignedBookIds = new Set();
+
+    sortedStudents.forEach((student) => {
+      // Get available books for this student (not yet assigned in this round)
+      const availableBooksForStudent = books.filter(
+        (book) => !assignedBookIds.has(book.id) && book.owner !== student.id
+      );
+
+      if (availableBooksForStudent.length === 0) {
+        // If we somehow ran out of books, allow own book as last resort
+        const lastResortBooks = books.filter(
+          (book) => !assignedBookIds.has(book.id)
+        );
+        if (lastResortBooks.length > 0) {
+          const book = lastResortBooks[0];
+          assignments.push({ student, book });
+          assignedBookIds.add(book.id);
+        }
+        return;
+      }
+
+      // Find the book with lowest score (least read) for this student
+      const bestBook = availableBooksForStudent.reduce((best, current) => {
+        return scoreMatrix[student.id][current.id] <
+          scoreMatrix[student.id][best.id]
+          ? current
+          : best;
+      }, availableBooksForStudent[0]);
+
+      assignments.push({ student, book: bestBook });
+      assignedBookIds.add(bestBook.id);
+    });
+
+    // Optimization pass: see if we can swap any assignments to reduce total repeats
+    let improved = true;
+    const MAX_ITERATIONS = 100;
+    let iteration = 0;
+
+    while (improved && iteration < MAX_ITERATIONS) {
+      improved = false;
+      iteration++;
+
+      // Try all possible swaps between pairs of assignments
+      for (let i = 0; i < assignments.length; i++) {
+        for (let j = i + 1; j < assignments.length; j++) {
+          const studentI = assignments[i].student;
+          const studentJ = assignments[j].student;
+          const bookI = assignments[i].book;
+          const bookJ = assignments[j].book;
+
+          // Calculate current score
+          const currentScore =
+            scoreMatrix[studentI.id][bookI.id] +
+            scoreMatrix[studentJ.id][bookJ.id];
+
+          // Calculate score after hypothetical swap
+          const swapScore =
+            scoreMatrix[studentI.id][bookJ.id] +
+            scoreMatrix[studentJ.id][bookI.id];
+
+          // If swapping would improve the score, do it
+          if (swapScore < currentScore) {
+            assignments[i].book = bookJ;
+            assignments[j].book = bookI;
+            improved = true;
+            break;
+          }
+        }
+        if (improved) break;
+      }
+    }
+
+    return assignments;
   };
 
   const handleSelectedClassroom = (classroom) => {

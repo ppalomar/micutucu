@@ -1,4 +1,6 @@
+// src/Presentational.js
 import React from "react";
+import { useClassroom, useStudent, useBook, useModal } from "./context";
 
 import ClassroomForm from "./components/ClassroomForm";
 import StudentForm from "./components/StudentForm";
@@ -6,33 +8,26 @@ import BookForm from "./components/BookForm";
 import ClassroomList from "./components/ClassroomList";
 import StudentList from "./components/StudentList";
 import BookList from "./components/BookList";
-import AssignmentList from "./components/AssignmentList"; // Import the new component
+import AssignmentList from "./components/AssignmentList";
 import AssignmentHeader from "./components/AssignmentHeader";
 
-const Presentational = ({
-  classrooms,
-  classroomStudents,
-  classroomBooks,
-  classroomRounds,
+const Presentational = () => {
+  // Get data and state from context hooks
+  const { isDevEnvironment } = useModal();
+  const { selectedClassroom } = useClassroom();
+  const { getClassroomStudents } = useStudent();
+  const { getClassroomBooks } = useBook();
 
-  addClassroom,
-  selectedClassroom,
-  handleSelectedClassroom,
+  // Get data for the selected classroom
+  const classroomStudents = selectedClassroom
+    ? getClassroomStudents(selectedClassroom.id)
+    : [];
 
-  addStudent,
-  removeStudent,
+  const classroomBooks = selectedClassroom
+    ? getClassroomBooks(selectedClassroom.id)
+    : [];
 
-  addBook,
-  updateBooks,
-  removeBook,
-
-  assignBooksToStudents,
-  removeRounds,
-  selectedRound,
-  handleSelectedRound,
-
-  isDevEnvironment,
-}) => {
+  // Check if the button should be enabled
   const isButtonEnabled =
     classroomStudents.length > 1 && classroomBooks.length > 1;
 
@@ -47,59 +42,29 @@ const Presentational = ({
       </div>
       <div className="main-section">
         <div className="section classroom">
-          <ClassroomForm addClassroom={addClassroom} />
+          {/* ClassroomForm and ClassroomList now get their data from context */}
+          <ClassroomForm />
           <div className="section-separator" />
-          <ClassroomList
-            classrooms={classrooms}
-            selectedClassroom={selectedClassroom}
-            handleSelectedClassroom={handleSelectedClassroom}
-          />
+          <ClassroomList />
         </div>
         <div className="section students">
-          <StudentForm
-            students={classroomStudents}
-            selectedClassroom={selectedClassroom}
-            addStudent={addStudent}
-          />
+          {/* StudentForm and StudentList now get their data from context */}
+          <StudentForm />
           <div className="section-separator" />
-          <StudentList
-            students={classroomStudents}
-            books={classroomBooks}
-            removeStudent={removeStudent}
-            selectedClassroom={selectedClassroom}
-          />
+          <StudentList />
         </div>
         <div className="section books">
-          <BookForm
-            students={classroomStudents}
-            books={classroomBooks}
-            selectedClassroom={selectedClassroom}
-            addBook={addBook}
-          />
+          {/* BookForm and BookList now get their data from context */}
+          <BookForm />
           <div className="section-separator" />
-          <BookList
-            books={classroomBooks}
-            students={classroomStudents}
-            updateBooks={updateBooks}
-            removeBook={removeBook}
-            selectedClassroom={selectedClassroom}
-          />
+          <BookList />
         </div>
         <div className="section rounds">
-          <AssignmentHeader
-            classroomRounds={classroomRounds}
-            selectedRound={selectedRound}
-            isButtonEnabled={isButtonEnabled}
-            assignBooksToStudents={assignBooksToStudents}
-            removeRounds={removeRounds}
-            selectedClassroom={selectedClassroom}
-            handleSelectedRound={handleSelectedRound}
-          />
+          {/* Only pass the button enabled state to AssignmentHeader */}
+          <AssignmentHeader isButtonEnabled={isButtonEnabled} />
           <div className="section-separator" />
-          <AssignmentList
-            selectedRound={selectedRound}
-            students={classroomStudents}
-          />
+          {/* AssignmentList gets its data from context */}
+          <AssignmentList />
         </div>
       </div>
     </div>

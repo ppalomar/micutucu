@@ -1,9 +1,8 @@
-// src/index.js
 import React from "react";
 import ReactDOM from "react-dom";
 import "./styles.css";
 import Container from "./Container";
-import { AppProvider } from "./context";
+import { AppProvider } from "./context"; // Import the combined provider
 
 ReactDOM.render(
   <React.StrictMode>

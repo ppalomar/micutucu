@@ -1,19 +1,26 @@
 // src/components/StudentForm.js
 import React, { useState } from "react";
+import { useStudent, useClassroom } from "../context";
 
-const StudentForm = ({ students, selectedClassroom, addStudent }) => {
+const StudentForm = () => {
+  // Get data and functions from context hooks
+  const { addStudent } = useStudent();
+  const { selectedClassroom } = useClassroom();
+
+  // Local state for the student name input
   const [studentName, setStudentName] = useState("");
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (studentName && selectedClassroom) {
       const student = {
-        id: new Date().getTime(),
+        id: new Date().getTime(), // Generate a unique ID
         name: studentName,
-        classroomId: selectedClassroom?.id,
+        classroomId: selectedClassroom.id,
       };
       addStudent(student);
-      setStudentName("");
+      setStudentName(""); // Reset form after submission
     }
   };
 

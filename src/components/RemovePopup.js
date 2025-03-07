@@ -1,27 +1,32 @@
+// src/components/RemovePopup.js
 import React from "react";
-
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { useModal } from "../context";
 
-import { useAppContext } from "../context";
+const RemovePopup = ({ onRemove, message }) => {
+  // Get modal state and functions from context
+  const { modal } = useModal();
+  const { openRemovePopup, toggleRemovePopup } = modal;
 
-const RemovePopup = ({ open, onRemove, message }) => {
-  const { modal } = useAppContext();
-  const { toggleRemovePopup } = modal;
-
+  // Handle cancel button click
   const handleCancel = () => {
     toggleRemovePopup();
   };
 
+  // Handle remove button click
   const handleRemove = () => {
-    onRemove();
+    // Execute the remove operation passed by the parent
+    if (onRemove) {
+      onRemove();
+    }
     toggleRemovePopup();
   };
 
   return (
     <Modal
-      open={open}
+      open={openRemovePopup}
       onClose={toggleRemovePopup}
       aria-labelledby="remove-popup"
       aria-describedby="popup-to-confirm-remove-action"

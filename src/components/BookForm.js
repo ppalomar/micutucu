@@ -1,32 +1,49 @@
 // src/components/BookForm.js
 import React, { useState } from "react";
+import { useBook, useStudent, useClassroom } from "../context";
 
-const BookForm = ({ students, books, selectedClassroom, addBook }) => {
+const BookForm = () => {
+  // Get data and functions from context hooks
+  const { addBook, getClassroomBooks } = useBook();
+  const { getClassroomStudents } = useStudent();
+  const { selectedClassroom } = useClassroom();
+
+  // Local state for form
   const [bookName, setBookName] = useState("");
   const [selectedStudent, setSelectedStudent] = useState("");
 
-  const studentsAreNotOwnersYet = students.filter(
-    (s) => !books.map((b) => b.owner).includes(s.id)
+  // Get classroom-specific data
+  const classroomStudents = selectedClassroom
+    ? getClassroomStudents(selectedClassroom.id)
+    : [];
+  const classroomBooks = selectedClassroom
+    ? getClassroomBooks(selectedClassroom.id)
+    : [];
+
+  // Filter students who don't own a book yet
+  const studentsAreNotOwnersYet = classroomStudents.filter(
+    (s) => !classroomBooks.map((b) => b.owner).includes(s.id)
   );
 
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "selectedStudent") {
       setSelectedStudent(Number(value));
-    } else {
     }
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (bookName && selectedStudent) {
+    if (bookName && selectedStudent && selectedClassroom) {
       const book = {
         id: new Date().getTime(),
         name: bookName,
         owner: selectedStudent,
         assigned: null,
         available: true,
-        classroomId: selectedClassroom?.id,
+        classroomId: selectedClassroom.id,
       };
       addBook(book);
       setBookName("");
@@ -63,7 +80,7 @@ const BookForm = ({ students, books, selectedClassroom, addBook }) => {
             <select
               value={selectedStudent}
               onChange={handleChange}
-              name="selectedStudent" // Add the name attribute
+              name="selectedStudent"
             >
               <option value="" disabled>
                 Select Owner

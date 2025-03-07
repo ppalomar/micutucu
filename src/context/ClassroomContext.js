@@ -1,5 +1,11 @@
 // src/context/ClassroomContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import {
   getCollection,
   saveCollection,
@@ -32,6 +38,22 @@ export const ClassroomProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  // Store selected classroom in localStorage
+  const storeSelectedClassroom = useCallback((classroomId) => {
+    localStorage.setItem(STORED_SELECTED_CLASSROOM, classroomId);
+  }, []);
+
+  // Custom setSelectedClassroom function that also updates localStorage
+  const setSelectedClassroomWithStorage = useCallback(
+    (classroom) => {
+      setSelectedClassroom(classroom);
+      if (classroom?.id) {
+        storeSelectedClassroom(classroom.id);
+      }
+    },
+    [storeSelectedClassroom]
+  );
 
   // Add a new classroom
   const addClassroom = async (classroom) => {
@@ -72,11 +94,6 @@ export const ClassroomProvider = ({ children }) => {
     }
   };
 
-  // Store selected classroom in localStorage
-  const storeSelectedClassroom = (classroomId) => {
-    localStorage.setItem(STORED_SELECTED_CLASSROOM, classroomId);
-  };
-
   // Get selected classroom
   const getSelectedClassroom = () => {
     return selectedClassroom;
@@ -104,7 +121,7 @@ export const ClassroomProvider = ({ children }) => {
         storeSelectedClassroom(classrooms[0].id);
       }
     }
-  }, [classrooms]);
+  }, [classrooms, storeSelectedClassroom]);
 
   // Initial fetch
   useEffect(() => {
@@ -116,7 +133,7 @@ export const ClassroomProvider = ({ children }) => {
       value={{
         classrooms,
         selectedClassroom,
-        setSelectedClassroom,
+        setSelectedClassroom: setSelectedClassroomWithStorage,
         loading,
         error,
         fetchClassrooms,

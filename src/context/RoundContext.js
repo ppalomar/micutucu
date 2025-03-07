@@ -1,5 +1,11 @@
 // src/context/RoundContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { maxBy } from "lodash";
 import {
   getCollection,
@@ -100,9 +106,12 @@ export const RoundProvider = ({ children }) => {
   };
 
   // Get rounds for a specific classroom
-  const getClassroomRounds = (classroomId) => {
-    return rounds.filter((round) => round.classroom === classroomId);
-  };
+  const getClassroomRounds = useCallback(
+    (classroomId) => {
+      return rounds.filter((round) => round.classroom === classroomId);
+    },
+    [rounds]
+  );
 
   // Update selected round when classroom changes or rounds update
   useEffect(() => {
@@ -117,7 +126,7 @@ export const RoundProvider = ({ children }) => {
     } else {
       setSelectedRound(null);
     }
-  }, [selectedClassroom, rounds]);
+  }, [selectedClassroom, rounds, getClassroomRounds]);
 
   // Initial fetch
   useEffect(() => {

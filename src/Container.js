@@ -12,17 +12,9 @@ import {
 
 const Container = () => {
   // Get all state and actions from context hooks
-  const {
-    books,
-    addBook,
-    updateBooks,
-    removeBook,
-    getClassroomBooks,
-    resetBooks,
-  } = useBook();
+  const { addBook, updateBooks, removeBook, getClassroomBooks } = useBook();
 
-  const { students, addStudent, removeStudent, getClassroomStudents } =
-    useStudent();
+  const { addStudent, removeStudent, getClassroomStudents } = useStudent();
 
   const {
     classrooms,
@@ -32,8 +24,7 @@ const Container = () => {
     addClassroom,
   } = useClassroom();
 
-  const { rounds, selectedRound, setSelectedRound, getClassroomRounds } =
-    useRound();
+  const { selectedRound, setSelectedRound, getClassroomRounds } = useRound();
 
   const { assignBooksToStudents } = useAssignment();
 

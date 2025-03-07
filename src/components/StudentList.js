@@ -1,5 +1,5 @@
 // src/components/StudentList.js
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useModal, useStudent, useBook, useClassroom } from "../context";
 import RemovePopup from "./RemovePopup";
 
@@ -20,9 +20,10 @@ const StudentList = () => {
     ? getClassroomStudents(selectedClassroom.id)
     : [];
 
-  const classroomBooks = selectedClassroom
-    ? getClassroomBooks(selectedClassroom.id)
-    : [];
+  const classroomBooks = useMemo(
+    () => (selectedClassroom ? getClassroomBooks(selectedClassroom.id) : []),
+    [getClassroomBooks, selectedClassroom]
+  );
 
   // Sort students by name
   const sortedStudents = classroomStudents.sort((a, b) =>

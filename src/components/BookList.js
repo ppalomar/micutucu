@@ -1,5 +1,5 @@
 // src/components/BookList.js
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useModal, useBook, useStudent, useClassroom } from "../context";
 import RemovePopup from "./RemovePopup";
 
@@ -8,8 +8,8 @@ const BookList = () => {
   const { modal } = useModal();
   const { openRemovePopup, toggleRemovePopup } = modal;
 
-  const { books, updateBooks, removeBook, getClassroomBooks } = useBook();
-  const { students, getClassroomStudents } = useStudent();
+  const { updateBooks, removeBook, getClassroomBooks } = useBook();
+  const { getClassroomStudents } = useStudent();
   const { selectedClassroom } = useClassroom();
 
   // Local state for the book selected for removal
@@ -19,9 +19,10 @@ const BookList = () => {
   const classroomBooks = selectedClassroom
     ? getClassroomBooks(selectedClassroom.id)
     : [];
-  const classroomStudents = selectedClassroom
-    ? getClassroomStudents(selectedClassroom.id)
-    : [];
+  const classroomStudents = useMemo(
+    () => (selectedClassroom ? getClassroomStudents(selectedClassroom.id) : []),
+    [getClassroomStudents, selectedClassroom]
+  );
 
   // Sort books by name
   const sortedBooks = classroomBooks.sort((a, b) =>

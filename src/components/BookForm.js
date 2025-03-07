@@ -62,7 +62,7 @@ const BookForm = () => {
           info
         </span>
         <span className="book-header-info">
-          Click on the book to mark/unmark it as not available.
+          Click on a book to toggle its availability status.
         </span>
       </h2>
       <form onSubmit={handleSubmit}>

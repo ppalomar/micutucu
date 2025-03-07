@@ -10,6 +10,7 @@ export const AppProvider = ({ children }) => {
   const [openRemovePopup, setOpenRemovePopup] = useState(false);
   const [openGenerateRoundPopup, setOpenGenerateRoundPopup] = useState(false);
   const [openNewCyclePopup, setOpenNewCyclePopup] = useState(false);
+  const [openNewCoursePopup, setOpenNewCoursePopup] = useState(false);
   const [isDevEnvironment] = useState(
     localStorage.getItem(STORED_ENVIRONMENT_KEY) === "DEV"
   );
@@ -29,14 +30,21 @@ export const AppProvider = ({ children }) => {
     setOpenNewCyclePopup(!openNewCyclePopup);
   };
 
+  // Toggle new course popup
+  const toggleNewCoursePopup = () => {
+    setOpenNewCoursePopup(!openNewCoursePopup);
+  };
+
   // Create value object
   const value = {
     openRemovePopup,
     openGenerateRoundPopup,
     openNewCyclePopup,
+    openNewCoursePopup,
     toggleRemovePopup,
     toggleGenerateRoundPopup,
     toggleNewCyclePopup,
+    toggleNewCoursePopup,
     isDevEnvironment,
     modal: {
       openRemovePopup,
@@ -45,6 +53,8 @@ export const AppProvider = ({ children }) => {
       toggleGenerateRoundPopup,
       openNewCyclePopup,
       toggleNewCyclePopup,
+      openNewCoursePopup,
+      toggleNewCoursePopup,
     },
   };
 

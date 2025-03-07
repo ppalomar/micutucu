@@ -72,6 +72,38 @@ export const StudentProvider = ({ children }) => {
     return students.filter((student) => student.classroomId === classroomId);
   };
 
+  // Remove all students for a classroom
+  const removeClassroomStudents = async (classroomId) => {
+    if (!classroomId) return { success: false, error: "No classroom selected" };
+
+    const classroomStudents = getClassroomStudents(classroomId);
+    if (!classroomStudents.length) return { success: true };
+
+    setLoading(true);
+    try {
+      // Remove all students from database
+      const promises = classroomStudents.map(async (student) => {
+        await removeDocFromCollection("students", student.documentId);
+      });
+
+      await Promise.all(promises);
+
+      // Update state
+      setStudents(
+        students.filter((student) => student.classroomId !== classroomId)
+      );
+
+      return { success: true };
+    } catch (err) {
+      console.error("Error removing classroom students:", err);
+      const handledError = handleFirebaseError(err);
+      setError(handledError.message);
+      return { success: false, error: handledError.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Initial fetch
   useEffect(() => {
     fetchStudents();
@@ -87,6 +119,7 @@ export const StudentProvider = ({ children }) => {
         addStudent,
         removeStudent,
         getClassroomStudents,
+        removeClassroomStudents,
       }}
     >
       {children}

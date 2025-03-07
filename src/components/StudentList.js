@@ -1,16 +1,30 @@
 // src/components/StudentList.js
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useModal, useStudent, useBook, useClassroom } from "../context";
+import {
+  useModal,
+  useStudent,
+  useBook,
+  useClassroom,
+  useRound,
+} from "../context";
 import RemovePopup from "./RemovePopup";
+import NewCoursePopup from "./NewCoursePopup";
 
 const StudentList = () => {
   // Get state and functions from context hooks
   const { modal } = useModal();
-  const { openRemovePopup, toggleRemovePopup } = modal;
+  const {
+    openRemovePopup,
+    toggleRemovePopup,
+    openNewCoursePopup,
+    toggleNewCoursePopup,
+  } = modal;
 
-  const { removeStudent, getClassroomStudents } = useStudent();
-  const { getClassroomBooks } = useBook();
+  const { removeStudent, getClassroomStudents, removeClassroomStudents } =
+    useStudent();
+  const { getClassroomBooks, removeClassroomBooks } = useBook();
   const { selectedClassroom } = useClassroom();
+  const { removeRounds } = useRound();
 
   // Local state for the student selected for removal
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -36,6 +50,33 @@ const StudentList = () => {
     toggleRemovePopup();
   };
 
+  // Handler for starting a new course
+  const handleStartNewCourse = async () => {
+    if (selectedClassroom) {
+      // First remove all rounds
+      const roundsResult = await removeRounds();
+      if (!roundsResult.success) {
+        console.error("Failed to remove rounds:", roundsResult.error);
+        return;
+      }
+
+      // Then remove all books for the classroom
+      const booksResult = await removeClassroomBooks(selectedClassroom.id);
+      if (!booksResult.success) {
+        console.error("Failed to remove books:", booksResult.error);
+        return;
+      }
+
+      // Finally remove all students for the classroom
+      const studentsResult = await removeClassroomStudents(
+        selectedClassroom.id
+      );
+      if (!studentsResult.success) {
+        console.error("Failed to remove students:", studentsResult.error);
+      }
+    }
+  };
+
   // Clear selected student when popup closes
   useEffect(() => {
     if (!openRemovePopup) {
@@ -59,38 +100,54 @@ const StudentList = () => {
   };
 
   return (
-    <div className="list-div">
-      {sortedStudents.map((student) => {
-        const studentNotOwner = getStudentNotOwner(student.id);
+    <div>
+      <div className="list-div">
+        {sortedStudents.map((student) => {
+          const studentNotOwner = getStudentNotOwner(student.id);
 
-        return (
-          <div
-            className={`list-item student ${studentNotOwner && "error"}`}
-            key={student.id}
-          >
-            <span className="material-symbols-rounded">person</span>
-            <div>{student.name}</div>
-            {studentNotOwner && (
-              <div className="student-not-owner">Book not provided</div>
-            )}
-            <div className="list-item-delete">
-              <span
-                title="Delete student"
-                className="material-symbols-rounded"
-                onClick={() => handleDeleteClick(student)}
-              >
-                delete
-              </span>
+          return (
+            <div
+              className={`list-item student ${studentNotOwner && "error"}`}
+              key={student.id}
+            >
+              <span className="material-symbols-rounded">person</span>
+              <div>{student.name}</div>
+              {studentNotOwner && (
+                <div className="student-not-owner">Book not provided</div>
+              )}
+              <div className="list-item-delete">
+                <span
+                  title="Delete student"
+                  className="material-symbols-rounded"
+                  onClick={() => handleDeleteClick(student)}
+                >
+                  delete
+                </span>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+      <div style={{ marginTop: 20 }}>
+        <button
+          onClick={toggleNewCoursePopup}
+          disabled={!selectedClassroom || sortedStudents.length === 0}
+        >
+          Start New Course
+        </button>
+      </div>
       {selectedStudent && (
         <RemovePopup
           open={openRemovePopup}
           onClose={toggleRemovePopup}
           onRemove={handleRemoveStudent}
           message={`Are you sure you want to remove ${selectedStudent.name} and the owned book from ${selectedClassroom?.name}?`}
+        />
+      )}
+      {selectedClassroom && (
+        <NewCoursePopup
+          onConfirm={handleStartNewCourse}
+          message={`Are you sure you want to start a new course for ${selectedClassroom?.name}? This will delete ALL students, books, and rounds for this classroom.`}
         />
       )}
     </div>

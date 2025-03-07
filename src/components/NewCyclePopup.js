@@ -49,7 +49,7 @@ const NewCyclePopup = ({ onConfirm, message }) => {
             onClick={handleConfirm}
             style={{ backgroundColor: "#e74c3c" }}
           >
-            Start New Cycle
+            Start New Books Cycle
           </Button>
         </div>
       </div>

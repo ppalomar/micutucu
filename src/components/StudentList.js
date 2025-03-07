@@ -13,12 +13,7 @@ import NewCoursePopup from "./NewCoursePopup";
 const StudentList = () => {
   // Get state and functions from context hooks
   const { modal } = useModal();
-  const {
-    openRemovePopup,
-    toggleRemovePopup,
-    openNewCoursePopup,
-    toggleNewCoursePopup,
-  } = modal;
+  const { openRemovePopup, toggleRemovePopup, toggleNewCoursePopup } = modal;
 
   const { removeStudent, getClassroomStudents, removeClassroomStudents } =
     useStudent();
@@ -147,7 +142,7 @@ const StudentList = () => {
       {selectedClassroom && (
         <NewCoursePopup
           onConfirm={handleStartNewCourse}
-          message={`Are you sure you want to start a new course for ${selectedClassroom?.name}? This will delete ALL students, books, and rounds for this classroom.`}
+          message={`Are you sure you want to start a new course for ${selectedClassroom?.name}? This will DELETE ALL students, books, and rounds for this classroom.`}
         />
       )}
     </div>

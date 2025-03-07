@@ -709,9 +709,13 @@ button:disabled:hover {
 }
 
 .new-course-popup Button {
-    background-color: #8e44ad;
+    background-color: #e74c3c;
+}
+
+.new-cycle-popup Button:hover {
+    background-color: #c0392b;
 }
 
 .new-course-popup Button:hover {
-    background-color: #9b59b6;
+    background-color: #c0392b;
 }

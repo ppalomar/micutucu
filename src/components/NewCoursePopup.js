@@ -44,11 +44,7 @@ const NewCoursePopup = ({ onConfirm, message }) => {
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>
-          <Button
-            variant="contained"
-            onClick={handleConfirm}
-            style={{ backgroundColor: "#8e44ad" }}
-          >
+          <Button variant="contained" onClick={handleConfirm}>
             Start New Course
           </Button>
         </div>

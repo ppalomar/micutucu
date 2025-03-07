@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./styles.css";
-import Container from "./Container";
+import App from "./App";
 import { AppProvider } from "./context"; // Import the combined provider
 
 ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
-      <Container />
+      <App />
     </AppProvider>
   </React.StrictMode>,
   document.getElementById("root")

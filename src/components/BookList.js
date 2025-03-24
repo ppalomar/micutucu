@@ -86,9 +86,16 @@ const BookList = () => {
   );
 
   // Handle book removal
-  const handleRemoveBook = () => {
+  const handleRemoveBook = async () => {
     if (selectedBook) {
-      removeBook(selectedBook.documentId);
+      if (classroomBooks.length === 1) {
+        const roundsResult = await removeRounds();
+        if (!roundsResult.success) {
+          console.error("Failed to remove rounds:", roundsResult.error);
+          return;
+        }
+      }
+      await removeBook(selectedBook.documentId);
     }
   };
 

@@ -35,12 +35,12 @@
     "deleteConfirmation": "¿Estás seguro de que quieres eliminar {{bookName}} del aula {{classroomName}}?",
     "minBooksRequired": "Debes proporcionar al menos 2 libros para comenzar un nuevo ciclo.",
     "newCycleConfirmation": "¿Estás seguro de que quieres empezar un nuevo ciclo de liblos para el aula {{classroomName}}? Esto ELIMINARÁ TODOS los libros y rondas de esta aula."
-
   },
   "assignment": {
     "title": "Asignaciones",
     "assignBooks": "Asignar Libros a Alumnos",
     "roundInfo": "Ronda {{roundNumber}} - {{date}}",
+    "notAllowedToReceiveBook": "A {{studentName}} no se le permite recibir un libro",
     "newRoundConfirmation": "Vas a crear una nueva ronda en {{classroomName}}. ¿Continuar?"
   },
   "round": {
@@ -55,7 +55,8 @@
     "save": "Guardar",
     "cancel": "Cancelar",
     "delete": "Eliminar",
-    "confirm": "Confirmar"
+    "confirm": "Confirmar",
+    "remove": "Eliminar"
   },
   "language": {
     "en": "Inglés",

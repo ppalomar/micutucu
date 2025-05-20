@@ -40,7 +40,8 @@
     "assignBooks": "Assign Books to Students",
     "roundInfo": "Round {{roundNumber}} - {{date}}",
     "newRoundConfirmation": "You are going to create a new round in {{classroomName}}. Proceed?",
-    "newCycleConfirmation": "Are you sure you want to start a new books cycle for {{classroomName}}? This will DELETE ALL books and rounds for this classroom."
+    "newCycleConfirmation": "Are you sure you want to start a new books cycle for {{classroomName}}? This will DELETE ALL books and rounds for this classroom.",
+    "notAllowedToReceiveBook": "{{studentName}} is not allowed to receive a book"
   },
   "round": {
     "title": "Reading Rounds",
@@ -54,7 +55,8 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "remove": "Remove"
   },
   "language": {
     "en": "English",

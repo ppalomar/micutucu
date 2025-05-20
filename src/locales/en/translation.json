@@ -32,13 +32,15 @@
     "notAvailableTooltip": "The student didn't return the book. She/he will NOT receive book in the next generated round",
     "owner": "Owner",
     "startNewCycle": "Start New Books Cycle",
-    "deleteConfirmation": "Are you sure you want to remove {{bookName}} from {{classroomName}}?"
+    "deleteConfirmation": "Are you sure you want to remove {{bookName}} from {{classroomName}}?",
+    "minBooksRequired": "You have to provide at least 2 books to start a new cycle."
   },
   "assignment": {
     "title": "Assignments",
     "assignBooks": "Assign Books to Students",
     "roundInfo": "Round {{roundNumber}} - {{date}}",
-    "newRoundConfirmation": "You are going to create a new round in {{classroomName}}. Proceed?"
+    "newRoundConfirmation": "You are going to create a new round in {{classroomName}}. Proceed?",
+    "newCycleConfirmation": "Are you sure you want to start a new books cycle for {{classroomName}}? This will DELETE ALL books and rounds for this classroom."
   },
   "round": {
     "title": "Reading Rounds",

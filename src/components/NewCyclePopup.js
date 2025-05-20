@@ -1,5 +1,6 @@
 // src/components/NewCyclePopup.js
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -7,6 +8,7 @@ import Box from "@mui/material/Box";
 import { useModal } from "../context";
 
 const NewCyclePopup = ({ onConfirm, message }) => {
+  const { t } = useTranslation();
   // Get modal state and functions from context
   const { modal } = useModal();
   const { openNewCyclePopup, toggleNewCyclePopup } = modal;
@@ -43,14 +45,14 @@ const NewCyclePopup = ({ onConfirm, message }) => {
         <Typography gutterBottom>{message}</Typography>
         <div className="actions-container">
           <Button variant="outlined" onClick={handleCancel}>
-            Cancel
+            {t('button.cancel')}
           </Button>
           <Button
             variant="contained"
             onClick={handleConfirm}
             style={{ backgroundColor: "#e74c3c" }}
           >
-            Start New Books Cycle
+            {t('book.startNewCycle')}
           </Button>
         </div>
       </div>

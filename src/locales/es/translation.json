@@ -32,7 +32,10 @@
     "notAvailableTooltip": "El alumno no ha devuelto el libro. No recibirá un libro en la próxima ronda generada.",
     "owner": "Propietario",
     "startNewCycle": "Comenzar Nuevo Ciclo de Libros",
-    "deleteConfirmation": "¿Estás seguro de que quieres eliminar {{bookName}} del aula {{classroomName}}?"
+    "deleteConfirmation": "¿Estás seguro de que quieres eliminar {{bookName}} del aula {{classroomName}}?",
+    "minBooksRequired": "Debes proporcionar al menos 2 libros para comenzar un nuevo ciclo.",
+    "newCycleConfirmation": "¿Estás seguro de que quieres empezar un nuevo ciclo de liblos para el aula {{classroomName}}? Esto ELIMINARÁ TODOS los libros y rondas de esta aula."
+
   },
   "assignment": {
     "title": "Asignaciones",

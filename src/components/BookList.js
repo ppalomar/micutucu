@@ -164,7 +164,7 @@ const BookList = () => {
       {selectedClassroom && (
         <NewCyclePopup
           onConfirm={handleStartNewCycle}
-          message={`Are you sure you want to start a new books cycle for ${selectedClassroom?.name}? This will DELETE ALL books and rounds for this classroom.`}
+          message={t('book.newCycleConfirmation', { classroomName: selectedClassroom?.name })}
         />
       )}
     </div>

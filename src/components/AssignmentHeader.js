@@ -1,5 +1,6 @@
 // src/components/AssignmentHeader.js
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useModal, useRound, useClassroom, useAssignment } from "../context";
 import GenerateRoundPopup from "./GenerateRoundPopup";
 
@@ -19,9 +20,11 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
       ? rounds.filter((round) => round.classroom === selectedClassroom.id)
       : [];
 
+  const { t } = useTranslation();
+  
   // Format the round text for display
   const roundText = selectedRound
-    ? `Round ${selectedRound.round} - ${selectedRound.date}`
+    ? t('assignment.roundInfo', { roundNumber: selectedRound.round, date: selectedRound.date })
     : "";
 
   // Handle navigation between rounds
@@ -60,7 +63,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
   return (
     <div>
       <div style={{ display: "flex" }}>
-        <h2>Assignments</h2>
+        <h2>{t('assignment.title')}</h2>
         <h3 className="round-info">
           {visibleArrows && (
             <>
@@ -99,7 +102,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
             disabled={!isButtonEnabled}
             onClick={toggleGenerateRoundPopup}
           >
-            Assign Books to Students
+            {t('assignment.assignBooks')}
           </button>
         </div>
       </div>
@@ -108,7 +111,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
           open={openGenerateRoundPopup}
           onClose={toggleGenerateRoundPopup}
           generateRoundHandler={handleAssignBooks}
-          message={`You are gonna create a new round in ${selectedClassroom.name}. Proceed?`}
+          message={t('assignment.newRoundConfirmation', { classroomName: selectedClassroom.name })}
         />
       )}
     </div>

@@ -1,5 +1,6 @@
 // src/components/BookList.js
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   useModal,
   useBook,
@@ -76,13 +77,15 @@ const BookList = () => {
   }, [openRemovePopup]);
 
   // Get owner name for a book
+  const { t } = useTranslation();
+  
   const getOwnerName = useCallback(
     (ownerId) => {
       return (
-        classroomStudents?.find((s) => s.id === ownerId)?.name || "Unknown"
+        classroomStudents?.find((s) => s.id === ownerId)?.name || t('book.unknownOwner')
       );
     },
-    [classroomStudents]
+    [classroomStudents, t]
   );
 
   // Handle book removal
@@ -112,10 +115,9 @@ const BookList = () => {
           >
             {!book.available && (
               <div className="book-not-available">
-                <div>Not Available</div>
-
+                <div>{t('book.notAvailable')}</div>
                 <span
-                  title="The student didn't return the book. She/he will NOT receive book in the next generated round"
+                  title={t('book.notAvailableTooltip')}
                   className="material-symbols-rounded"
                 >
                   info
@@ -129,11 +131,11 @@ const BookList = () => {
 
             <div className="book-owner">
               <span className="material-symbols-rounded">person</span>
-              Owner: {getOwnerName(book.owner)}
+              {t('book.owner')}: {getOwnerName(book.owner)}
             </div>
             <div className="list-item-delete">
               <span
-                title="Delete book"
+                title={t('book.deleteTitle')}
                 className="material-symbols-rounded"
                 onClick={(event) => handleDeleteClick(event, book)}
               >
@@ -148,7 +150,7 @@ const BookList = () => {
           onClick={toggleNewCyclePopup}
           disabled={!selectedClassroom || sortedBooks.length === 0}
         >
-          Start New Books Cycle
+          {t('book.startNewCycle')}
         </button>
       </div>
       {selectedBook && (
@@ -156,7 +158,7 @@ const BookList = () => {
           open={openRemovePopup}
           onClose={toggleRemovePopup}
           onRemove={handleRemoveBook}
-          message={`Are you sure you want to remove ${selectedBook.name} from ${selectedClassroom?.name}?`}
+          message={t('book.deleteConfirmation', { bookName: selectedBook.name, classroomName: selectedClassroom?.name })}
         />
       )}
       {selectedClassroom && (

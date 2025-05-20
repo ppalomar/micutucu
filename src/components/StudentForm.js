@@ -1,8 +1,10 @@
 // src/components/StudentForm.js
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { useStudent, useClassroom } from "../context";
 
 const StudentForm = () => {
+  const { t } = useTranslation();
   // Get data and functions from context hooks
   const { addStudent } = useStudent();
   const { selectedClassroom } = useClassroom();
@@ -28,13 +30,13 @@ const StudentForm = () => {
 
   return (
     <div>
-      <h2>Students</h2>
+      <h2>{t('student.title')}</h2>
       <form onSubmit={handleSubmit}>
         <div style={{ display: "flex" }}>
           <div style={{ flex: 10, marginRight: 20 }}>
             <input
               type="text"
-              placeholder="Enter student name"
+              placeholder={t('student.name')}
               name="studentName"
               value={studentName}
               onChange={(e) => setStudentName(e.target.value)}
@@ -42,7 +44,7 @@ const StudentForm = () => {
           </div>
           <div style={{ flex: 2 }}>
             <button disabled={isAddButtonDisabled} type="submit">
-              Add
+              {t('student.add')}
             </button>
           </div>
         </div>

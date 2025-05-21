@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import { useModal } from "../context";
 
 const NewCyclePopup = ({ onConfirm, message }) => {

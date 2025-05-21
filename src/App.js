@@ -1,5 +1,6 @@
 // src/Presentational.js
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { useClassroom, useStudent, useBook, useModal } from "./context";
 
 import ClassroomForm from "./components/ClassroomForm";
@@ -10,9 +11,10 @@ import StudentList from "./components/StudentList";
 import BookList from "./components/BookList";
 import AssignmentList from "./components/AssignmentList";
 import AssignmentHeader from "./components/AssignmentHeader";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 
 const Presentational = () => {
-  // Get data and state from context hooks
+  const { t } = useTranslation();
   const { isDevEnvironment } = useModal();
   const { selectedClassroom } = useClassroom();
   const { getClassroomStudents } = useStudent();
@@ -41,12 +43,15 @@ const Presentational = () => {
 
   return (
     <div className="container">
+      <LanguageSwitcher />
+      
       {isDevEnvironment && (
         <div className="dev-environment-header">DEVELOPMENT ENVIRONMENT</div>
       )}
+      
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <div className="title">Micu</div>
-        <div className="title-second">tucu</div>
+        <div className="title">{t('app.title')}</div>
+        <div className="title-second">{t('app.subtitle')}</div>
       </div>
       <div className="main-section">
         <div

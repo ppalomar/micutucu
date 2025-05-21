@@ -1,5 +1,6 @@
 // src/components/StudentList.js
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   useModal,
   useStudent,
@@ -20,6 +21,7 @@ const StudentList = () => {
   const { getClassroomBooks, removeClassroomBooks } = useBook();
   const { selectedClassroom } = useClassroom();
   const { removeRounds } = useRound();
+  const { t } = useTranslation();
 
   // Local state for the student selected for removal
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -108,11 +110,11 @@ const StudentList = () => {
               <span className="material-symbols-rounded">person</span>
               <div>{student.name}</div>
               {studentNotOwner && (
-                <div className="student-not-owner">Book not provided</div>
+                <div className="student-not-owner">{t('student.bookNotProvided')}</div>
               )}
               <div className="list-item-delete">
                 <span
-                  title="Delete student"
+                  title={t('student.deleteTitle')}
                   className="material-symbols-rounded"
                   onClick={() => handleDeleteClick(student)}
                 >
@@ -128,7 +130,7 @@ const StudentList = () => {
           onClick={toggleNewCoursePopup}
           disabled={!selectedClassroom || sortedStudents.length === 0}
         >
-          Start New Course
+          {t('student.startNewCourse')}
         </button>
       </div>
       {selectedStudent && (
@@ -136,13 +138,13 @@ const StudentList = () => {
           open={openRemovePopup}
           onClose={toggleRemovePopup}
           onRemove={handleRemoveStudent}
-          message={`Are you sure you want to remove ${selectedStudent.name} and the owned book from ${selectedClassroom?.name}?`}
+          message={t('student.deleteConfirmation', { studentName: selectedStudent.name, classroomName: selectedClassroom?.name })}
         />
       )}
       {selectedClassroom && (
         <NewCoursePopup
           onConfirm={handleStartNewCourse}
-          message={`Are you sure you want to start a new course for ${selectedClassroom?.name}? This will DELETE ALL students, books, and rounds for this classroom.`}
+          message={t('student.newCourseConfirmation', { classroomName: selectedClassroom?.name })}
         />
       )}
     </div>

@@ -1,0 +1,66 @@
+{
+  "app": {
+    "title": "Micu",
+    "subtitle": "tucu"
+  },
+  "classroom": {
+    "title": "Aula",
+    "add": "Añadir Aula",
+    "name": "Nombre del Aula",
+    "select": "Selecciona un aula"
+  },
+  "student": {
+    "title": "Alumnos",
+    "add": "Añadir",
+    "name": "Nombre",
+    "select": "Selecciona un alumno",
+    "deleteTitle": "Eliminar alumno",
+    "bookNotProvided": "Libro no proporcionado",
+    "deleteConfirmation": "¿Estás seguro de que quieres eliminar a {{studentName}} y su libro del aula {{classroomName}}?",
+    "newCourseConfirmation": "¿Estás seguro de que quieres comenzar un nuevo curso para {{classroomName}}? Esto ELIMINARÁ TODOS los alumnos, libros y rondas de esta aula.",
+    "startNewCourse": "Comenzar Nuevo Curso"
+  },
+  "book": {
+    "title": "Libros",
+    "add": "Añadir",
+    "titlePlaceholder": "Título",
+    "authorPlaceholder": "Autor",
+    "selectOwner": "Propietario",
+    "infoTooltip": "Haz clic en un libro para cambiar su disponibilidad.",
+    "deleteTitle": "Eliminar libro",
+    "notAvailable": "No Disponible",
+    "notAvailableTooltip": "El alumno no ha devuelto el libro. No recibirá un libro en la próxima ronda generada.",
+    "owner": "Propietario",
+    "startNewCycle": "Comenzar Nuevo Ciclo de Libros",
+    "deleteConfirmation": "¿Estás seguro de que quieres eliminar {{bookName}} del aula {{classroomName}}?",
+    "minBooksRequired": "Debes proporcionar al menos 2 libros para comenzar un nuevo ciclo.",
+    "newCycleConfirmation": "¿Estás seguro de que quieres empezar un nuevo ciclo de liblos para el aula {{classroomName}}? Esto ELIMINARÁ TODOS los libros y rondas de esta aula."
+  },
+  "assignment": {
+    "title": "Asignaciones",
+    "assignBooks": "Asignar Libros a Alumnos",
+    "roundInfo": "Ronda {{roundNumber}} - {{date}}",
+    "notAllowedToReceiveBook": "A {{studentName}} no se le permite recibir un libro",
+    "newRoundConfirmation": "Vas a crear una nueva ronda en {{classroomName}}. ¿Continuar?"
+  },
+  "round": {
+    "title": "Rondas de Lectura",
+    "generate": "Nueva Ronda",
+    "newCycle": "Nuevo Ciclo",
+    "newCourse": "Nuevo Curso",
+    "confirmWithClassroom": "Vas a crear una nueva ronda en {{classroom}}. ¿Continuar?",
+    "confirmWithoutClassroom": "Vas a crear una nueva ronda. ¿Continuar?"
+  },
+  "button": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "confirm": "Confirmar",
+    "remove": "Eliminar"
+  },
+  "language": {
+    "en": "Inglés",
+    "es": "Español",
+    "select": "Seleccionar Idioma"
+  }
+}

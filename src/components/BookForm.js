@@ -1,8 +1,10 @@
 // src/components/BookForm.js
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { useBook, useStudent, useClassroom } from "../context";
 
 const BookForm = () => {
+  const { t } = useTranslation();
   // Get data and functions from context hooks
   const { addBook, getClassroomBooks } = useBook();
   const { getClassroomStudents } = useStudent();
@@ -56,15 +58,16 @@ const BookForm = () => {
   return (
     <div className="book-header">
       <h2>
-        Books{" "}
+        {t('book.title')}{" "}
         <span
           className="material-symbols-rounded"
           style={{ cursor: "default" }}
+          title={t('book.infoTooltip')}
         >
           info
         </span>
         <span className="book-header-info">
-          Click on a book to toggle its availability status.
+          {t('book.infoTooltip')}
         </span>
       </h2>
       <form onSubmit={handleSubmit}>
@@ -72,7 +75,7 @@ const BookForm = () => {
           <div style={{ flex: 7, marginRight: 20 }}>
             <input
               type="text"
-              placeholder="Enter book name"
+              placeholder={t('book.titlePlaceholder')}
               name="bookName"
               value={bookName}
               onChange={(e) => setBookName(e.target.value)}
@@ -85,7 +88,7 @@ const BookForm = () => {
               name="selectedStudent"
             >
               <option value="" disabled>
-                Select Owner
+                {t('book.selectOwner')}
               </option>
               {studentsAreNotOwnersYet.map((student) => (
                 <option key={student.id} value={student.id}>
@@ -96,7 +99,7 @@ const BookForm = () => {
           </div>
           <div style={{ flex: 1 }}>
             <button disabled={isAddButtonDisabled} type="submit">
-              Add
+              {t('book.add')}
             </button>
           </div>
         </div>

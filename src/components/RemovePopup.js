@@ -4,11 +4,14 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useModal } from "../context";
+import { useTranslation } from "react-i18next";
 
 const RemovePopup = ({ onRemove, message }) => {
   // Get modal state and functions from context
   const { modal } = useModal();
   const { openRemovePopup, toggleRemovePopup } = modal;
+
+  const { t } = useTranslation();
 
   // Handle cancel button click
   const handleCancel = () => {
@@ -42,10 +45,10 @@ const RemovePopup = ({ onRemove, message }) => {
         <Typography gutterBottom>{message}</Typography>
         <div className="actions-container">
           <Button variant="outlined" onClick={handleCancel}>
-            Cancel
+            {t('button.cancel')}
           </Button>
           <Button variant="contained" onClick={handleRemove}>
-            Remove
+            {t('button.remove')}
           </Button>
         </div>
       </div>

@@ -1,11 +1,13 @@
 // src/components/GenerateRoundPopup.js
 import React from "react";
+import { useTranslation } from 'react-i18next';
+import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { useModal, useAssignment, useClassroom } from "../context";
 
 const GenerateRoundPopup = () => {
+  const { t } = useTranslation();
   // Get state and functions from context hooks
   const { modal } = useModal();
   const { openGenerateRoundPopup, toggleGenerateRoundPopup } = modal;
@@ -28,8 +30,8 @@ const GenerateRoundPopup = () => {
 
   // Create the confirmation message
   const message = selectedClassroom
-    ? `You are gonna create a new round in ${selectedClassroom.name}. Proceed?`
-    : "You are going to create a new round. Proceed?";
+    ? t('round.confirmWithClassroom', { classroom: selectedClassroom.name })
+    : t('round.confirmWithoutClassroom');
 
   return (
     <Modal
@@ -49,10 +51,10 @@ const GenerateRoundPopup = () => {
         <Typography gutterBottom>{message}</Typography>
         <div className="actions-container">
           <Button variant="outlined" onClick={handleCancel}>
-            Cancel
+            {t('button.cancel')}
           </Button>
           <Button variant="contained" onClick={handleGenerateRound}>
-            New Round
+            {t('round.generate')}
           </Button>
         </div>
       </div>

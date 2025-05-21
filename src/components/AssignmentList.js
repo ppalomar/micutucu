@@ -1,12 +1,14 @@
 // src/components/AssignmentList.js
 import React from "react";
 import { useRound, useStudent, useClassroom } from "../context";
+import { useTranslation } from "react-i18next";
 
 const AssignmentList = () => {
   // Get data from context hooks
   const { selectedRound } = useRound();
   const { getClassroomStudents } = useStudent();
   const { selectedClassroom } = useClassroom();
+  const { t } = useTranslation();
 
   // If no round is selected, don't render anything
   if (!selectedRound) return null;
@@ -39,7 +41,7 @@ const AssignmentList = () => {
       {studentsWithoutBook.map((student) => (
         <div className="list-item assignment not-returned" key={student.id}>
           <span className="material-symbols-rounded">info</span>
-          {`${student.name} is not allowed to receive a book`}
+          {t('assignment.notAllowedToReceiveBook', { studentName: student.name })}
         </div>
       ))}
     </div>

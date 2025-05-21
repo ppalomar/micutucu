@@ -1,0 +1,66 @@
+{
+  "app": {
+    "title": "Micu",
+    "subtitle": "tucu"
+  },
+  "classroom": {
+    "title": "Classroom",
+    "add": "Add Classroom",
+    "name": "Classroom Name",
+    "select": "Select a classroom"
+  },
+  "student": {
+    "title": "Students",
+    "add": "Add",
+    "name": "Name",
+    "select": "Select a student",
+    "deleteTitle": "Delete student",
+    "bookNotProvided": "Book not provided",
+    "deleteConfirmation": "Are you sure you want to remove {{studentName}} and the owned book from {{classroomName}}?",
+    "newCourseConfirmation": "Are you sure you want to start a new course for {{classroomName}}? This will DELETE ALL students, books, and rounds for this classroom.",
+    "startNewCourse": "Start New Course"
+  },
+  "book": {
+    "title": "Books",
+    "add": "Add",
+    "titlePlaceholder": "Title",
+    "authorPlaceholder": "Author",
+    "selectOwner": "Select Owner",
+    "infoTooltip": "Click on a book to toggle its availability status.",
+    "deleteTitle": "Delete book",
+    "notAvailable": "Not Available",
+    "notAvailableTooltip": "The student didn't return the book. She/he will NOT receive book in the next generated round",
+    "owner": "Owner",
+    "startNewCycle": "Start New Books Cycle",
+    "deleteConfirmation": "Are you sure you want to remove {{bookName}} from {{classroomName}}?",
+    "minBooksRequired": "You have to provide at least 2 books to start a new cycle."
+  },
+  "assignment": {
+    "title": "Assignments",
+    "assignBooks": "Assign Books to Students",
+    "roundInfo": "Round {{roundNumber}} - {{date}}",
+    "newRoundConfirmation": "You are going to create a new round in {{classroomName}}. Proceed?",
+    "newCycleConfirmation": "Are you sure you want to start a new books cycle for {{classroomName}}? This will DELETE ALL books and rounds for this classroom.",
+    "notAllowedToReceiveBook": "{{studentName}} is not allowed to receive a book"
+  },
+  "round": {
+    "title": "Reading Rounds",
+    "generate": "New Round",
+    "newCycle": "New Cycle",
+    "newCourse": "New Course",
+    "confirmWithClassroom": "You are going to create a new round in {{classroom}}. Proceed?",
+    "confirmWithoutClassroom": "You are going to create a new round. Proceed?"
+  },
+  "button": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "remove": "Remove"
+  },
+  "language": {
+    "en": "English",
+    "es": "Spanish",
+    "select": "Select Language"
+  }
+}

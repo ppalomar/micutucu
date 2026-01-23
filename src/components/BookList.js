@@ -103,7 +103,7 @@ const BookList = () => {
   };
 
   return (
-    <div>
+    <div className="list-container">
       <div className="list-div">
         {sortedBooks.map((book) => (
           <div
@@ -145,7 +145,7 @@ const BookList = () => {
           </div>
         ))}
       </div>
-      <div style={{ marginTop: 20 }}>
+      <div className="list-action">
         <button
           onClick={toggleNewCyclePopup}
           disabled={!selectedClassroom || sortedBooks.length === 0}

@@ -125,17 +125,30 @@ button:disabled:hover {
     border-radius: 8px;
 }
 
-.classroom{
-    flex: 1
+/* Classroom Selector */
+.classroom-selector {
+    max-width: 200px;
+    margin-bottom: 20px;
+    padding: 0 10px;
 }
+
+.classroom-selector .MuiInputLabel-root {
+    color: #82589F;
+}
+
+.classroom-selector .MuiInputLabel-root.Mui-focused {
+    color: #82589F;
+}
+
+/* Column proportions for 3 columns */
 .students{
     flex: 2
 }
 .books{
-    flex: 5
+    flex: 3
 }
 .rounds{
-    flex: 4
+    flex: 3
 }
 
 .section.rounds.clean {
@@ -169,13 +182,6 @@ button:disabled:hover {
     font-weight: 400;
 }
 
-.list-item.classroom > span {
-    margin-right: 5px;
-    position: relative;
-    top: -2px;
-    color: #82589F;
-    opacity: 0.5;
-}
 
 .list-item.student > span:nth-child(1) {
     margin-right: 5px;
@@ -285,32 +291,6 @@ button:disabled:hover {
     color: #82589F;
 }
 
-.classroom .list-item {
-    background-color: #e3daff;
-    border: 1px dashed #bdc3c7;
-    color: #2c3e50;
-    cursor: pointer;
-    font-weight: 200;
-}
-
-.classroom .list-item.active{
-    display: flex;
-    font-weight: 400;
-    border: 2px solid #82589F;
-    background-color: #d9cdff;
-}
-
-.classroom .list-item.active > span{
-    opacity: 1.1;
-}
-
-.classroom .list-item:hover {
-    border: 1px dashed white;
-}
-
-.classroom .list-item.active:hover{
-    border: 1px solid #82589F;
-}
 
 .main-section {
     display: flex;
@@ -475,222 +455,6 @@ button:disabled:hover {
   }
 
 
-/* Estilos para el header de la sección classroom */
-.classroom-header {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-  
-  .classroom-header h2 {
-    margin-bottom: 0;
-    flex-grow: 1;
-  }
-  
-  /* Estilo para el título cuando está colapsado (icono) */
-  .classroom-collapsed-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #82589F;
-    margin-bottom: 0;
-    margin-right: 5px;
-  }
-  
-  .classroom-collapsed-title .material-symbols-rounded {
-    font-size: 24px;
-  }
-  
-  /* Estilos para el header de la sección classroom */
-.classroom-header {
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin-bottom: 58px;
-}
-
-.classroom-header h2 {
-  margin-bottom: 0;
-  flex-grow: 1;
-}
-
-/* Estilo para el título cuando está colapsado (icono) */
-.classroom-collapsed-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #82589F;
-  margin-bottom: 0;
-  margin-right: 0;
-}
-
-.classroom-collapsed-title .material-symbols-rounded {
-  font-size: 20px;
-}
-
-/* Estilos para el botón de toggle */
-.section-toggle {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  color: #82589F;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
-}
-
-.section-toggle:hover {
-  background-color: rgba(214, 162, 232, 0.2);
-}
-
-.section-toggle .material-symbols-rounded {
-  font-size: 18px;
-}
-
-.section.classroom.collapsed .section-toggle {
-  width: 22px;
-  height: 22px;
-}
-
-/* La sección necesita position relative para posicionar el toggle */
-.section.classroom {
-    position: relative;
-    transition: all 0.3s ease;
-  }
-  
-  /* Estilos para el botón de toggle */
-  .section-toggle {
-    position: absolute;
-    right: -12px; /* Medio fuera del borde */
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    color: #82589F;
-    background-color: #e0d6ff; /* Mismo color que el fondo de la sección */
-    border-radius: 50%;
-    transition: background-color 0.2s ease;
-    z-index: 10;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .section-toggle:hover {
-    background-color: rgba(214, 162, 232, 0.6);
-  }
-  
-  .section-toggle .material-symbols-rounded {
-    font-size: 18px;
-  }
-  
-  /* Ajustes para la sección classroom cuando está colapsada */
-  .section.classroom.collapsed {
-    flex: none;
-    width: 15px;
-    min-width: 15px;
-    padding: 15px 5px;
-  }
-  
-  /* Estilos para el título cuando está colapsado (icono) */
-  .classroom-collapsed-title {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #82589F;
-    margin-bottom: 0;
-  }
-  
-  .classroom-collapsed-title .material-symbols-rounded {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  /* Estilos para mostrar información cuando está colapsada */
-  .classroom-collapsed-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #82589F;
-  }
-  
-  .classroom-collapsed-info span {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    max-height: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: 400;
-    text-align: center;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-  }
-  
-  /* Ajustes para el header de classroom */
-  .classroom-header {
-    display: flex;
-    align-items: flex-start;
-    position: relative;
-    margin-bottom: 58px;
-  }
-  
-  .classroom-header h2 {
-    margin-bottom: 0;
-    flex-grow: 1;
-  }
-  
-  /* Ajustes para las media queries */
-  @media (max-width: 1520px) {
-    .section.classroom.collapsed {
-      width: auto;
-      min-width: auto;
-      height: 22px;
-      min-height: 22px;
-      padding: 10px 15px;
-    }
-    
-    .section-toggle {
-      right: 10px;
-      top: 10px;
-      transform: none;
-    }
-    
-    .classroom-collapsed-title {
-      flex-direction: row;
-      align-items: center;
-    }
-    
-    .classroom-collapsed-title .material-symbols-rounded {
-      margin-bottom: 0;
-      margin-right: 10px;
-    }
-    
-    .classroom-collapsed-info {
-      margin-left: 5px;
-    }
-    
-    .classroom-collapsed-info span {
-      writing-mode: horizontal-tb;
-      transform: none;
-      max-height: none;
-      max-width: 150px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    .section-toggle .material-symbols-rounded {
-      transform: rotate(90deg);
-    }
-    
-    .classroom-header {
-      align-items: center;
-    }
-  }
 
 .generate-round-popup Button:hover {
     background-color: #2ecc71;

@@ -56,19 +56,9 @@ const BookForm = () => {
   const isAddButtonDisabled = !bookName || !selectedStudent;
 
   return (
-    <div className="book-header">
+    <div>
       <h2>
-        {t('book.title')}{" "}
-        <span
-          className="material-symbols-rounded"
-          style={{ cursor: "default" }}
-          title={t('book.infoTooltip')}
-        >
-          info
-        </span>
-        <span className="book-header-info">
-          {t('book.infoTooltip')}
-        </span>
+        {t('book.title')} <span style={{ fontSize: '0.75em' }}>({classroomBooks.length})</span>
       </h2>
       <form onSubmit={handleSubmit}>
         <div style={{ display: "flex" }}>

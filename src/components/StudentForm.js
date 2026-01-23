@@ -6,8 +6,13 @@ import { useStudent, useClassroom } from "../context";
 const StudentForm = () => {
   const { t } = useTranslation();
   // Get data and functions from context hooks
-  const { addStudent } = useStudent();
+  const { addStudent, getClassroomStudents } = useStudent();
   const { selectedClassroom } = useClassroom();
+
+  // Get classroom-specific students
+  const classroomStudents = selectedClassroom
+    ? getClassroomStudents(selectedClassroom.id)
+    : [];
 
   // Local state for the student name input
   const [studentName, setStudentName] = useState("");
@@ -30,7 +35,7 @@ const StudentForm = () => {
 
   return (
     <div>
-      <h2>{t('student.title')}</h2>
+      <h2>{t('student.title')} <span style={{ fontSize: '0.75em' }}>({classroomStudents.length})</span></h2>
       <form onSubmit={handleSubmit}>
         <div style={{ display: "flex" }}>
           <div style={{ flex: 10, marginRight: 20 }}>

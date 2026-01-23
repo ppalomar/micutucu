@@ -58,7 +58,7 @@ const BookForm = () => {
   return (
     <div>
       <h2>
-        {t('book.title')} <span style={{ fontSize: '0.75em' }}>({classroomBooks.length})</span>
+        {t('book.title')} <span style={{ fontSize: '0.75em', marginLeft: 8 }}>({classroomBooks.length})</span>
       </h2>
       <form onSubmit={handleSubmit}>
         <div style={{ display: "flex" }}>

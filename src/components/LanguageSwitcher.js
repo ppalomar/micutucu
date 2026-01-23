@@ -19,7 +19,6 @@ const LanguageSwitcher = () => {
       alignItems: 'center',
       zIndex: 1000
     }}>
-      <span style={{ fontSize: '14px', color: '#666' }}>{t('language.select')}:</span>
       <button 
         onClick={() => changeLanguage('es')} 
         style={{

@@ -62,7 +62,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
 
   return (
     <div>
-      <div style={{ display: "flex" }}>
+      <div className="section-header">
         <h2>{t('assignment.title')}</h2>
         <h3 className="round-info">
           {visibleArrows && (
@@ -93,7 +93,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
               </div>
             </>
           )}
-          <div style={{ marginTop: 3 }}>{roundText}</div>
+          <span className="round-text">{roundText}</span>
         </h3>
       </div>
       <div style={{ display: "flex" }}>

@@ -92,13 +92,18 @@ h2 {
     margin: 0px 0px 20px 0px;
     font-weight: 500;
     color: var(--purple-700);
+    display: flex;
+    align-items: center;
 }
 
 h3 {
     font-weight: 400;
-    margin-top: 8px;
+    margin-top: 0;
+    margin-bottom: 20px;
     margin-left: auto;
     color: var(--purple-700);
+    display: flex;
+    align-items: center;
 }
 
 /* ===========================================
@@ -190,16 +195,16 @@ button:disabled:hover {
    TITLE
    =========================================== */
 .title {
-    font-size: var(--text-3xl);
+    font-size: 3rem;
     text-align: center;
     padding: 20px 0;
     color: var(--purple-700);
-    font-weight: 600;
+    font-weight: 400;
     margin-right: 4px;
 }
 
 .title-second {
-    font-size: var(--text-3xl);
+    font-size: 3rem;
     text-align: center;
     padding: 20px 0;
     color: var(--purple-300);
@@ -412,6 +417,7 @@ button:disabled:hover {
 .list-item.assignment {
     border: 1px solid var(--purple-700);
     font-weight: 400;
+    min-height: 56px;
 }
 
 .list-item.assignment.not-returned {
@@ -431,6 +437,35 @@ button:disabled:hover {
 .main-section {
     display: flex;
     font-size: 14px;
+    align-items: stretch;
+}
+
+.main-section > .section {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===========================================
+   SECTION HEADER
+   =========================================== */
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: var(--space-6);
+}
+
+.section-header h2 {
+    margin: 0;
+}
+
+.section-header h3 {
+    margin: 0;
+    margin-left: auto;
+}
+
+.round-text {
+    margin-left: var(--space-2);
 }
 
 /* ===========================================
@@ -453,6 +488,7 @@ button:disabled:hover {
 
 .round-info {
     display: flex;
+    align-items: center;
     font-weight: 400;
 }
 

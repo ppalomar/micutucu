@@ -35,7 +35,7 @@ const StudentForm = () => {
 
   return (
     <div>
-      <h2>{t('student.title')} <span style={{ fontSize: '0.75em' }}>({classroomStudents.length})</span></h2>
+      <h2>{t('student.title')} <span style={{ fontSize: '0.75em', marginLeft: 8 }}>({classroomStudents.length})</span></h2>
       <form onSubmit={handleSubmit}>
         <div style={{ display: "flex" }}>
           <div style={{ flex: 10, marginRight: 20 }}>

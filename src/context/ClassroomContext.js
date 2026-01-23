@@ -5,6 +5,7 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useMemo,
 } from "react";
 import {
   getCollection,
@@ -99,10 +100,14 @@ export const ClassroomProvider = ({ children }) => {
     return selectedClassroom;
   };
 
-  // Initialize selected classroom from localStorage or first classroom
+  // Initialize selected classroom from localStorage or first classroom (alphabetically)
   useEffect(() => {
     if (classrooms.length) {
       const storedClassroomId = localStorage.getItem(STORED_SELECTED_CLASSROOM);
+      // Sort for initial selection
+      const sorted = [...classrooms].sort((a, b) =>
+        (a.name || '').localeCompare(b.name || '')
+      );
 
       if (storedClassroomId) {
         const storedClassroom = classrooms.find(
@@ -111,14 +116,14 @@ export const ClassroomProvider = ({ children }) => {
         if (storedClassroom) {
           setSelectedClassroom(storedClassroom);
         } else {
-          // If stored classroom not found, use first classroom
-          setSelectedClassroom(classrooms[0]);
-          storeSelectedClassroom(classrooms[0].id);
+          // If stored classroom not found, use first sorted classroom
+          setSelectedClassroom(sorted[0]);
+          storeSelectedClassroom(sorted[0].id);
         }
       } else {
-        // If no stored classroom, use first classroom
-        setSelectedClassroom(classrooms[0]);
-        storeSelectedClassroom(classrooms[0].id);
+        // If no stored classroom, use first sorted classroom
+        setSelectedClassroom(sorted[0]);
+        storeSelectedClassroom(sorted[0].id);
       }
     }
   }, [classrooms, storeSelectedClassroom]);
@@ -128,10 +133,17 @@ export const ClassroomProvider = ({ children }) => {
     fetchClassrooms();
   }, []);
 
+  // Sort classrooms alphabetically by name
+  const sortedClassrooms = useMemo(() => {
+    return [...classrooms].sort((a, b) =>
+      (a.name || '').localeCompare(b.name || '')
+    );
+  }, [classrooms]);
+
   return (
     <ClassroomContext.Provider
       value={{
-        classrooms,
+        classrooms: sortedClassrooms,
         selectedClassroom,
         setSelectedClassroom: setSelectedClassroomWithStorage,
         loading,

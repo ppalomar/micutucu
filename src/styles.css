@@ -417,7 +417,7 @@ button:disabled:hover {
 .list-item.assignment {
     border: 1px solid var(--purple-700);
     font-weight: 400;
-    min-height: 56px;
+    min-height: 56.92px;
 }
 
 .list-item.assignment.not-returned {

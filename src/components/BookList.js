@@ -34,9 +34,9 @@ const BookList = () => {
     [getClassroomStudents, selectedClassroom]
   );
 
-  // Sort books by name
+  // Sort books by name (with natural number sorting)
   const sortedBooks = classroomBooks.sort((a, b) =>
-    a.name.localeCompare(b.name)
+    a.name.localeCompare(b.name, undefined, { numeric: true })
   );
 
   // Toggle book availability when clicked

@@ -13,13 +13,10 @@ export const AssignmentProvider = ({ children }) => {
   const { updateBooks, resetBooks, getClassroomBooks } = useBook();
   const { addRound, getClassroomRounds } = useRound();
   const { getClassroomStudents } = useStudent();
-  const { getSelectedClassroom } = useClassroom();
+  const { selectedClassroom } = useClassroom();
 
   // Assign books to students with improved algorithm
   const assignBooksToStudents = async (classroomId) => {
-    // Get required data from other contexts
-
-    const selectedClassroom = getSelectedClassroom();
     const classroomBooks = getClassroomBooks(classroomId);
     const classroomStudents = getClassroomStudents(classroomId);
     const classroomRounds = getClassroomRounds(classroomId);

@@ -69,11 +69,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
             <>
               <div className={!isEnabledBackArrow ? "disabled" : ""}>
                 <span
-                  onClick={
-                    isEnabledBackArrow
-                      ? () => handleSelectedRound("back")
-                      : () => {}
-                  }
+                  onClick={() => isEnabledBackArrow && handleSelectedRound("back")}
                   className="material-symbols-rounded"
                 >
                   arrow_back
@@ -81,11 +77,7 @@ const AssignmentHeader = ({ isButtonEnabled }) => {
               </div>
               <div className={!isEnabledForwardArrow ? "disabled" : ""}>
                 <span
-                  onClick={
-                    isEnabledForwardArrow
-                      ? () => handleSelectedRound("forward")
-                      : () => {}
-                  }
+                  onClick={() => isEnabledForwardArrow && handleSelectedRound("forward")}
                   className="material-symbols-rounded"
                 >
                   arrow_forward

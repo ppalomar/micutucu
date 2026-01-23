@@ -1,12 +1,11 @@
 // src/Presentational.js
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from 'react-i18next';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { useClassroom, useStudent, useBook, useModal } from "./context";
 
-import ClassroomForm from "./components/ClassroomForm";
 import StudentForm from "./components/StudentForm";
 import BookForm from "./components/BookForm";
-import ClassroomList from "./components/ClassroomList";
 import StudentList from "./components/StudentList";
 import BookList from "./components/BookList";
 import AssignmentList from "./components/AssignmentList";
@@ -16,12 +15,9 @@ import LanguageSwitcher from "./components/LanguageSwitcher";
 const Presentational = () => {
   const { t } = useTranslation();
   const { isDevEnvironment } = useModal();
-  const { selectedClassroom } = useClassroom();
+  const { selectedClassroom, setSelectedClassroom, classrooms } = useClassroom();
   const { getClassroomStudents } = useStudent();
   const { getClassroomBooks } = useBook();
-
-  // Estado para controlar si la sección de Classroom está contraída
-  const [isClassroomCollapsed, setIsClassroomCollapsed] = useState(false);
 
   // Get data for the selected classroom
   const classroomStudents = selectedClassroom
@@ -36,51 +32,48 @@ const Presentational = () => {
   const isButtonEnabled =
     classroomStudents.length > 1 && classroomBooks.length > 1;
 
-  // Función para alternar el estado de contracción
-  const toggleClassroomCollapse = () => {
-    setIsClassroomCollapsed(!isClassroomCollapsed);
-  };
-
   return (
     <div className="container">
       <LanguageSwitcher />
-      
+
       {isDevEnvironment && (
         <div className="dev-environment-header">DEVELOPMENT ENVIRONMENT</div>
       )}
-      
+
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div className="title">{t('app.title')}</div>
         <div className="title-second">{t('app.subtitle')}</div>
       </div>
-      <div className="main-section">
-        <div
-          className={`section classroom ${
-            isClassroomCollapsed ? "collapsed" : ""
-          }`}
-        >
-          <ClassroomForm isCollapsed={isClassroomCollapsed} />
 
-          {!isClassroomCollapsed && (
-            <>
-              <div className="section-separator" />
-              <ClassroomList />
-            </>
-          )}
-
-          <div
-            className="section-toggle"
-            onClick={toggleClassroomCollapse}
-            title={isClassroomCollapsed ? "Expand" : "Collapse"}
+      {/* Classroom Selector */}
+      <div className="classroom-selector">
+        <FormControl fullWidth size="small">
+          <InputLabel id="classroom-select-label">{t('classroom.title')}</InputLabel>
+          <Select
+            labelId="classroom-select-label"
+            value={selectedClassroom?.id || ''}
+            label={t('classroom.title')}
+            onChange={(e) => {
+              const classroom = classrooms.find(c => c.id === e.target.value);
+              setSelectedClassroom(classroom);
+            }}
+            sx={{
+              '& .MuiOutlinedInput-notchedOutline': { borderColor: '#82589F' },
+              '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#D6A2E8' },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#82589F' },
+            }}
           >
-            <span className="material-symbols-rounded">
-              {isClassroomCollapsed
-                ? "keyboard_double_arrow_right"
-                : "keyboard_double_arrow_left"}
-            </span>
-          </div>
-        </div>
+            {classrooms.map((classroom) => (
+              <MenuItem key={classroom.id} value={classroom.id}>
+                {classroom.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
 
+      {/* 3 columns: Students | Books | Assignments */}
+      <div className="main-section">
         <div className="section students">
           <StudentForm />
           <div className="section-separator" />

@@ -36,9 +36,9 @@ const StudentList = () => {
     [getClassroomBooks, selectedClassroom]
   );
 
-  // Sort students by name
+  // Sort students by name (with natural number sorting)
   const sortedStudents = classroomStudents.sort((a, b) =>
-    a.name.localeCompare(b.name)
+    a.name.localeCompare(b.name, undefined, { numeric: true })
   );
 
   // Handle delete button click

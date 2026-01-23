@@ -23,8 +23,9 @@ const BookForm = () => {
     : [];
 
   // Filter students who don't own a book yet
-  const studentsAreNotOwnersYet = classroomStudents.filter(
-    (s) => !classroomBooks.map((b) => b.owner).includes(s.id)
+  const bookOwnerIds = new Set(classroomBooks.map((b) => b.owner));
+  const studentsWithoutBooks = classroomStudents.filter(
+    (student) => !bookOwnerIds.has(student.id)
   );
 
   // Handle input changes
@@ -80,7 +81,7 @@ const BookForm = () => {
               <option value="" disabled>
                 {t('book.selectOwner')}
               </option>
-              {studentsAreNotOwnersYet.map((student) => (
+              {studentsWithoutBooks.map((student) => (
                 <option key={student.id} value={student.id}>
                   {student.name}
                 </option>

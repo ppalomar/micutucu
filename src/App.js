@@ -20,17 +20,12 @@ const Presentational = () => {
   const { getClassroomBooks } = useBook();
 
   // Get data for the selected classroom
-  const classroomStudents = selectedClassroom
-    ? getClassroomStudents(selectedClassroom.id)
-    : [];
+  const classroomId = selectedClassroom?.id;
+  const classroomStudents = classroomId ? getClassroomStudents(classroomId) : [];
+  const classroomBooks = classroomId ? getClassroomBooks(classroomId) : [];
 
-  const classroomBooks = selectedClassroom
-    ? getClassroomBooks(selectedClassroom.id)
-    : [];
-
-  // Check if the button should be enabled
-  const isButtonEnabled =
-    classroomStudents.length > 1 && classroomBooks.length > 1;
+  // Button is enabled when there are at least 2 students and 2 books
+  const isButtonEnabled = classroomStudents.length > 1 && classroomBooks.length > 1;
 
   return (
     <div className="container">

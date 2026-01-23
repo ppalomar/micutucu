@@ -95,11 +95,6 @@ export const ClassroomProvider = ({ children }) => {
     }
   };
 
-  // Get selected classroom
-  const getSelectedClassroom = () => {
-    return selectedClassroom;
-  };
-
   // Initialize selected classroom from localStorage or first classroom (alphabetically)
   useEffect(() => {
     if (classrooms.length) {
@@ -152,7 +147,6 @@ export const ClassroomProvider = ({ children }) => {
         addClassroom,
         removeClassroom,
         storeSelectedClassroom,
-        getSelectedClassroom,
       }}
     >
       {children}

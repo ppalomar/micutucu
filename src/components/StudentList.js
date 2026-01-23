@@ -18,7 +18,7 @@ const StudentList = () => {
 
   const { removeStudent, getClassroomStudents, removeClassroomStudents } =
     useStudent();
-  const { getClassroomBooks, removeClassroomBooks } = useBook();
+  const { getClassroomBooks, removeClassroomBooks, removeBook } = useBook();
   const { selectedClassroom } = useClassroom();
   const { removeRounds } = useRound();
   const { t } = useTranslation();
@@ -90,14 +90,22 @@ const StudentList = () => {
   );
 
   // Handle student removal
-  const handleRemoveStudent = () => {
+  const handleRemoveStudent = async () => {
     if (selectedStudent) {
+      // Remove the student's book first
+      const studentBook = classroomBooks.find(
+        (book) => book.owner === selectedStudent.id
+      );
+      if (studentBook) {
+        await removeBook(studentBook.documentId);
+      }
+      // Then remove the student
       removeStudent(selectedStudent.documentId, selectedStudent.id);
     }
   };
 
   return (
-    <div>
+    <div className="list-container">
       <div className="list-div">
         {sortedStudents.map((student) => {
           const studentNotOwner = getStudentNotOwner(student.id);
@@ -125,7 +133,7 @@ const StudentList = () => {
           );
         })}
       </div>
-      <div style={{ marginTop: 20 }}>
+      <div className="list-action">
         <button
           onClick={toggleNewCoursePopup}
           disabled={!selectedClassroom || sortedStudents.length === 0}
